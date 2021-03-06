@@ -3,24 +3,79 @@ requisito 1{
     -bloco tapetes rot
     -bloco maquina
     -bloco master
-    -serie de caminhos entre armazem e maquinas/tapetes
+    -série de caminhos entre armazem e maquinas/tapetes
     -gestor de armazem
 }
 
 
+### Pedido  = O que recebe por UDP/IP - XML
+            . Transformação de Peças
+            . Descarga de Peças
+            . Existências de Peças
+            . Lista de Ordens
 
+### Ordens  = controlo efetivo da fábrica/PLC
+            . Transformação de Peças
+            . Descarga de Peças
+
+            // Separar em ordens agendadas e não agendadas?
 
 
 requisito 2{
-    -listener
-    -parcer
-    -gerador de orders
-    -scheduler
-    -handler para OPC-UA
     
-    -classe estatisticas ?
-    -DB
+    // Threads:
+
+    - Listener{
+        . Espera até receber novo pacote UDP/IP
+        . Quando recebe chama parser
+            
+            - Parser
+                . Deteta tipo de pedido
+                . Desconstroi pedido
+                . Trata do pedido
+                    * Tranformação de Peças -> Inserir na DB
+                    * Descarga de Peças -> Inserir na DB
+                    * Existência de Peças -> Executar Pedido
+                        . Ir buscar à DB
+                        . Enviar resposta UDP/IP
+                    * Lista de Ordens -> Executar Pedido
+                        . Ir buscar à DB
+                        . Enviar resposta UDP/IP
+    }
+
+    // As ordens são agendadas logo quando são inseridas na DB ou existe
+    // uma thread "Schedule" sempre a correr que vê as ordens não agendadas
+    // e agenda-as (e se necessário altera schedule das outras)?
     
+    // Nota: Na lista de ordens temos de dizer qual a previsão de inicio e fim
+    // das ordens. Será possível haver um pedido de lista de ordens antes do
+    // schedule agendar a tarefa? Será problemático?
+
+    - Scheduler{
+        . 
+
+    }
+
+    - Order Manager{
+        . Vê se uma ordem está pronta
+        . Manda executar ordens
+    }
+
+    - Order Executer{
+        . Gere Tapetes, Máquinas e Armazém necessários para executar a ordem
+
+        . Handler para OPC-UA?
+
+    }
+
+    - Interface Gráfica{
+        // Interface gráfica tipo Scada, JavaSwing?
+
+        . Estatisticas
+        . Estado da fábrica
+        . Ordens em espera
+        . Ações? (emergência, ... )?
+    }
     
     --classes:
         -orders {
