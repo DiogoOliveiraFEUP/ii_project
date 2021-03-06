@@ -1,0 +1,32 @@
+requisito 1{
+    -bloco de tapetes lineares
+    -bloco tapetes rot
+    -bloco maquina
+    -bloco master
+    -serie de caminhos entre armazem e maquinas/tapetes
+    -gestor de armazem
+}
+
+
+
+
+
+requisito 2{
+    -listener
+    -parcer
+    -gerador de orders
+    -scheduler
+    -handler para OPC-UA
+    
+    -classe estatisticas ?
+    -DB
+    
+    
+    --classes:
+        -orders {
+                classe transformação,
+                classe descarga
+                classe cargas
+                }
+        -
+}
