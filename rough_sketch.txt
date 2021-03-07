@@ -8,28 +8,28 @@ requisito 1{
 }
 
 
-### Pedido  = O que recebe por UDP/IP - XML
+### "Pedido"  = O que recebe por UDP/IP - XML
             . Transformação de Peças
             . Descarga de Peças
             . Existências de Peças
             . Lista de Ordens
 
-### Ordens  = controlo efetivo da fábrica/PLC
+### "Ordens"  = controlo efetivo da fábrica/PLC
             . Transformação de Peças
             . Descarga de Peças
 
             // Separar em ordens agendadas e não agendadas?
 
 
-requisito 2{
+requisito_2(){
     
     // Threads:
 
-    - Listener{
+    - Listener(){
         . Espera até receber novo pacote UDP/IP
         . Quando recebe chama parser
             
-            - Parser
+            - Parser()
                 . Deteta tipo de pedido
                 . Desconstroi pedido
                 . Trata do pedido
@@ -51,24 +51,24 @@ requisito 2{
     // das ordens. Será possível haver um pedido de lista de ordens antes do
     // schedule agendar a tarefa? Será problemático?
 
-    - Scheduler{
+    - Scheduler(){
         . 
 
     }
 
-    - Order Manager{
+    - Order_Manager(){
         . Vê se uma ordem está pronta
         . Manda executar ordens
     }
 
-    - Order Executer{
+    - Order_Executer(){
         . Gere Tapetes, Máquinas e Armazém necessários para executar a ordem
 
         . Handler para OPC-UA?
 
     }
 
-    - Interface Gráfica{
+    - Interface_Grafica(){
         // Interface gráfica tipo Scada, JavaSwing?
 
         . Estatisticas
