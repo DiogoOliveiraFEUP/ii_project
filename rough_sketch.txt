@@ -7,6 +7,35 @@ requisito 1{
     -gestor de armazem
 }
 
+{
+
+Transformação de P2 -> P7
+    MES -> PLC
+    P2 -> P7 = P2->P3 + P3->P4 + P4->P5 + P5->P6 + P6->P7
+    A -> P2->P3
+    A -> P3->P4
+    B->P4 ->P5
+    C
+    D
+
+
+
+    transformação
+    {
+        movements{
+            armazem:a, Aa1=1
+            a:a,
+            a:b,
+            b:c,
+            c:d,
+            d:armazem;
+        }
+    }
+
+
+}
+
+
 
 ### "Pedido"  = O que recebe por UDP/IP - XML
             . Transformação de Peças
@@ -14,11 +43,16 @@ requisito 1{
             . Existências de Peças
             . Lista de Ordens
 
-### "Ordens"  = controlo efetivo da fábrica/PLC
+### "Ordem"  = pedido a efetuar na fábrica/PLC
             . Transformação de Peças
             . Descarga de Peças
 
-            // Separar em ordens agendadas e não agendadas?
+//Na realidade, uma ordem tem "n" ordens iguais a executar sequencialmente.
+
+### "Transformação" = parte da ordem de transformação de peças
+    
+    "Ordem" P1 [->] P5 = "Transformações" P1->P2 + P2->P3 + P3->P4 + P4->P5
+
 
 
 requisito_2(){
@@ -44,15 +78,25 @@ requisito_2(){
     }
 
     // As ordens são agendadas logo quando são inseridas na DB ou existe
-    // uma thread "Schedule" sempre a correr que vê as ordens não agendadas
+    // uma thread "Scheduler" sempre a correr que vê as ordens não agendadas
     // e agenda-as (e se necessário altera schedule das outras)?
     
     // Nota: Na lista de ordens temos de dizer qual a previsão de inicio e fim
     // das ordens. Será possível haver um pedido de lista de ordens antes do
-    // schedule agendar a tarefa? Será problemático?
+    // scheduler agendar a tarefa? Será problemático?
 
-    - Scheduler(){
-        . 
+
+    
+    // Separar em ordens agendadas e não agendadas?
+
+
+    - Scheduler( List<Transformações> , List<Orders_atuais> ){    
+
+        . Calcula Ocupação das Máquinas para cada uma das transformações //????
+        
+        . Organizar temporalmente a ordem das peças //???
+
+        . return List<Orders>
 
     }
 
@@ -63,7 +107,7 @@ requisito_2(){
 
     - Order_Executer(){
         . Gere Tapetes, Máquinas e Armazém necessários para executar a ordem
-
+        
         . Handler para OPC-UA?
 
     }
@@ -77,11 +121,4 @@ requisito_2(){
         . Ações? (emergência, ... )?
     }
     
-    --classes:
-        -orders {
-                classe transformação,
-                classe descarga
-                classe cargas
-                }
-        -
 }
