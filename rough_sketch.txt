@@ -5,36 +5,16 @@ requisito 1{
     -bloco master
     -série de caminhos entre armazem e maquinas/tapetes
     -gestor de armazem
+
+    Lógica por trás do funcionamento do plc:
+        -Conjunto de Peças
+            -Peças
+                -Conjunto de caminhos
+                    -caminhos
+                        -Tapetes
+                        -Rotativos
+                        -Máquinas
 }
-
-{
-
-Transformação de P2 -> P7
-    MES -> PLC
-    P2 -> P7 = P2->P3 + P3->P4 + P4->P5 + P5->P6 + P6->P7
-    A -> P2->P3
-    A -> P3->P4
-    B->P4 ->P5
-    C
-    D
-
-
-
-    transformação
-    {
-        movements{
-            armazem:a, Aa1=1
-            a:a,
-            a:b,
-            b:c,
-            c:d,
-            d:armazem;
-        }
-    }
-
-
-}
-
 
 
 ### "Pedido"  = O que recebe por UDP/IP - XML
@@ -47,7 +27,7 @@ Transformação de P2 -> P7
             . Transformação de Peças
             . Descarga de Peças
 
-//Na realidade, uma ordem tem "n" ordens iguais a executar sequencialmente.
+//Na realidade, uma ordem tem "n" ordens iguais a executar sequencialmente
 
 ### "Transformação" = parte da ordem de transformação de peças
     
@@ -57,8 +37,8 @@ Transformação de P2 -> P7
 
 requisito_2(){
     
-    // Threads:
-
+    
+    // Thread:
     - Listener(){
         . Espera até receber novo pacote UDP/IP
         . Quando recebe chama parser
@@ -67,8 +47,12 @@ requisito_2(){
                 . Deteta tipo de pedido
                 . Desconstroi pedido
                 . Trata do pedido
-                    * Tranformação de Peças -> Inserir na DB
-                    * Descarga de Peças -> Inserir na DB
+                    * Transformação de Peças
+                        - Inserir na DB
+                        - Scheduler()
+                    * Descarga de Peças
+                        - Inserir na DB
+                        - Scheduler()
                     * Existência de Peças -> Executar Pedido
                         . Ir buscar à DB
                         . Enviar resposta UDP/IP
@@ -77,41 +61,34 @@ requisito_2(){
                         . Enviar resposta UDP/IP
     }
 
-    // As ordens são agendadas logo quando são inseridas na DB ou existe
-    // uma thread "Scheduler" sempre a correr que vê as ordens não agendadas
-    // e agenda-as (e se necessário altera schedule das outras)?
-    
-    // Nota: Na lista de ordens temos de dizer qual a previsão de inicio e fim
-    // das ordens. Será possível haver um pedido de lista de ordens antes do
-    // scheduler agendar a tarefa? Será problemático?
-
-
-    
-    // Separar em ordens agendadas e não agendadas?
-
-
     - Scheduler( List<Transformações> , List<Orders_atuais> ){    
-
-        . Calcula Ocupação das Máquinas para cada uma das transformações //????
         
-        . Organizar temporalmente a ordem das peças //???
-
-        . return List<Orders>
-
+        . Lê ordens não agendadas e ordens agendadas da DB
+        . Define:
+            - Organização temporal das ordens
+            - Separação das ordens em sub_ordens (no limite em transformações)
+            - Alocação de recursos (máquinas) às ordens
+        
+        . Insere na DB as ordens agendadas com as novas definições
     }
-
+    
+    //Thread:
     - Order_Manager(){
         . Vê se uma ordem está pronta
         . Manda executar ordens
     }
 
+    //Thread:
     - Order_Executer(){
-        . Gere Tapetes, Máquinas e Armazém necessários para executar a ordem
-        
+        . Gere Tapetes, Gere Máquinas e Armazém necessários para executar a ordem
+            - Gere caminhos
+        . Gere Troca de Ferramentas
+
         . Handler para OPC-UA?
 
     }
 
+    //Thread:
     - Interface_Grafica(){
         // Interface gráfica tipo Scada, JavaSwing?
 
