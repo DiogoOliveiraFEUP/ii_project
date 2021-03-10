@@ -1,1 +1,1 @@
-# InfInd2021
+# Industrial Informatics FEUP - 2020/2021
