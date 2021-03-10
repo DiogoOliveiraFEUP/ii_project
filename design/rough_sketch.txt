@@ -1,0 +1,101 @@
+Requirement_1(){
+    
+    - Linear_Conveyor()
+    - Rotative_Conveyor()
+    - Pusher()
+    - Roller()
+    - Machine()
+    - Warehouse_In()
+    - Warehouse_Out()
+    
+    - Path() //All possible combinations. How is this a class??
+
+    // more ... ???
+}
+
+
+### "Request (Pedido in PT)"  = what is received by UDP/IP - XML
+            . Block Tranformation
+            . Block Unloading
+            . Block Stock
+            . Order List
+
+### "Order"  = request that needs interaction with shop_floor/PLC
+            . Block Transformation      //Note: this order have a quantity (n) parameter
+            . Block Unloading           //Note: this order have a quantity (n) parameter
+
+### "Transformation" = part of a block transformation order
+    
+    //For example:
+        "Order" P1 [->] P5 = "Transformations" P1->P2 + P2->P3 + P3->P4 + P4->P5
+
+
+
+Requirement_2(){
+    
+    
+    // Thread:
+    - Listener(){
+        . Waits until receives new UDP/IP packet
+        . When received, calls parser method
+            
+            - Parser()
+                . Resolve type of request
+                . Parse request
+                . Handle the request
+                    * Block Transformation
+                        - Insert into DB
+                        - Calls Scheduler()
+                    * Block Unloading
+                        - Insert into DB
+                        - Calls Scheduler()
+                    * Block Stock
+                        - Get info from DB or MES
+                        - Send reply via UDP/IP
+                    * Order List
+                        - Get info from DB or MES
+                        - Send reply via UDP/IP
+    }
+
+    - Scheduler( List<Orders> ){    
+        
+        . Reads list of orders (scheduled + not scheduled + (in progress?))
+        . Defines:
+            - Sort orders chronologically
+            - Split orders into sub-orders - if necessary, and at the limit into transformations
+            - Allocate resources to orders (machines, cells, etc)
+        . Insert/Replace into DB the new order schedule
+    }
+    
+    //Thread:
+    - Order_Manager(){
+        . Verify if there is any completed order
+            - if true, transfer it to the list of completed orders
+        . Verify if there is any order that can be executed
+            - if true, transfer ir to the list of running orders
+    }
+
+    //Thread:
+    - Order_Executer(){
+        . Manage paths
+            - Activate source transition of path grafcet, i.e., activate path method
+            - Verify if any block reaches the end of the path
+                . if true, update order
+        . Manage changes of machine tools
+
+        . Handler for OPC-UA?
+    }
+
+    //Thread:
+    - Graphical_Interface(){
+        // Graphical Interface like Scada, JavaSwing?
+
+        . Statistics
+        . Factory State
+        . Waiting Orders
+        . Actions? (emergency, ... )?
+    }
+    
+}
+
+//Keep stock info in PLC, MES and DB
