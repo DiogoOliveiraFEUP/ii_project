@@ -33,28 +33,34 @@ Requirement_1(){
 
 Requirement_2(){
     
-    
-    // Thread:
-    - Listener(){
+    @ List <XML_Request>
+    @ List <Scheduled_Orders>
+    @ List <NonScheduled_Orders>
+    @ List <Running_Orders>  
+
+    // Thread - LISTENER:
+    - Listener( List<XML_Request> ){
         . Waits until receives new UDP/IP packet
         . When received, calls parser method
-            
-            - Parser()
-                . Resolve type of request
-                . Parse request
-                . Handle the request
-                    * Block Transformation
-                        - Insert into DB
-                        - Calls Scheduler()
-                    * Block Unloading
-                        - Insert into DB
-                        - Calls Scheduler()
-                    * Block Stock
-                        - Get info from DB or MES
-                        - Send reply via UDP/IP
-                    * Order List
-                        - Get info from DB or MES
-                        - Send reply via UDP/IP
+    }
+
+    // Thread - XML_PROCESSOR
+    - Parser(){
+        . Resolve type of request
+        . Parse request
+        . Handle the request
+            * Block Transformation
+                - Insert into DB
+                - Calls Scheduler()
+            * Block Unloading
+                - Insert into DB
+                - Calls Scheduler()
+            * Block Stock
+                - Get info from DB or MES
+                - Send reply via UDP/IP
+            * Order List
+                - Get info from DB or MES
+                - Send reply via UDP/IP
     }
 
     - Scheduler( List<Orders> ){    
@@ -63,7 +69,7 @@ Requirement_2(){
         . Defines:
             - Sort orders chronologically
             - Split orders into sub-orders - if necessary, and at the limit into transformations
-            - Allocate resources to orders (machines, cells, etc)
+            - Allocate resources toorders (machines, cells, etc)
         . Insert/Replace into DB the new order schedule
     }
     
@@ -89,6 +95,7 @@ Requirement_2(){
     //Thread:
     - Graphical_Interface(){
         // Graphical Interface like Scada, JavaSwing?
+        
 
         . Statistics
         . Factory State
@@ -99,3 +106,33 @@ Requirement_2(){
 }
 
 //Keep stock info in PLC, MES and DB
+
+
+
+
+
+
+
+int main()
+
+    
+
+    thread1_xmllistener
+
+    thread2_ordermanager
+
+    thread3_orderexecuter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
