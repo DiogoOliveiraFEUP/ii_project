@@ -105,34 +105,8 @@ Requirement_2(){
     
 }
 
-//Keep stock info in PLC, MES and DB
+//Keep stock info in PLC, MES and DB ??
 
 
-
-
-
-
-
-int main()
-
-    
-
-    thread1_xmllistener
-
-    thread2_ordermanager
-
-    thread3_orderexecuter
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//Path -> maybe it will be necessary to add a step before the one with pushO_x 
+//        to wait for the Empty Step of the Element
