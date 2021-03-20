@@ -27,4 +27,11 @@ erp/gui/.idea/
 erp/gui/.gradle/
 erp/gui/out/
 erp/gui/build/
-erp/gui/*iml
+erp/gui/*.iml
+
+#MES IntelliJ
+mes/.idea/
+mes/.gradle/
+mes/out/
+mes/build/
+mes/*.iml
