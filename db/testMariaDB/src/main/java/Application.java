@@ -6,14 +6,18 @@ public class Application {
 
 
             //create connection for a server installed in localhost, with a user "root" with no password
-            try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost/", "root", "teste123")) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost/", "root", "root")) {
                 // create a Statement
                 try (Statement stmt = conn.createStatement()) {
                     //execute query
-                    try(ResultSet rs = stmt.executeQuery("USE test ")){
+                    try(ResultSet rs = stmt.executeQuery("USE test")){
 
                     };
 
+                    try(ResultSet rs = stmt.executeQuery("INSERT INTO HELLO (a) VALUES (1),(2)")){
+
+
+                    };
                     try (ResultSet rs = stmt.executeQuery("SELECT * FROM `HELLO`")) {
                         //position result to first
                         rs.first();

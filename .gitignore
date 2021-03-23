@@ -35,3 +35,15 @@ mes/.gradle/
 mes/out/
 mes/build/
 mes/*.iml
+
+#DBs IntelliJ
+db/testMariaDB/.idea/
+db/testMariaDB/.gradle/
+db/testMariaDB/out/
+db/testMariaDB/build/
+db/testMariaDB/*.iml
+db/testPostgreSQL/.idea/
+db/testPostgreSQL/.gradle/
+db/testPostgreSQL/out/
+db/testPostgreSQL/build/
+db/testPostgreSQL/*.iml
