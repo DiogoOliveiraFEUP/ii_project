@@ -1,11 +1,24 @@
+import org.eclipse.milo.opcua.stack.core.UaException;
+
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class Application {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello World!");
+
+        try {
+            new OPC_UA_Connection();
+        } catch (UaException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         List<String> xml_requests = new ArrayList<>();
 
