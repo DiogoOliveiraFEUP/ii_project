@@ -5,20 +5,28 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.List;
 
-public class UDP_Listener {
+public class UDP_Listener extends Thread{
 
     private DatagramSocket ds = new DatagramSocket(1234);
     private byte[] buf = new byte[65535];
 
-    public UDP_Listener() throws SocketException {
+    private List<String> xml_requests;
+
+    public UDP_Listener(List<String> xml_requests) throws SocketException {
+        this.xml_requests = xml_requests;
     }
 
-    public void run(List<String> XML_Requests) throws IOException {
+    @Override
+    public void run() {
 
         while(true){
             DatagramPacket packet = new DatagramPacket(buf,buf.length);
             System.out.println("Waiting...");
-            ds.receive(packet);
+            try {
+                ds.receive(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             System.out.println("Received...");
 
             InetAddress address = packet.getAddress();
@@ -26,8 +34,10 @@ public class UDP_Listener {
             String received = new String(packet.getData(),0,packet.getLength());
 
             System.out.println(received);
-            XML_Requests.add(received);
 
+            synchronized (xml_requests){
+                xml_requests.add(received);
+            }
         }
     }
 
