@@ -33,7 +33,7 @@ public class UDP_Listener extends Thread{
             int port = packet.getPort();
             String received = new String(packet.getData(),0,packet.getLength());
 
-            System.out.println(received);
+            //System.out.println(received);
 
             synchronized (xml_requests){
                 xml_requests.add(received);
