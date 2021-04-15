@@ -64,31 +64,29 @@ public class OPC_UA_Connection {
 
         List<? extends UaNode> nodes = addressSpace.browseNodes(serverNode);
 
-        Node plcNode;
-
-        for (UaNode node : nodes) {
-            if (node.getDisplayName().equals(opc_ua_props.getProperty("plc_name"))) {
-                plcNode = node;
-                break;
-            }
-            ;
-        }
 
         NodeId GVLId = new NodeId(4,"|var|CODESYS Control Win V3 x64.Application.GVL");
 
         UaNode GVL = addressSpace.getNode(GVLId);
 
-        List<? extends UaNode> vnodes = addressSpace.browseNodes(GVL);
+        List<? extends UaNode> vNodes = addressSpace.browseNodes(GVL);
 
-        for(UaNode vnode: vnodes){
-            System.out.println(((VariableNode)vnode).getValue().getValue());
+        for(UaNode vNode: vNodes) {
+            ((VariableNode) vNode).setValue(new DataValue(new Variant(false),null,null));
+            System.out.println(client.writeValue(vNode.getNodeId(),new DataValue(new Variant(false))).get().toString());
+
+
         }
+
+
 
 
 
     }
 
-
+    public String getValue(UaNode vNode){
+        return (String) ((VariableNode) vNode).getValue().getValue().getValue();
+    }
 
 
 }
