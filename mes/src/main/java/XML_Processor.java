@@ -3,10 +3,10 @@ import java.util.List;
 public class XML_Processor extends Thread{
 
     private XML_Parser xml_parser = new XML_Parser();
-    private List<String> xml_requests;
+    private List<XML_Request> xml_requests;
     private List<Order> orders;
 
-    public XML_Processor(List<String> xml_requests, List<Order> orders) {
+    public XML_Processor(List<XML_Request> xml_requests, List<Order> orders) {
         this.xml_requests = xml_requests;
         this.orders = orders;
     }

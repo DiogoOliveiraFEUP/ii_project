@@ -1,17 +1,17 @@
 public class Unloading_Order extends Order{
 
-    private int blockType;
+    private String blockType;
 
-    public Unloading_Order(int blockType,int mainID, int inputTime, int maxDelay, int penalty) {
+    public Unloading_Order(String blockType,int mainID, int inputTime, int maxDelay, int penalty) {
         super(mainID, inputTime, maxDelay, penalty);
         this.blockType = blockType;
     }
 
-    public int getBlockType() {
+    public String getBlockType() {
         return blockType;
     }
 
-    public void setBlockType(int blockType) {
+    public void setBlockType(String blockType) {
         this.blockType = blockType;
     }
 }
