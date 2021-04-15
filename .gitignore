@@ -29,6 +29,13 @@ erp/gui/out/
 erp/gui/build/
 erp/gui/*.iml
 
+#ERP UDP Receiver GUI
+erp/UDP_Receiver/.idea/
+erp/UDP_Receiver/.gradle/
+erp/UDP_Receiver/out/
+erp/UDP_Receiver/build/
+erp/UDP_Receiver/*.iml
+
 #MES IntelliJ
 mes/.idea/
 mes/.gradle/
