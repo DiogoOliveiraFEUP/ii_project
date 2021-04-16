@@ -1,10 +1,12 @@
 import org.eclipse.milo.opcua.sdk.client.*;
+import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.sdk.client.nodes.UaNode;
 import org.eclipse.milo.opcua.sdk.core.nodes.VariableNode;
 import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.security.SecurityPolicy;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
+import org.eclipse.milo.opcua.stack.core.types.builtin.LocalizedText;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
@@ -21,7 +23,7 @@ public class OPC_UA_Connection {
 
     OpcUaClient client;
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    //private final Logger logger = LoggerFactory.getLogger(getClass());
     UaNode serverNode;
     UaNode GVLNode;
     AddressSpace addressSpace;
@@ -50,7 +52,10 @@ public class OPC_UA_Connection {
                                 .filter(e -> e.getSecurityPolicyUri().equals(SecurityPolicy.None.getUri()))
                                 .findFirst(),
                 configBuilder ->
-                        configBuilder.build()
+                        configBuilder
+                                .setApplicationName(LocalizedText.english("eclipse milo opc-ua client"))
+                                .setApplicationUri("urn:eclipse:milo:examples:client")
+                                .build()
         );
         client.connect().get();
         addressSpace = client.getAddressSpace();
@@ -63,8 +68,6 @@ public class OPC_UA_Connection {
     }
 
     public void setValue(String node, boolean value) throws UaException {
-        System.out.println(GVLNode.getNodeId().getIdentifier() +"."+ node);
-
         UaNode nodeToChange = addressSpace.getNode(new NodeId(4,GVLNode.getNodeId().getIdentifier() +"."+ node));
         client.writeValue(nodeToChange.getNodeId(),new DataValue(new Variant(value),null,null));
 
