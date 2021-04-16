@@ -9,9 +9,22 @@ import java.util.concurrent.ExecutionException;
 public class Application {
     public static void main(String[] args) throws IOException {
         System.out.println("Hello World!");
-
+        OPC_UA_Connection conn = null;
         try {
-            new OPC_UA_Connection();
+            conn = new OPC_UA_Connection();
+        } catch (UaException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            conn.setValue("bool_var",true);
+            System.out.println(conn.getBooleanValue("bool_var"));
+            conn.setValue("bool_var",false);
+            System.out.println(conn.getBooleanValue("bool_var"));
         } catch (UaException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
