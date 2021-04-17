@@ -20,6 +20,7 @@ public class GUI_Main {
 
     public GUI_Main(){
 
+
         try {
             IPmes = InetAddress.getByName("127.0.0.1");
             portMes = 1234;
@@ -32,6 +33,7 @@ public class GUI_Main {
         udpClient = new UDP_Client(portErp);
 
         f = new JFrame("Enterprise Resource Planning");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // ---- MAIN PANEL ---- //
 
