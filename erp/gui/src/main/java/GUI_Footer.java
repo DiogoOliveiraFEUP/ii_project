@@ -1,11 +1,14 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class GUI_Footer {
 
-    JPanel footer;
+    private JPanel footer;
+    private JSpinner nextID;
 
-    public GUI_Footer(){
+    public GUI_Footer(GUI_Main gui_main){
 
         // ---- NEXT ORDER ID ---- //
 
@@ -21,16 +24,18 @@ public class GUI_Footer {
         constraints.gridy = 0;
         footer.add(nextOrderID,constraints);
 
-        JSpinner nextID = new JSpinner(
+        nextID = new JSpinner(
                 new SpinnerNumberModel(1,1,100,1));
         constraints.gridx = 1;
         constraints.gridy = 0;
         footer.add(nextID,constraints);
 
-        JButton nextOrderSet = new JButton("Set");
-        constraints.gridx = 2;
-        constraints.gridy = 0;
-        footer.add(nextOrderSet,constraints);
+        nextID.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                gui_main.setNextOrderID((Integer) nextID.getValue());
+            }
+        });
+
 
         // ----------------------- //
 
@@ -38,5 +43,9 @@ public class GUI_Footer {
 
     public JPanel getFooter() {
         return footer;
+    }
+
+    public JSpinner getNextID(){
+        return nextID;
     }
 }

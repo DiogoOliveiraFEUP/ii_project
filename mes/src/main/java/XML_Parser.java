@@ -59,14 +59,14 @@ public class XML_Parser {
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
                                 e2 = (Element) e1.getElementsByTagName("Unload").item(0);
                                 String type = e2.getAttribute("Type");
-                                int dest = Integer.parseInt(e2.getAttribute("Destination"));
+                                String dest = e2.getAttribute("Destination");
                                 int quantity = Integer.parseInt(e2.getAttribute("Quantity"));
                                 System.out.println("Unload _" + " Type:" + type + " Destination:" + dest + " Quantity:" + quantity);
 
                                 /* Do Something - Order Unload */
                                 for(int i = 0; i < quantity; i++){
                                     // TIME, DELAY, PENALTY ???????????????????
-                                    orders.add(new Unloading_Order(type,number,0,1000,0));
+                                    orders.add(new Unloading_Order(type,dest,number,0,1000,0));
                                 }
                             }
                         }
