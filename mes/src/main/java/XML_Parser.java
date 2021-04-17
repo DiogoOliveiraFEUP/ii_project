@@ -65,7 +65,6 @@ public class XML_Parser {
 
                                 /* Do Something - Order Unload */
                                 for(int i = 0; i < quantity; i++){
-                                    // TIME, DELAY, PENALTY ???????????????????
                                     orders.add(new Unloading_Order(type,dest,number));
                                 }
                             }
@@ -130,6 +129,14 @@ public class XML_Parser {
     private void updateDB(List<Order> orders){
         /* Connect and Update DB */
 
+        /*
+        (new Database_Connection()).query(
+                "INSERT INTO transforders (MainID,FinalType,InitType,TotalQuantity) " +
+                "VALUES (124,'P1','P5',5)");
+        */
+
+        String res = (new Database_Connection()).query("Select * from transforders");
+        //System.out.println(res);
     }
 
 

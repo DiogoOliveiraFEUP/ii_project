@@ -6,7 +6,7 @@ public class Transformation_Order extends Order{
     private final int maxDelay;
     private final int penalty;
     private final int realInputTime;
-    private int beginTime;
+    private int startTime;
     private int endTime;
     private int realPenalty;
 
@@ -50,12 +50,12 @@ public class Transformation_Order extends Order{
         return realInputTime;
     }
 
-    public int getBeginTime() {
-        return beginTime;
+    public int getStartTime() {
+        return startTime;
     }
 
-    public void setBeginTime(int beginTime) {
-        this.beginTime = beginTime;
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
     }
 
     public int getEndTime() {

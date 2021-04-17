@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +13,6 @@ public class Application {
 
         XML_Processor xml_processor = new XML_Processor(xml_requests, orders);
         xml_processor.start();
-
-
 
     }
 }
