@@ -66,7 +66,7 @@ public class XML_Parser {
                                 /* Do Something - Order Unload */
                                 for(int i = 0; i < quantity; i++){
                                     // TIME, DELAY, PENALTY ???????????????????
-                                    orders.add(new Unloading_Order(type,dest,number,0,1000,0));
+                                    orders.add(new Unloading_Order(type,dest,number));
                                 }
                             }
                         }
@@ -84,7 +84,7 @@ public class XML_Parser {
 
                         /* Do Something - Request_Stores */
                         udp.send(getStoresXML(),request.getAddress(),request.getPort());
-                        System.out.println("Sent " + getStoresXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
+                        // System.out.println("Sent " + getStoresXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
 
                     }
                 }
@@ -98,10 +98,9 @@ public class XML_Parser {
 
                         /* Do Something - Request_Orders */
                         udp.send(getOrdersXML(),request.getAddress(),request.getPort());
-                        System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
+                        //System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
                     }
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
