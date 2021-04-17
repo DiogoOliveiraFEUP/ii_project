@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UDP_Listener extends Thread{
-
+/*
     Application app;
     private final DatagramSocket socket;
     private final byte[] buf = new byte[2048];
@@ -47,4 +47,6 @@ public class UDP_Listener extends Thread{
         }
         socket.close();
     }
+*/
 }
+

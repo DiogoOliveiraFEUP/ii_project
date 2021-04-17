@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GUI{
+public class UDP_GUI {
+    /*
     private final JFrame frame;
     private final ArrayList packet_list;
     JTextArea area;
     DefaultListModel<String> l1;
     JList<String> list;
-    public GUI(ArrayList packet_list){
+    public UDP_GUI(ArrayList packet_list){
         this.packet_list = packet_list;
 
         frame = new JFrame("UDP_Listener");
@@ -59,5 +60,5 @@ public class GUI{
             area.setCaretPosition(area .getDocument().getLength());
         }
     }
-
+*/
 }
