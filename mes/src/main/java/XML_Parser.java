@@ -59,14 +59,14 @@ public class XML_Parser {
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
                                 e2 = (Element) e1.getElementsByTagName("Unload").item(0);
                                 String type = e2.getAttribute("Type");
-                                int dest = Integer.parseInt(e2.getAttribute("Destination"));
+                                String dest = e2.getAttribute("Destination");
                                 int quantity = Integer.parseInt(e2.getAttribute("Quantity"));
                                 System.out.println("Unload _" + " Type:" + type + " Destination:" + dest + " Quantity:" + quantity);
 
                                 /* Do Something - Order Unload */
                                 for(int i = 0; i < quantity; i++){
                                     // TIME, DELAY, PENALTY ???????????????????
-                                    orders.add(new Unloading_Order(type,number,0,1000,0));
+                                    orders.add(new Unloading_Order(type,dest,number,0,1000,0));
                                 }
                             }
                         }
@@ -84,6 +84,8 @@ public class XML_Parser {
 
                         /* Do Something - Request_Stores */
                         udp.send(getStoresXML(),request.getAddress(),request.getPort());
+                        System.out.println("Sent " + getStoresXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
+
                     }
                 }
 
@@ -96,6 +98,7 @@ public class XML_Parser {
 
                         /* Do Something - Request_Orders */
                         udp.send(getOrdersXML(),request.getAddress(),request.getPort());
+                        System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
                     }
                 }
 
@@ -108,12 +111,21 @@ public class XML_Parser {
 
     private String getOrdersXML() {
 
-        return "Hello World";
+        return "<Order_Schedule>\n" +
+                "<Order Number=\"nnn\">\n" +
+                "<Transform From=\"Px\" To=\"Py\" Quantity=\"XX\" Quantity1=\"X1\" Quantity2=\"X2\"\n" +
+                "Quantity3=\"X3\" Time=\"TT\" Time1=\"T1\" MaxDelay=\"DD\" Penalty=\"PP\" Start=\"ST\"\n" +
+                "End=\"ET\" PenaltyIncurred=\"PI\"/>\n" +
+                "</Order>\n" +
+                "</Order_Schedule>";
     }
 
     private String getStoresXML() {
 
-        return "Hello World";
+        return "<Current_Stores>\n" +
+                "<WorkPiece type=\"Px\" quantity=\"XX\"/>\n" +
+                "<WorkPiece type=\"Px\" quantity=\"XX\"/>\n" +
+                "</Current_Stores>";
     }
 
     private void updateDB(List<Order> orders){
