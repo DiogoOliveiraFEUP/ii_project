@@ -30,7 +30,7 @@ public class GUI_StoresPanel {
         sendReqStores.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 gui_main.getUdpClient().send(getMessage(),gui_main.getIPmes(),gui_main.getPortMes());
-                new GUI_UDP_Listener(gui_main);
+                new GUI_UDP_Listener(gui_main,"Request Stores - Response:");
             }
         });
 

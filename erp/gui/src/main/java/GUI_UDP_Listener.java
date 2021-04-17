@@ -1,16 +1,11 @@
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class GUI_UDP_Listener {
 
-    public GUI_UDP_Listener(GUI_Main gui_main) {
+    public GUI_UDP_Listener(GUI_Main gui_main, String title) {
 
 //        gui_main.getJFrame().setVisible(false);
 
@@ -25,7 +20,7 @@ public class GUI_UDP_Listener {
 
         JPanel udpPanel = new JPanel(new GridBagLayout());
         udpPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "UDP Listener"));
+                BorderFactory.createEtchedBorder(), title));
 
         JTextArea text = new JTextArea("Listening...");
         //text.setBounds(10,30, 200,200);

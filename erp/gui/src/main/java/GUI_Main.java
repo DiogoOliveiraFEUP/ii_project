@@ -41,27 +41,28 @@ public class GUI_Main {
         constraints.insets = new Insets(10, 10, 10, 10);
 
         JPanel transfPanel = (new GUI_TransfPanel(this)).getJPanel();
+        constraints.fill = GridBagConstraints.VERTICAL;
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 1;
+        constraints.gridheight = 2;
         mainPanel.add(transfPanel,constraints);
 
         JPanel unldPanel = (new GUI_UnldPanel(this)).getUnldPanel();
         constraints.gridx = 1;
         constraints.gridy = 0;
-        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
         mainPanel.add(unldPanel,constraints);
 
         JPanel storesPanel = (new GUI_StoresPanel(this)).getStoresPanel();
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridx = 0;
+        constraints.gridx = 1;
         constraints.gridy = 1;
         mainPanel.add(storesPanel,constraints);
 
         JPanel ordersPanel = (new GUI_OrdersPanel(this)).getOrdersPanel();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx = 1;
-        constraints.gridy = 1;
+        constraints.gridy = 2;
         mainPanel.add(ordersPanel,constraints);
 
         JPanel footer = gui_footer.getFooter();
@@ -70,7 +71,7 @@ public class GUI_Main {
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.gridx = 0;
         constraints.gridy = 2;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 1;
         mainPanel.add(footer,constraints);
 
         // -------------------  //

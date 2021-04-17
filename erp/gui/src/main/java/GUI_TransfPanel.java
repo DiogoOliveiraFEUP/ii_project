@@ -55,16 +55,50 @@ public class GUI_TransfPanel {
         constraints.gridy = 1;
         transfPanel.add(transfQuant,constraints);
 
-        JButton sendTransf = new JButton("Send Order");
+        JLabel TimeL = new JLabel("Time:");
         constraints.gridx = 0;
         constraints.gridy = 2;
+        transfPanel.add(TimeL,constraints);
+
+        JSpinner Time = new JSpinner(
+                new SpinnerNumberModel(0,0,3600,1));
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        transfPanel.add(Time,constraints);
+
+        JLabel MaxDelayL = new JLabel("MaxDelay:");
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        transfPanel.add(MaxDelayL,constraints);
+
+        JSpinner MaxDelay = new JSpinner(
+                new SpinnerNumberModel(60,0,3600,1));
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        transfPanel.add(MaxDelay,constraints);
+
+        JLabel PenaltyL = new JLabel("Penalty:");
+        constraints.gridx = 2;
+        constraints.gridy = 2;
+        transfPanel.add(PenaltyL,constraints);
+
+        JSpinner Penalty = new JSpinner(
+                new SpinnerNumberModel(0,0,50,1));
+        constraints.gridx = 2;
+        constraints.gridy = 3;
+        transfPanel.add(Penalty,constraints);
+
+        JButton sendTransf = new JButton("Send Order");
+        constraints.gridx = 0;
+        constraints.gridy = 4;
         constraints.gridwidth = 3;
         transfPanel.add(sendTransf,constraints);
 
         sendTransf.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String message = getMessage((String) transfFrom.getSelectedItem(),
-                        (String) transfTo.getSelectedItem(), (Integer) transfQuant.getValue());
+                        (String) transfTo.getSelectedItem(), (Integer) transfQuant.getValue(),
+                            (Integer) Time.getValue(), (Integer) MaxDelay.getValue(), (Integer) Penalty.getValue());
                 gui_main.getUdpClient().send(message,gui_main.getIPmes(),gui_main.getPortMes());
                 gui_main.setNextOrderID(gui_main.getNextOrderID()+1);
             }
@@ -73,7 +107,7 @@ public class GUI_TransfPanel {
         // ---------------------- //
     }
 
-    private String getMessage(String from, String to, int quant) {
+    private String getMessage(String from, String to, int quant, int time, int maxDelay, int penalty) {
         return "<?xml version=\"1.0\"?>\n" +
                 "<!DOCTYPE PRODUCTION_ORDERS [\n" +
                 "<!ELEMENT ORDERS (Request_Stores | Order*)>\n" +
@@ -100,7 +134,8 @@ public class GUI_TransfPanel {
                 "]>\n" +
                 "<ORDERS>\n" +
                 "<Order Number=\"" + gui_main.getNextOrderID() +"\">\n" +
-                "<Transform From=\"" + from + "\" To=\"" + to + "\" Quantity=\"" + quant + "\" Time=\"0\" MaxDelay=\"250\" Penalty=\"100\"/>\n" +
+                "<Transform From=\"" + from + "\" To=\"" + to + "\" Quantity=\"" + quant + "\" " +
+                    "Time=\"" + time + "\" MaxDelay=\"" + maxDelay + "\" Penalty=\"" + penalty + "\"/>\n" +
                 "</Order>\n" +
                 "</ORDERS>\n";
     }
