@@ -9,7 +9,7 @@ public class XML_Parser {
     Scheduler scheduler = new Scheduler();
     UDP_Sender udp = new UDP_Sender();
 
-    public void parse(XML_Request request, List<Order> orders) {
+    public void parse(XML_Request request, List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders) {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -53,7 +53,7 @@ public class XML_Parser {
 
                                 /* Do Something - Order Transform */
                                 for(int i = 0; i < quantity; i++){
-                                    orders.add(new Transformation_Order(from,to,number,time,maxDelay,penalty));
+                                    transfOrders.add(new Transformation_Order(from,to,number,time,maxDelay,penalty));
                                 }
                             }
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
@@ -65,13 +65,13 @@ public class XML_Parser {
 
                                 /* Do Something - Order Unload */
                                 for(int i = 0; i < quantity; i++){
-                                    orders.add(new Unloading_Order(type,dest,number));
+                                    unldOrders.add(new Unloading_Order(type,dest,number));
                                 }
                             }
                         }
                     }
-                    scheduler.schedule(orders);
-                    updateDB(orders);
+                    scheduler.schedule(transfOrders,unldOrders);
+                    updateDB(transfOrders,unldOrders);
                 }
 
                 nList = doc.getElementsByTagName("Request_Stores");
@@ -126,7 +126,7 @@ public class XML_Parser {
                 "</Current_Stores>";
     }
 
-    private void updateDB(List<Order> orders){
+    private void updateDB(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders){
         /* Connect and Update DB */
 
         /*
