@@ -10,9 +10,9 @@ public class UDP_Listener extends Thread{
     private DatagramSocket ds = new DatagramSocket(1234);
     private byte[] buf = new byte[65535];
 
-    private List<String> xml_requests;
+    private List<XML_Request> xml_requests;
 
-    public UDP_Listener(List<String> xml_requests) throws SocketException {
+    public UDP_Listener(List<XML_Request> xml_requests) throws SocketException {
         this.xml_requests = xml_requests;
     }
 
@@ -36,7 +36,7 @@ public class UDP_Listener extends Thread{
             //System.out.println(received);
 
             synchronized (xml_requests){
-                xml_requests.add(received);
+                xml_requests.add(new XML_Request(received,address,port));
             }
         }
     }

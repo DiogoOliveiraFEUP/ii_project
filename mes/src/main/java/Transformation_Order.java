@@ -1,27 +1,27 @@
 public class Transformation_Order extends Order{
 
-    private int initBlockType;
-    private int finalBlockType;
+    private String initBlockType;
+    private String finalBlockType;
 
-    public Transformation_Order(int initBlockType, int finalBlockType, int mainID, int inputTime, int maxDelay, int penalty) {
+    public Transformation_Order(String initBlockType, String finalBlockType, int mainID, int inputTime, int maxDelay, int penalty) {
         super(mainID, inputTime, maxDelay, penalty);
         this.finalBlockType = finalBlockType;
         this.initBlockType = initBlockType;
     }
 
-    public int getInitBlockType() {
+    public String getInitBlockType() {
         return initBlockType;
     }
 
-    public void setInitBlockType(int initBlockType) {
+    public void setInitBlockType(String initBlockType) {
         this.initBlockType = initBlockType;
     }
 
-    public int getFinalBlockType() {
+    public String getFinalBlockType() {
         return finalBlockType;
     }
 
-    public void setFinalBlockType(int finalBlockType) {
+    public void setFinalBlockType(String finalBlockType) {
         this.finalBlockType = finalBlockType;
     }
 }

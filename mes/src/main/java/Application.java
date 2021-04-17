@@ -6,7 +6,7 @@ import java.util.List;
 public class Application {
     public static void main(String[] args) throws IOException {
 
-        List<String> xml_requests = new ArrayList<>();
+        List<XML_Request> xml_requests = new ArrayList<>();
         List<Order> orders = new ArrayList<>();
 
         UDP_Listener udp_listener = new UDP_Listener(xml_requests);
