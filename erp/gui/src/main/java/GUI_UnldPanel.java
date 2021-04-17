@@ -65,7 +65,7 @@ public class GUI_UnldPanel {
             public void actionPerformed(ActionEvent e){
                 String message = getMessage((String) unldType.getSelectedItem(),
                         (String) unldDest.getSelectedItem(), (Integer) unldQuant.getValue());
-                gui_main.getUdpSender().send(message,gui_main.getIPmes(),gui_main.getPortMes());
+                gui_main.getUdpClient().send(message,gui_main.getIPmes(),gui_main.getPortMes());
                 gui_main.setNextOrderID(gui_main.getNextOrderID()+1);
             }
         });

@@ -10,11 +10,13 @@ public class GUI_Main {
     private InetAddress IPerp;
     private int portErp;
 
-    private UDP_Sender udp_sender;
+    private UDP_Client udpClient;
 
     private int nextOrderID = 1;
 
     GUI_Footer gui_footer = new GUI_Footer(this);
+
+    JFrame f;
 
     public GUI_Main(){
 
@@ -27,9 +29,9 @@ public class GUI_Main {
             e.printStackTrace();
         }
 
-        udp_sender = new UDP_Sender(portErp);
+        udpClient = new UDP_Client(portErp);
 
-        JFrame f = new JFrame("Enterprise Resource Planning");
+        f = new JFrame("Enterprise Resource Planning");
 
         // ---- MAIN PANEL ---- //
 
@@ -111,8 +113,8 @@ public class GUI_Main {
         this.portErp = portErp;
     }
 
-    public UDP_Sender getUdpSender() {
-        return udp_sender;
+    public UDP_Client getUdpClient() {
+        return udpClient;
     }
 
     public int getNextOrderID() {
@@ -122,5 +124,9 @@ public class GUI_Main {
     public void setNextOrderID(int nextOrderID) {
         this.nextOrderID = nextOrderID;
         gui_footer.getNextID().setValue(nextOrderID);
+    }
+
+    public JFrame getJFrame() {
+        return f;
     }
 }

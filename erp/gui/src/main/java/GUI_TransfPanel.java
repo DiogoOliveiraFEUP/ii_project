@@ -65,7 +65,7 @@ public class GUI_TransfPanel {
             public void actionPerformed(ActionEvent e){
                 String message = getMessage((String) transfFrom.getSelectedItem(),
                         (String) transfTo.getSelectedItem(), (Integer) transfQuant.getValue());
-                gui_main.getUdpSender().send(message,gui_main.getIPmes(),gui_main.getPortMes());
+                gui_main.getUdpClient().send(message,gui_main.getIPmes(),gui_main.getPortMes());
                 gui_main.setNextOrderID(gui_main.getNextOrderID()+1);
             }
         });

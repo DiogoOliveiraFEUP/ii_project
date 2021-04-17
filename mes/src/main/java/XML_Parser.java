@@ -84,6 +84,8 @@ public class XML_Parser {
 
                         /* Do Something - Request_Stores */
                         udp.send(getStoresXML(),request.getAddress(),request.getPort());
+                        System.out.println("Sent " + getStoresXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
+
                     }
                 }
 
@@ -96,6 +98,7 @@ public class XML_Parser {
 
                         /* Do Something - Request_Orders */
                         udp.send(getOrdersXML(),request.getAddress(),request.getPort());
+                        System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
                     }
                 }
 
@@ -108,12 +111,21 @@ public class XML_Parser {
 
     private String getOrdersXML() {
 
-        return "Hello World";
+        return "<Order_Schedule>\n" +
+                "<Order Number=\"nnn\">\n" +
+                "<Transform From=\"Px\" To=\"Py\" Quantity=\"XX\" Quantity1=\"X1\" Quantity2=\"X2\"\n" +
+                "Quantity3=\"X3\" Time=\"TT\" Time1=\"T1\" MaxDelay=\"DD\" Penalty=\"PP\" Start=\"ST\"\n" +
+                "End=\"ET\" PenaltyIncurred=\"PI\"/>\n" +
+                "</Order>\n" +
+                "</Order_Schedule>";
     }
 
     private String getStoresXML() {
 
-        return "Hello World";
+        return "<Current_Stores>\n" +
+                "<WorkPiece type=\"Px\" quantity=\"XX\"/>\n" +
+                "<WorkPiece type=\"Px\" quantity=\"XX\"/>\n" +
+                "</Current_Stores>";
     }
 
     private void updateDB(List<Order> orders){
