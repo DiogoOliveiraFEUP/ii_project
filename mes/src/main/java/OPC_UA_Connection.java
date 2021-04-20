@@ -36,7 +36,7 @@ public class OPC_UA_Connection {
 
 
         try {
-            in = new FileInputStream("src\\main\\java\\OPC_UA_Connection.properties");
+            in = new FileInputStream("src\\main\\config\\OPC_UA_Connection.properties");
         } catch (FileNotFoundException e) {
             System.err.println("File not found");
             throw new FileNotFoundException();
