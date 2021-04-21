@@ -1,16 +1,18 @@
+import java.time.Instant;
+
 public class Transformation_Order extends Order{
 
     private final String initBlockType;
     private final String finalBlockType;
-    private final int inputTime;
+    private final long inputTime;
     private final int maxDelay;
     private final int penalty;
-    private final int realInputTime;
+    private final long realInputTime;
     private int startTime;
     private int endTime;
     private int realPenalty;
 
-    public Transformation_Order(String initBlockType, String finalBlockType, int mainID, int inputTime, int maxDelay, int penalty) {
+    public Transformation_Order(String initBlockType, String finalBlockType, int mainID, long inputTime, int maxDelay, int penalty) {
         super(mainID);
 
         this.finalBlockType = finalBlockType;
@@ -19,10 +21,7 @@ public class Transformation_Order extends Order{
         this.maxDelay = maxDelay;
         this.penalty = penalty;
 
-        /* ---- REAL INPUT TIME --- */
-        /* ### Change this ### */
-        this.realInputTime = inputTime;
-
+        this.realInputTime = Instant.now().getEpochSecond();
     }
 
     public String getInitBlockType() {
@@ -34,7 +33,7 @@ public class Transformation_Order extends Order{
         return finalBlockType;
     }
 
-    public int getInputTime() {
+    public long getInputTime() {
         return inputTime;
     }
 
@@ -46,7 +45,7 @@ public class Transformation_Order extends Order{
         return penalty;
     }
 
-    public int getRealInputTime() {
+    public long getRealInputTime() {
         return realInputTime;
     }
 
