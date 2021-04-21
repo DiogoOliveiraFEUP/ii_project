@@ -10,7 +10,7 @@ import javax.xml.transform.stream.StreamResult;
 
 public class Database_Connection {
 
-    String URL = "jdbc:mariadb://localhost/";
+    String URL = "jdbc:mariadb://localhost/factory?allowMultiQueries=true";
     String user = "root";
     String password = "root";
 

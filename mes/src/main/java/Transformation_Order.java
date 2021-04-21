@@ -1,4 +1,6 @@
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Transformation_Order extends Order{
 
@@ -13,7 +15,9 @@ public class Transformation_Order extends Order{
     private int realPenalty;
 
     public Transformation_Order(String initBlockType, String finalBlockType, int mainID, long inputTime, int maxDelay, int penalty) {
-        super(mainID);
+
+        /* CHANGE ID !!!!!!!!!!! */
+        super(1,mainID);
 
         this.finalBlockType = finalBlockType;
         this.initBlockType = initBlockType;
@@ -71,5 +75,22 @@ public class Transformation_Order extends Order{
 
     public void setRealPenalty(int realPenalty) {
         this.realPenalty = realPenalty;
+    }
+
+    public static List<Integer> getMainIDs(List<Transformation_Order> orders){
+        List<Integer> ids = new ArrayList<>();
+        for(Transformation_Order order : orders){
+            if(ids.contains(order.getMainID())){}
+            else {ids.add(order.getMainID());}
+        }
+        return ids;
+    }
+
+    public static List<Transformation_Order> getOrdersByMainID(List<Transformation_Order> orders, int id){
+        List<Transformation_Order> result = new ArrayList<>();
+        for(Transformation_Order order : orders){
+            if(order.getMainID() == id) result.add(order);
+        }
+        return result;
     }
 }

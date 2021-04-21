@@ -2,6 +2,7 @@ import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class XML_Parser {
@@ -55,6 +56,9 @@ public class XML_Parser {
                                 for(int i = 0; i < quantity; i++){
                                     transfOrders.add(new Transformation_Order(from,to,number,time,maxDelay,penalty));
                                 }
+
+                                scheduler.schedule(transfOrders,unldOrders);
+                                updateDB(transfOrders);
                             }
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
                                 e2 = (Element) e1.getElementsByTagName("Unload").item(0);
@@ -67,11 +71,10 @@ public class XML_Parser {
                                 for(int i = 0; i < quantity; i++){
                                     unldOrders.add(new Unloading_Order(type,dest,number));
                                 }
+                                scheduler.schedule(transfOrders,unldOrders);
                             }
                         }
                     }
-                    scheduler.schedule(transfOrders,unldOrders);
-                    updateDB(transfOrders,unldOrders);
                 }
 
                 nList = doc.getElementsByTagName("Request_Stores");
@@ -126,18 +129,68 @@ public class XML_Parser {
                 "</Current_Stores>";
     }
 
-    private void updateDB(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders){
-        /* Connect and Update DB */
+    private void updateDB(List<Transformation_Order> transfOrders){
+
+        StringBuilder sb = new StringBuilder();
+
+        List<Integer> ids = Transformation_Order.getMainIDs(transfOrders);
+
+        for(Integer id : ids){
+            List<Transformation_Order> orders = Transformation_Order.getOrdersByMainID(transfOrders,id);
+            int total = 0;
+            int finished = 0;
+            int running = 0;
+            long startTime = Long.MAX_VALUE;
+            long endTime = Long.MIN_VALUE;
+
+            for(Transformation_Order order : orders){
+                total++;
+                if(order.getStatus() == Order.Status.COMPLETED){
+                    finished++;
+                }
+                else if(order.getStatus() == Order.Status.RUNNING){
+                    running++;
+                }
+                if(order.getStartTime() < startTime){
+                    startTime=order.getStartTime();
+                }
+                if(order.getEndTime() > endTime){
+                    endTime= order.getEndTime();
+                }
+            }
+
+            sb.append("REPLACE INTO transforders VALUES ("
+                    + id + ","
+                    + "'" + orders.get(0).getInitBlockType() + "',"
+                    + "'" + orders.get(0).getFinalBlockType() + "',"
+                    + total + ","
+                    + finished + ","
+                    + running + ","
+                    + orders.get(0).getInputTime() + ","
+                    + orders.get(0).getRealInputTime() + ","
+                    + orders.get(0).getMaxDelay() + ","
+                    + orders.get(0).getPenalty() + ","
+                    + startTime + ","
+                    + endTime + ");\n");
+        }
 
         /*
-        (new Database_Connection()).query(
-                "INSERT INTO transforders (MainID,FinalType,InitType,TotalQuantity) " +
-                "VALUES (124,'P1','P5',5)");
+        Transformation Order DB
+            + Main_ID: int
+            + BlockType_Initial: int
+            + BlockType_Final: int
+            + Total_Quantity: int
+            + Finished_Quantity: int
+            + Running_Quantity: int
+            + Send_Time: int
+            + Arrival_Time: int
+            + MaxDelay: int
+            + Penalty: int
+            + Start_Time: int
+            + End_Time: int
         */
 
-        String res = (new Database_Connection()).query("Select * from transforders");
-        //System.out.println(res);
+        String res = (new Database_Connection()).query(sb.toString());
+        System.out.println(res);
     }
-
-
 }

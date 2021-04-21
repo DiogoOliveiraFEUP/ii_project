@@ -1,10 +1,23 @@
 public class Order {
 
+    private int ID;
     private int mainID;
     private int path;
-    private int status;
 
-    public Order(int mainID){
+    public enum Status {READY,RUNNING,COMPLETED}
+    private Status status;
+
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public Order(int ID, int mainID){
+        this.ID = ID;
         this.mainID = mainID;
     }
 
@@ -12,7 +25,7 @@ public class Order {
         this.path = path;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -28,7 +41,7 @@ public class Order {
         return path;
     }
 
-    public int getStatus() {
+    public Status getStatus() {
         return status;
     }
 }
