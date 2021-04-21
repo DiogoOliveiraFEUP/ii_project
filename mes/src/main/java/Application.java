@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class Application {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
 
         System.out.println("Hello World!");
 
@@ -14,10 +14,10 @@ public class Application {
 
         try {
             conn = new OPC_UA_Connection();
+            conn.setValue("bool_var",true);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
-        conn.setValue("bool_var",true);
 
         List<XML_Request> xml_requests = new ArrayList<>();
         List<Transformation_Order> transfOrders = new ArrayList<>();

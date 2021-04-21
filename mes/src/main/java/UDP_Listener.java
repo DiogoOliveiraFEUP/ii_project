@@ -7,13 +7,19 @@ import java.util.List;
 
 public class UDP_Listener extends Thread{
 
-    private DatagramSocket ds = new DatagramSocket(1234);
+    private DatagramSocket ds;
+
     private byte[] buf = new byte[65535];
 
     private List<XML_Request> xml_requests;
 
-    public UDP_Listener(List<XML_Request> xml_requests) throws SocketException {
+    public UDP_Listener(List<XML_Request> xml_requests){
         this.xml_requests = xml_requests;
+        try {
+            ds = new DatagramSocket(1234);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

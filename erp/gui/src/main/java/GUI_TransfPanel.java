@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
 
 public class GUI_TransfPanel {
 
@@ -61,7 +62,7 @@ public class GUI_TransfPanel {
         transfPanel.add(TimeL,constraints);
 
         JSpinner Time = new JSpinner(
-                new SpinnerNumberModel(0,0,3600,1));
+                new SpinnerNumberModel(-1,-1,3600,1));
         constraints.gridx = 0;
         constraints.gridy = 3;
         transfPanel.add(Time,constraints);
@@ -88,9 +89,15 @@ public class GUI_TransfPanel {
         constraints.gridy = 3;
         transfPanel.add(Penalty,constraints);
 
-        JButton sendTransf = new JButton("Send Order");
+        JLabel TimeUNIX = new JLabel("(Time=-1 => Time=UNIX timestamp)");
         constraints.gridx = 0;
         constraints.gridy = 4;
+        constraints.gridwidth = 3;
+        transfPanel.add(TimeUNIX,constraints);
+
+        JButton sendTransf = new JButton("Send Order");
+        constraints.gridx = 0;
+        constraints.gridy = 5;
         constraints.gridwidth = 3;
         transfPanel.add(sendTransf,constraints);
 
@@ -107,7 +114,13 @@ public class GUI_TransfPanel {
         // ---------------------- //
     }
 
-    private String getMessage(String from, String to, int quant, int time, int maxDelay, int penalty) {
+    private String getMessage(String from, String to, int quant, int _time, int maxDelay, int penalty) {
+
+        long time;
+
+        if(_time == -1) time = Instant.now().getEpochSecond();
+        else time = _time;
+
         return "<?xml version=\"1.0\"?>\n" +
                 "<!DOCTYPE PRODUCTION_ORDERS [\n" +
                 "<!ELEMENT ORDERS (Request_Stores | Order*)>\n" +

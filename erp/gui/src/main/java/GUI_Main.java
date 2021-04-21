@@ -56,7 +56,7 @@ public class GUI_Main {
         mainPanel.add(unldPanel,constraints);
 
         JPanel storesPanel = (new GUI_StoresPanel(this)).getStoresPanel();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 1;
         constraints.gridy = 1;
         mainPanel.add(storesPanel,constraints);
