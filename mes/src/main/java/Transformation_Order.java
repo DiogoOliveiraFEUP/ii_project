@@ -14,10 +14,9 @@ public class Transformation_Order extends Order{
     private int endTime;
     private int realPenalty;
 
-    public Transformation_Order(String initBlockType, String finalBlockType, int mainID, long inputTime, int maxDelay, int penalty) {
+    public Transformation_Order(int mainID, int subID, String initBlockType, String finalBlockType, long inputTime, int maxDelay, int penalty) {
 
-        /* CHANGE ID !!!!!!!!!!! */
-        super(1,mainID);
+        super(mainID,subID);
 
         this.finalBlockType = finalBlockType;
         this.initBlockType = initBlockType;
@@ -31,7 +30,6 @@ public class Transformation_Order extends Order{
     public String getInitBlockType() {
         return initBlockType;
     }
-
 
     public String getFinalBlockType() {
         return finalBlockType;

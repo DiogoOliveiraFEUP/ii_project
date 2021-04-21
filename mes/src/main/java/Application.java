@@ -10,14 +10,14 @@ public class Application {
 
         System.out.println("Hello World!");
 
-        OPC_UA_Connection conn = null;
+        /*OPC_UA_Connection conn = null;
 
         try {
             conn = new OPC_UA_Connection();
             conn.setValue("bool_var",true);
         } catch (Exception e) {
             //e.printStackTrace();
-        }
+        }*/
 
         List<XML_Request> xml_requests = new ArrayList<>();
         List<Transformation_Order> transfOrders = new ArrayList<>();

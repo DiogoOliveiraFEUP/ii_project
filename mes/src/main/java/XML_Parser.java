@@ -1,8 +1,8 @@
+import jdk.swing.interop.SwingInterOpUtils;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 public class XML_Parser {
@@ -54,7 +54,7 @@ public class XML_Parser {
 
                                 /* Do Something - Order Transform */
                                 for(int i = 0; i < quantity; i++){
-                                    transfOrders.add(new Transformation_Order(from,to,number,time,maxDelay,penalty));
+                                    transfOrders.add(new Transformation_Order(number,i+1, from,to, time,maxDelay,penalty));
                                 }
 
                                 scheduler.schedule(transfOrders,unldOrders);
@@ -112,6 +112,9 @@ public class XML_Parser {
 
     private String getOrdersXML() {
 
+        /* Get information from MES or DB?? */
+        String res = (new Database_Connection()).query("SELECT * FROM transforders;");
+
         return "<Order_Schedule>\n" +
                 "<Order Number=\"nnn\">\n" +
                 "<Transform From=\"Px\" To=\"Py\" Quantity=\"XX\" Quantity1=\"X1\" Quantity2=\"X2\"\n" +
@@ -123,10 +126,50 @@ public class XML_Parser {
 
     private String getStoresXML() {
 
-        return "<Current_Stores>\n" +
-                "<WorkPiece type=\"Px\" quantity=\"XX\"/>\n" +
-                "<WorkPiece type=\"Px\" quantity=\"XX\"/>\n" +
-                "</Current_Stores>";
+        /* Get information from MES or DB?? */
+        /* DB is always up to date with stocks info?? */
+
+        String res = (new Database_Connection()).query("SELECT * FROM stocks;");
+        //System.out.println(res);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<Current_Stores>\n");
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = null;
+            builder = factory.newDocumentBuilder();
+            ByteArrayInputStream input = new ByteArrayInputStream(
+                    res.getBytes(StandardCharsets.UTF_8));
+            Document doc = builder.parse(input);
+
+            Element root = doc.getDocumentElement();
+            doc.getDocumentElement().normalize();
+
+            NodeList nList;
+            nList = doc.getElementsByTagName("Row");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                Element e1 = (Element) nNode;
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    sb.append("<WorkPiece type=\"");
+                    sb.append(e1.getElementsByTagName("BlockType").item(0).getTextContent());
+                    sb.append("\" quantity=\"");
+                    sb.append(e1.getElementsByTagName("Quantity").item(0).getTextContent());
+                    sb.append("\"/>\n");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sb.append("</Current_Stores>");
+        //System.out.println(sb.toString());
+
+        return sb.toString();
     }
 
     private void updateDB(List<Transformation_Order> transfOrders){
@@ -191,6 +234,6 @@ public class XML_Parser {
         */
 
         String res = (new Database_Connection()).query(sb.toString());
-        System.out.println(res);
+        //System.out.println(res);
     }
 }

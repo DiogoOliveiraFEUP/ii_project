@@ -1,24 +1,23 @@
 public class Order {
 
-    private int ID;
     private int mainID;
+    private int subID;
     private int path;
 
-    public enum Status {READY,RUNNING,COMPLETED}
+    public enum Status {READY,RUNNING,COMPLETED};
     private Status status;
 
-
-    public int getID() {
-        return ID;
+    public int getSubID() {
+        return subID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setSubID(int subID) {
+        this.subID = subID;
     }
 
-    public Order(int ID, int mainID){
-        this.ID = ID;
+    public Order(int mainID, int subID){
         this.mainID = mainID;
+        this.subID = subID;
     }
 
     public void setPath(int path) {
