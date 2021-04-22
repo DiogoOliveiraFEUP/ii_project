@@ -1,7 +1,11 @@
-import jdk.swing.interop.SwingInterOpUtils;
-import org.w3c.dom.*;
-import javax.xml.parsers.*;
-import java.io.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -114,14 +118,110 @@ public class XML_Parser {
 
         /* Get information from MES or DB?? */
         String res = (new Database_Connection()).query("SELECT * FROM transforders;");
+        //System.out.println(res);
 
-        return "<Order_Schedule>\n" +
+        StringBuilder sb = new StringBuilder();
+        sb.append("<Order_Schedule>\n");
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder;
+            builder = factory.newDocumentBuilder();
+            ByteArrayInputStream input = new ByteArrayInputStream(
+                    res.getBytes(StandardCharsets.UTF_8));
+            Document doc = builder.parse(input);
+
+            doc.getDocumentElement().normalize();
+
+            NodeList nList;
+            nList = doc.getElementsByTagName("Row");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                Element e1 = (Element) nNode;
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    sb.append("<Order Number=\"");
+                    sb.append(e1.getElementsByTagName("MainID").item(0).getTextContent());
+                    sb.append("\">\n<Transform From=\"");
+                    sb.append(e1.getElementsByTagName("InitType").item(0).getTextContent());
+                    sb.append("\" To=\"");
+                    sb.append(e1.getElementsByTagName("FinalType").item(0).getTextContent());
+                    sb.append("\" Quantity=\"");
+                    int x = Integer.parseInt(e1.getElementsByTagName("TotalQuantity").item(0).getTextContent());
+                    sb.append(x);
+                    sb.append("\" Quantity1=\"");
+                    int x1 = Integer.parseInt(e1.getElementsByTagName("FinQuantity").item(0).getTextContent());
+                    sb.append(x1);
+                    sb.append("\" Quantity2=\"");
+                    int x2 = Integer.parseInt(e1.getElementsByTagName("RunQuantity").item(0).getTextContent());
+                    sb.append(x2);
+                    sb.append("\" Quantity3=\"");
+                    sb.append(x-x1-x2);
+                    sb.append("\" Time=\"");
+                    long InputTime = Long.parseLong(e1.getElementsByTagName("InputTime").item(0).getTextContent());
+                    sb.append(InputTime);
+                    sb.append("\" Time1=\"");
+                    sb.append(e1.getElementsByTagName("RealInputTime").item(0).getTextContent());
+                    sb.append("\" MaxDelay=\"");
+                    int MaxDelay = Integer.parseInt(e1.getElementsByTagName("MaxDelay").item(0).getTextContent());
+                    sb.append(MaxDelay);
+                    sb.append("\" Penalty=\"");
+                    int penalty = Integer.parseInt(e1.getElementsByTagName("Penalty").item(0).getTextContent());
+                    sb.append(penalty);
+                    sb.append("\" Start=\"");
+                    sb.append(e1.getElementsByTagName("StartTime").item(0).getTextContent());
+                    sb.append("\" End=\"");
+                    long EndTime = Long.parseLong(e1.getElementsByTagName("EndTime").item(0).getTextContent());
+                    sb.append(EndTime);
+                    sb.append("\" PenaltyIncurred=\"");
+                    long delta = (EndTime-InputTime-MaxDelay);
+                    if(delta>0) delta = (delta/50 + 1);
+                    else delta = 0;
+                    sb.append(delta*penalty);
+                    sb.append("\"/>\n</Order>\n");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sb.append("</Order_Schedule>\n");
+        System.out.println(sb.toString());
+
+        return sb.toString();
+
+       /* return "<Order_Schedule>\n" +
                 "<Order Number=\"nnn\">\n" +
                 "<Transform From=\"Px\" To=\"Py\" Quantity=\"XX\" Quantity1=\"X1\" Quantity2=\"X2\"\n" +
                 "Quantity3=\"X3\" Time=\"TT\" Time1=\"T1\" MaxDelay=\"DD\" Penalty=\"PP\" Start=\"ST\"\n" +
                 "End=\"ET\" PenaltyIncurred=\"PI\"/>\n" +
                 "</Order>\n" +
                 "</Order_Schedule>";
+*/
+        /*
+            nnn – número de ordem
+            Px – tipo de peça de origem
+            Py – tipo de peça final
+            XX – quantidade total a produzir
+            X1 – quantidade já produzidas
+            X2 – quantidade em produção
+            X3 – quantidade por produzir
+            TT – instante no qual a ordem é enviada ao MES (em segundos)
+            T1 – instante no qual a ordem efectivamente chegou ao MES (em segundos)
+            DD – atraso máximo (em segundos) para terminar de executar esta ordem
+            (a contar a partir do instante de envio da ordem)
+            PP – penalidade (numero de 0 a 1000) a incorrer por cada dia de atraso na ‘entrega
+            da encomenda.
+            ST – tempo (em segundos) em que a ordem iniciou a transformação (caso já tenha
+            iniciado) ou tempo para o qual está previsto o seu inicio (caso ainda não tenha
+            iniciado)
+            ET – tempo (em segundos) em que a ordem terminou a transformação (caso já tenha
+            terminado) ou tempo para o qual está previsto o seu fim (caso ainda não tenha
+            terminado)
+            PI – penalidade incurrida (caso já tenha terminado) ou
+        */
     }
 
     private String getStoresXML() {
@@ -137,13 +237,12 @@ public class XML_Parser {
 
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = null;
+            DocumentBuilder builder;
             builder = factory.newDocumentBuilder();
             ByteArrayInputStream input = new ByteArrayInputStream(
                     res.getBytes(StandardCharsets.UTF_8));
             Document doc = builder.parse(input);
 
-            Element root = doc.getDocumentElement();
             doc.getDocumentElement().normalize();
 
             NodeList nList;

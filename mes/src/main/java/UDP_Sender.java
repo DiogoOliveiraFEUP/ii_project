@@ -21,9 +21,11 @@ public class UDP_Sender {
 
     public void send(String message, InetAddress address, int port){
         buf = message.getBytes();
+        System.out.println(buf.length);
         DatagramPacket packet = new DatagramPacket(buf,buf.length,address,port);
         try {
             socket.send(packet);
+            System.out.println("\n\n...\n\n" + new String(packet.getData(),0,packet.getLength()));
         } catch (IOException e) {
             e.printStackTrace();
         }

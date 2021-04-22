@@ -8,7 +8,7 @@ public class UDP_Client {
 
     private DatagramSocket socket;
 
-    private byte[] buf = new byte[65535];
+    private byte[] buf = new byte[65508];
 
     public UDP_Client(int port){
         try {
@@ -43,6 +43,7 @@ public class UDP_Client {
         InetAddress address = packet.getAddress();
         int port = packet.getPort();
         String received = new String(packet.getData(),0,packet.getLength());
+        System.out.println(packet.getLength());
         System.out.println(received);
         return received;
     }
