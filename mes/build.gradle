@@ -21,9 +21,11 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
     implementation ('com.github.eclipse:milo:0.6.0'){
-        exclude module:'server-examples';
+        exclude module:'server-examples'
     }
-
+    implementation 'com.javasolver:jsr331:2.1.0'
+    implementation group: 'org.jgrapht', name: 'jgrapht-core', version: '1.5.1'
+    implementation group: 'org.jgrapht', name: 'jgrapht-io', version: '1.5.1'
 
 }
 

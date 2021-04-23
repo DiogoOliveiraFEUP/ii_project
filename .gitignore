@@ -49,3 +49,4 @@ plc/*.opt
 plc/*.bootinfo
 plc/*.bootinfo_guids
 plc/*.compileinfo
+erp/UDP_Receiver/gradle/wrapper/gradle-wrapper.jar
