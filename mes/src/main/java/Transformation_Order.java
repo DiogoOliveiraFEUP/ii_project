@@ -84,10 +84,27 @@ public class Transformation_Order extends Order{
         return ids;
     }
 
+    public static List<Integer> getIDs(List<Transformation_Order> orders){
+        List<Integer> ids = new ArrayList<>();
+        for(Transformation_Order order : orders){
+            if(ids.contains(order.getID())){}
+            else {ids.add(order.getID());}
+        }
+        return ids;
+    }
+
     public static List<Transformation_Order> getOrdersByMainID(List<Transformation_Order> orders, int id){
         List<Transformation_Order> result = new ArrayList<>();
         for(Transformation_Order order : orders){
             if(order.getMainID() == id) result.add(order);
+        }
+        return result;
+    }
+
+    public static List<Transformation_Order> getOrdersByID(List<Transformation_Order> orders, int id){
+        List<Transformation_Order> result = new ArrayList<>();
+        for(Transformation_Order order : orders){
+            if(order.getID() == id) result.add(order);
         }
         return result;
     }
