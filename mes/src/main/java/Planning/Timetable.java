@@ -1,6 +1,6 @@
 package Planning;
 
-import Entities.Entity;
+import Factory.Entities.Entity;
 
 import java.util.HashMap;
 import java.util.Map;

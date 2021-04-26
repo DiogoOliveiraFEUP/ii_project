@@ -1,5 +1,5 @@
-import Entities.Entity;
-import Entities.Rotative;
+import Factory.Entities.Entity;
+import Factory.Entities.Rotative;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
