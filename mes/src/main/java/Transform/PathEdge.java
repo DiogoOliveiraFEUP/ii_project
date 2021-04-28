@@ -12,6 +12,10 @@ public class PathEdge extends DefaultEdge {
         Tool = tool;
     }
 
+    public PathEdge(){
+
+    }
+
     public int getTime() {
         return time;
     }

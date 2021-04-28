@@ -1,3 +1,5 @@
+import Factory.Entities.Entity;
+import Factory.Factory;
 import Transform.Part;
 import Transform.PathEdge;
 import org.jgrapht.GraphPath;
@@ -24,6 +26,14 @@ public class PathPlannerTest {
         System.out.println(path.getVertexList().get(path.getLength()));
 
         pathPlanner.getPath("P1","P9");
+        Factory factory = new Factory();
+        GraphPath<Entity, PathEdge> fpath =   factory.getPath("Wo1","Wi1");
+
+        for(int i = 0; i<fpath.getLength();i++){
+            System.out.format("%s:",fpath.getVertexList().get(i));
+        }
+        System.out.format("%s:\n",fpath.getVertexList().get(fpath.getLength()));
+
 
         return;
     }
