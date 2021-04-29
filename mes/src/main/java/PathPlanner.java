@@ -78,6 +78,15 @@ public class PathPlanner {
         return indexedPaths.get(new Pair<>(p1,p2));
     }
 
+    public int getMachiningTime(String part1, String part2){
+        Part p1 = partList.get(part1);
+        Part p2 = partList.get(part2);
+        int time_sum = 0;
+        for(PathEdge pathEdge:indexedPaths.get(new Pair<>(p1,p2)).getEdgeList()){
+            time_sum+=pathEdge.getTime();
+        };
+        return time_sum;
+    }
 
 
 }

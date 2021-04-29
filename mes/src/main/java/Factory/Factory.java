@@ -186,7 +186,6 @@ public class Factory{
             machineEntities.add(factoryList.get(machine.substring(0,2)));
         }
         GraphWalk<Entity,PathEdge> returnPath = (GraphWalk<Entity, PathEdge>) factoryIndexedPaths.get(new Pair<>(p1,machineEntities.get(0)));
-        System.out.format("%s %s",p1,machineEntities.get(0));
         for(int i = 0;i<machineEntities.size()-1;i++){
             returnPath = returnPath.concat((GraphWalk<Entity, PathEdge>) factoryIndexedPaths.get(new Pair<>(machineEntities.get(i), machineEntities.get(i+1))),walk->walk.getWeight());
         }

@@ -24,9 +24,10 @@ public class Scheduler {
 
 
     public void schedule(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders){
+        transfOrders.sort(new OrderComparator());
         for(Transformation_Order transformation_order:transfOrders){
             GraphPath<Part, PathEdge> partPath = pathPlanner.getPath(transformation_order.getInitBlockType(),transformation_order.getFinalBlockType());
-            
+
         }
     }
 
