@@ -4,11 +4,15 @@ import Factory.Entities.*;
 import Transform.Part;
 import Transform.PathEdge;
 import kotlin.Pair;
+import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.GraphWalk;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Factory{
     DefaultDirectedGraph<Entity, PathEdge> factoryModel = new DefaultDirectedGraph<Entity, PathEdge>(PathEdge.class);
@@ -172,7 +176,26 @@ public class Factory{
         Entity p1 = factoryList.get(entity1);
         Entity p2 = factoryList.get(entity2);
         return factoryIndexedPaths.get(new Pair<>(p1,p2));
+   }
+
+    public GraphPath<Entity, PathEdge> getPath(String entity1, String entity2, List<String> Machines){
+        Entity p1 = factoryList.get(entity1);
+        Entity p2 = factoryList.get(entity2);
+        List<Entity> machineEntities= new ArrayList<Entity>();
+        for(String machine: Machines){
+            machineEntities.add(factoryList.get(machine.substring(0,2)));
+        }
+        GraphWalk<Entity,PathEdge> returnPath = (GraphWalk<Entity, PathEdge>) factoryIndexedPaths.get(new Pair<>(p1,machineEntities.get(0)));
+        System.out.format("%s %s",p1,machineEntities.get(0));
+        for(int i = 0;i<machineEntities.size()-1;i++){
+            returnPath = returnPath.concat((GraphWalk<Entity, PathEdge>) factoryIndexedPaths.get(new Pair<>(machineEntities.get(i), machineEntities.get(i+1))),walk->walk.getWeight());
+        }
+        returnPath = returnPath.concat((GraphWalk<Entity, PathEdge>) factoryIndexedPaths.get(new Pair<>(machineEntities.get(machineEntities.size()-1), p2)),walk->walk.getWeight());
+
+        return returnPath;
+
     }
+
 
 
 
