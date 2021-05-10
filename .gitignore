@@ -45,7 +45,10 @@ db/testPostgreSQL/.gradle/
 db/testPostgreSQL/out/
 db/testPostgreSQL/build/
 db/testPostgreSQL/*.iml
+
 plc/*.opt
 plc/*.bootinfo
 plc/*.bootinfo_guids
 plc/*.compileinfo
+plc/*.precompilecache
+plc/*.xml
