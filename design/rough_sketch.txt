@@ -92,6 +92,40 @@ Requirement_2(){
         . Handler for OPC-UA?
     }
 
+
+    - PLC_Manager(){
+        
+        . Quando Wix está livre:
+
+            - getNextOrder, manda executar
+            - updateOrder()
+                . order passa a running
+            - updateDB()
+                . getOrderbyMainID_ID
+                . Se for a primeira em running com esse ID:
+                    - RunQuant++;
+                . Se não for, não faz nada
+
+        . Quando Wox manda peça para WH:
+
+            - updateOrder()
+                . order passa a completed
+                . se todas as ordens com esse ID estiverem COMPLETED apagar ordens
+            - updateDB()
+                . getOrderByMainID_ID 
+                . Se for a ultima em running com esse ID:
+                    - RunQuant--;
+                    - FinQuant++;
+                . Se não for, não faz nada
+            - 
+
+    }
+
+
+
+
+
+
     //Thread:
     - Graphical_Interface(){
         // Graphical Interface like Scada, JavaSwing?
@@ -110,3 +144,7 @@ Requirement_2(){
 
 //Path -> maybe it will be necessary to add a step before the one with pushO_x 
 //        to wait for the Empty Step of the Element
+
+
+//evidenciar shared resource
+

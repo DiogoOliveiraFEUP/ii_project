@@ -6,13 +6,14 @@ public class Order {
     private String path;
     //Path, e.g., "Wi1:L1:R1:M1#3:L2:Wo1"
 
-    public enum Status {READY,RUNNING,COMPLETED};
+    public enum Status {NEW,READY,RUNNING,COMPLETED};
     private Status status;
 
     public Order(int mainID, int ID){
         this.mainID = mainID;
         this.ID = ID;
         this.subID = 0;
+        this.status = Status.NEW;
     }
 
     public int getMainID() {
