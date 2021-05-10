@@ -1,5 +1,7 @@
 import Factory.Entities.Entity;
 import Factory.Factory;
+import Order.Transformation_Order;
+import Order.Unloading_Order;
 import Transform.Part;
 import Transform.PathEdge;
 import org.jgrapht.GraphPath;
@@ -42,6 +44,23 @@ public class PathPlannerTest {
 
 
         return;
+    }
+
+
+    @Test
+    public void schedulerTest(){
+
+        Transformation_Order transformation_order = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Scheduler scheduler = new Scheduler();
+        List<Transformation_Order> transformation_order_list = new ArrayList<>();
+        transformation_order_list.add(transformation_order);
+        transformation_order_list.add(transformation_order);
+        transformation_order_list.add(transformation_order);
+        transformation_order_list.add(transformation_order);
+        transformation_order_list.add(transformation_order);
+
+        scheduler.schedule(transformation_order_list, new ArrayList<Unloading_Order>());
+        System.out.println(scheduler.timetable);
     }
 
 }

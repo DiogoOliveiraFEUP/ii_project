@@ -1,13 +1,10 @@
-import Factory.Entities.Entity;
-import Factory.Entities.Rotative;
 import Factory.Factory;
+import Order.Transformation_Order;
+import Order.Unloading_Order;
 import Planning.Timetable;
 import Transform.Part;
 import Transform.PathEdge;
-import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
 
 import java.util.List;
 
@@ -20,6 +17,8 @@ public class Scheduler {
     Timetable timetable;
     public Scheduler() {
         factory= new Factory();
+        timetable = new Timetable();
+        pathPlanner = new PathPlanner();
     }
 
 
@@ -27,8 +26,10 @@ public class Scheduler {
         transfOrders.sort(new OrderComparator());
         for(Transformation_Order transformation_order:transfOrders){
             GraphPath<Part, PathEdge> partPath = pathPlanner.getPath(transformation_order.getInitBlockType(),transformation_order.getFinalBlockType());
+            timetable.addToTimetable(transformation_order,partPath);
 
         }
+
     }
 
 }
