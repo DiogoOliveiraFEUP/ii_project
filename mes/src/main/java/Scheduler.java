@@ -43,12 +43,12 @@ public class Scheduler {
             for(int i = 0; i<path.getLength();i++){
                 pathString +=String.format("%s:",path.getVertexList().get(i));
             }
-            pathString +=String.format("%s:\n",path.getVertexList().get(path.getLength()));
+            pathString +=String.format("%s:",path.getVertexList().get(path.getLength()));
             for (String s:machineList){
                 pathString = pathString.replace(s.substring(0,2),s);
             }
-            System.out.println(pathString);
 
+            transformation_order.setPath(pathString);
         }
 
     }

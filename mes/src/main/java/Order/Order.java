@@ -4,7 +4,7 @@ public class Order {
 
     private int mainID;
     private int subID;
-    private int path;
+    private String path="";
 
     public enum Status {READY,RUNNING,COMPLETED};
     private Status status;
@@ -23,7 +23,7 @@ public class Order {
     }
 
 
-    public void setPath(int path) {
+    public void setPath(String path) {
         this.path = path;
     }
 
@@ -39,7 +39,7 @@ public class Order {
         this.mainID = mainID;
     }
 
-    public int getPath() {
+    public String getPath() {
         return path;
     }
 

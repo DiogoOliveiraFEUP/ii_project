@@ -51,18 +51,27 @@ public class PathPlannerTest {
     public void schedulerTest(){
 
         Transformation_Order transformation_order = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Transformation_Order transformation_order1 = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Transformation_Order transformation_order2 = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Transformation_Order transformation_order5 = new Transformation_Order(1,1,"P1","P4",0,0,0);
+
         Scheduler scheduler = new Scheduler();
         List<Transformation_Order> transformation_order_list = new ArrayList<>();
         transformation_order_list.add(transformation_order);
-        transformation_order_list.add(transformation_order);
-        transformation_order_list.add(transformation_order);
-        transformation_order_list.add(transformation_order);
-        transformation_order_list.add(transformation_order);
-        transformation_order_list.add(transformation_order);
+        transformation_order_list.add(transformation_order1);
+        transformation_order_list.add(transformation_order2);
+        transformation_order_list.add(transformation_order3);
+        transformation_order_list.add(transformation_order4);
+        transformation_order_list.add(transformation_order5);
 
 
         scheduler.schedule(transformation_order_list, new ArrayList<Unloading_Order>());
-        System.out.println(scheduler.timetable);
+        for(Transformation_Order transformation_order_ : transformation_order_list){
+            System.out.println(transformation_order_.getPath());
+        }
+        //System.out.println(scheduler.timetable);
     }
 
 }
