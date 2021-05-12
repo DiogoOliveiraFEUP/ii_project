@@ -1,3 +1,5 @@
+import Order.Transformation_Order;
+import Order.Unloading_Order;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -287,10 +289,10 @@ public class XML_Parser {
 
             for(Transformation_Order order : orders){
                 total++;
-                if(order.getStatus() == Order.Status.COMPLETED){
+                if(order.getStatus() == Order.Order.Status.COMPLETED){
                     finished++;
                 }
-                else if(order.getStatus() == Order.Status.RUNNING){
+                else if(order.getStatus() == Order.Order.Status.RUNNING){
                     running++;
                 }
                 if(order.getStartTime() < startTime){

@@ -8,10 +8,8 @@ import Transform.PathEdge;
 import org.jgrapht.GraphPath;
 
 import javax.tools.Tool;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.sql.Time;
+import java.util.*;
 
 public class Timetable {
     //Map<Entity, Map> timetable = new HashMap<>();
@@ -32,6 +30,16 @@ public class Timetable {
 
     }
 
+    public Timetable(HashMap<Entity,LinkedList<MachineTimeSlot>> timetable){
+        this.timetable = new HashMap<Entity, LinkedList<MachineTimeSlot>>();
+        for(Entity entity: timetable.keySet()){
+            this.timetable.put(entity,new LinkedList<MachineTimeSlot>());
+            for(MachineTimeSlot machineTimeSlot:timetable.get(entity)){
+                this.timetable.get(entity).add(machineTimeSlot);
+            }
+        }
+    }
+
     public void addEntity(Entity entity){
         timetable.put(entity,new LinkedList<MachineTimeSlot>());
     }
@@ -44,8 +52,17 @@ public class Timetable {
         return false;
     }
 
-    public Machine getMachineWithTool(String tool){
-        for (int i = 1; i < 9; i++) {
+    public int getEndingTime(){
+        int maxEndingTime = 0;
+        for(Entity entity:timetable.keySet()){
+            if(!timetable.get(entity).isEmpty())
+                maxEndingTime = Math.max(timetable.get(entity).getLast().getEnding_Time(),maxEndingTime);
+        }
+        return maxEndingTime;
+    }
+
+    public Machine getMachineWithTool(String tool, int side){
+        for (int i = 4*side + 1; i < 4*side +5; i++) {
             Entity entity = new Machine("M"+i);
             if(timetable.get(entity).isEmpty()||timetable.get(entity).getLast().tool.equals(tool) ){
                 return (Machine) entity;
@@ -61,26 +78,61 @@ public class Timetable {
             return timetable.get(machine).getLast().getEnding_Time();
     }
 
-    public boolean addToTimetable(Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
+    public List<String> addToTimetable(Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
         boolean isFirst = true;
         int lastEndingTime=0;
         int newStartTime = 0;
+        List<String> sideAMachines = new ArrayList<>();
+        List<String> sideBMachines = new ArrayList<>();
+
+        Timetable sideA = new Timetable(timetable);
         for (PathEdge pathEdge:orderPath.getEdgeList()) {
-            Machine machine = getMachineWithTool(pathEdge.getTool());
+
+            Machine machine = sideA.getMachineWithTool(pathEdge.getTool(),0);
+            sideAMachines.add(machine.toString()+"#"+pathEdge.getTool().substring(1,2)+'|'+pathEdge.getTime());
             MachineTimeSlot machineTimeSlot = null;
             if(isFirst){
-                 machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),getLastEndingTime(machine),getLastEndingTime(machine)+ pathEdge.getTime());
+                 machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),sideA.getLastEndingTime(machine),sideA.getLastEndingTime(machine)+ pathEdge.getTime());
                  isFirst=false;
-                 lastEndingTime = getLastEndingTime(machine)+ pathEdge.getTime();
+                 lastEndingTime = sideA.getLastEndingTime(machine)+ pathEdge.getTime();
             }else{
-                newStartTime=getLastEndingTime(machine);
+                newStartTime=sideA.getLastEndingTime(machine);
                 newStartTime = Math.max(newStartTime, lastEndingTime);
                 lastEndingTime = newStartTime+ pathEdge.getTime();
                 machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),newStartTime,newStartTime+ pathEdge.getTime());
             }
-            timetable.get(machine).addLast(machineTimeSlot);
+            sideA.timetable.get(machine).addLast(machineTimeSlot);
         }
-        return true;
+        Timetable sideB = new Timetable(timetable);
+         isFirst = true;
+         lastEndingTime=0;
+         newStartTime = 0;
+        for (PathEdge pathEdge:orderPath.getEdgeList()) {
+
+            Machine machine = sideB.getMachineWithTool(pathEdge.getTool(),1);
+            sideBMachines.add(machine.toString()+"#"+pathEdge.getTool().substring(1,2)+'|'+pathEdge.getTime());
+
+            MachineTimeSlot machineTimeSlot = null;
+            if(isFirst){
+                machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),sideB.getLastEndingTime(machine),sideB.getLastEndingTime(machine)+ pathEdge.getTime());
+                isFirst=false;
+                lastEndingTime = sideB.getLastEndingTime(machine)+ pathEdge.getTime();
+            }else{
+                newStartTime=sideB.getLastEndingTime(machine);
+                newStartTime = Math.max(newStartTime, lastEndingTime);
+                lastEndingTime = newStartTime+ pathEdge.getTime();
+                machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),newStartTime,newStartTime+ pathEdge.getTime());
+            }
+            sideB.timetable.get(machine).addLast(machineTimeSlot);
+        }
+        if(sideA.getEndingTime()>sideB.getEndingTime()){
+            timetable=sideB.timetable;
+            return sideBMachines;
+        }
+        else{
+            timetable= sideA.timetable;
+            return sideAMachines;
+        }
     }
 
     @Override

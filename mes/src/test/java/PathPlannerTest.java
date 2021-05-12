@@ -58,6 +58,8 @@ public class PathPlannerTest {
         transformation_order_list.add(transformation_order);
         transformation_order_list.add(transformation_order);
         transformation_order_list.add(transformation_order);
+        transformation_order_list.add(transformation_order);
+
 
         scheduler.schedule(transformation_order_list, new ArrayList<Unloading_Order>());
         System.out.println(scheduler.timetable);
