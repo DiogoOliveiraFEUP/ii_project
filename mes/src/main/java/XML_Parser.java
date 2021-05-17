@@ -64,6 +64,8 @@ public class XML_Parser {
                                 }
 
                                 scheduler.schedule(transfOrders,unldOrders);
+                                PLC_Manager.getInstance().evalWo1();
+                                PLC_Manager.getInstance().evalWo2();
                                 updateDB(transfOrders);
                             }
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
@@ -78,6 +80,8 @@ public class XML_Parser {
                                     unldOrders.add(new Unloading_Order(type,dest,number));
                                 }
                                 scheduler.schedule(transfOrders,unldOrders);
+                                PLC_Manager.getInstance().evalWo1();
+                                PLC_Manager.getInstance().evalWo2();
                             }
                         }
                     }
@@ -277,34 +281,50 @@ public class XML_Parser {
 
         StringBuilder sb = new StringBuilder();
 
-        List<Integer> ids = Transformation_Order.getMainIDs(transfOrders);
+        List<Integer> mainIDs = Transformation_Order.getMainIDs(transfOrders);
 
-        for(Integer id : ids){
-            List<Transformation_Order> orders = Transformation_Order.getOrdersByMainID(transfOrders,id);
+        for(Integer mainID : mainIDs){
+            List<Transformation_Order> orders = Transformation_Order.getOrdersByMainID(transfOrders,mainID);
             int total = 0;
             int finished = 0;
             int running = 0;
             long startTime = Long.MAX_VALUE;
             long endTime = Long.MIN_VALUE;
 
-            for(Transformation_Order order : orders){
+            Order.Status status;
+            List<Integer> IDs = Transformation_Order.getIDs(orders);
+                
+            for(Integer ID : IDs){
+                List<Transformation_Order> subOrders = Transformation_Order.getOrdersByID(orders,ID);
+
                 total++;
-                if(order.getStatus() == Order.Order.Status.COMPLETED){
+                status = Order.Status.READY;
+
+                for(Transformation_Order subOrder : subOrders){
+                    if(subOrder.getStatus() == Order.Status.RUNNING){
+                        status = Order.Status.RUNNING;
+                    }
+                    else if(status != Order.Status.RUNNING && subOrder.getStatus() == Order.Status.COMPLETED){
+                        status = Order.Status.COMPLETED;
+                    }
+                    if(subOrder.getStartTime() < startTime){
+                        startTime = subOrder.getStartTime();
+                    }
+                    if(subOrder.getEndTime() > endTime){
+                        endTime = subOrder.getEndTime();
+                    }
+                }
+
+                if(status == Order.Status.COMPLETED){
                     finished++;
                 }
-                else if(order.getStatus() == Order.Order.Status.RUNNING){
+                else if(status == Order.Status.RUNNING){
                     running++;
-                }
-                if(order.getStartTime() < startTime){
-                    startTime=order.getStartTime();
-                }
-                if(order.getEndTime() > endTime){
-                    endTime= order.getEndTime();
                 }
             }
 
             sb.append("REPLACE INTO transforders VALUES ("
-                    + id + ","
+                    + mainID + ","
                     + "'" + orders.get(0).getInitBlockType() + "',"
                     + "'" + orders.get(0).getFinalBlockType() + "',"
                     + total + ","

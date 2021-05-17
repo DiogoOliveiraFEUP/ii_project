@@ -1,0 +1,309 @@
+					DEC	HEX			Var Name
+1	ART1	Warehouse In	O	Motor +	0	0	Wi1		Wi1_O_0
+1	ART1	Warehouse In	O	Motor -	1	1	Wi1		Wi1_O_1
+1	ART1	Warehouse In	O	Warehouse In	2	2	Wi1		Wi1_O_2
+1	ART1	Warehouse In	I	Sensor 0	0	0	Wi1		Wi1_I_0
+2	ART2	Warehouse Out	O	Motor +	3	3	Wo1		Wo1_O_3
+2	ART2	Warehouse Out	O	Motor -	4	4	Wo1		Wo1_O_4
+2	ART2	Warehouse Out	I	Sensor 0	1	1	Wo1		Wo1_I_1
+2	ART2	Warehouse Out	R	Warehouse Out	0	0	Wo1		Wo1_R_0
+3	ART3	Conveyor	O	Motor +	5	5	L7		L7_O_5
+3	ART3	Conveyor	O	Motor -	6	6	L7		L7_O_6
+3	ART3	Conveyor	I	Sensor 0	2	2	L7		L7_I_2
+4	ART4	Rotator	O	Motor +	7	7	R3		R3_O_7
+4	ART4	Rotator	O	Motor -	8	8	R3		R3_O_8
+4	ART4	Rotator	O	Rotate -	9	9	R3		R3_O_9
+4	ART4	Rotator	O	Rotate +	10	A	R3		R3_O_10
+4	ART4	Rotator	I	Sensor 0	3	3	R3		R3_I_3
+4	ART4	Rotator	I	Rotate - Sensor	4	4	R3		R3_I_4
+4	ART4	Rotator	I	Rotate + Sensor	5	5	R3		R3_I_5
+5	CR0T1	Rotator	O	Motor +	11	B	R5		R5_O_11
+5	CR0T1	Rotator	O	Motor -	12	C	R5		R5_O_12
+5	CR0T1	Rotator	O	Rotate -	13	D	R5		R5_O_13
+5	CR0T1	Rotator	O	Rotate +	14	E	R5		R5_O_14
+5	CR0T1	Rotator	I	Sensor 0	6	6	R5		R5_I_6
+5	CR0T1	Rotator	I	Rotate - Sensor	7	7	R5		R5_I_7
+5	CR0T1	Rotator	I	Rotate + Sensor	8	8	R5		R5_I_8
+6	CR0T2	Rotator	O	Motor +	15	F	R9		R9_O_15
+6	CR0T2	Rotator	O	Motor -	16	10	R9		R9_O_16
+6	CR0T2	Rotator	O	Rotate -	17	11	R9		R9_O_17
+6	CR0T2	Rotator	O	Rotate +	18	12	R9		R9_O_18
+6	CR0T2	Rotator	I	Sensor 0	9	9	R9		R9_I_9
+6	CR0T2	Rotator	I	Rotate - Sensor	10	A	R9		R9_I_10
+6	CR0T2	Rotator	I	Rotate + Sensor	11	B	R9		R9_I_11
+7	CR0T3	Rotator	O	Motor +	19	13	R8		R8_O_19
+7	CR0T3	Rotator	O	Motor -	20	14	R8		R8_O_20
+7	CR0T3	Rotator	O	Rotate -	21	15	R8		R8_O_21
+7	CR0T3	Rotator	O	Rotate +	22	16	R8		R8_O_22
+7	CR0T3	Rotator	I	Sensor 0	12	C	R8		R8_I_12
+7	CR0T3	Rotator	I	Rotate - Sensor	13	D	R8		R8_I_13
+7	CR0T3	Rotator	I	Rotate + Sensor	14	E	R8		R8_I_14
+8	CR0T4	Rotator	O	Motor +	23	17	R7		R7_O_23
+8	CR0T4	Rotator	O	Motor -	24	18	R7		R7_O_24
+8	CR0T4	Rotator	O	Rotate -	25	19	R7		R7_O_25
+8	CR0T4	Rotator	O	Rotate +	26	1A	R7		R7_O_26
+8	CR0T4	Rotator	I	Sensor 0	15	F	R7		R7_I_15
+8	CR0T4	Rotator	I	Rotate - Sensor	16	10	R7		R7_I_16
+8	CR0T4	Rotator	I	Rotate + Sensor	17	11	R7		R7_I_17
+9	CR0T5	Rotator	O	Motor +	27	1B	R6		R6_O_27
+9	CR0T5	Rotator	O	Motor -	28	1C	R6		R6_O_28
+9	CR0T5	Rotator	O	Rotate -	29	1D	R6		R6_O_29
+9	CR0T5	Rotator	O	Rotate +	30	1E	R6		R6_O_30
+9	CR0T5	Rotator	I	Sensor 0	18	12	R6		R6_I_18
+9	CR0T5	Rotator	I	Rotate - Sensor	19	13	R6		R6_I_19
+9	CR0T5	Rotator	I	Rotate + Sensor	20	14	R6		R6_I_20
+10	CR0T6	Rotator	O	Motor +	31	1F	R2		R2_O_31
+10	CR0T6	Rotator	O	Motor -	32	20	R2		R2_O_32
+10	CR0T6	Rotator	O	Rotate -	33	21	R2		R2_O_33
+10	CR0T6	Rotator	O	Rotate +	34	22	R2		R2_O_34
+10	CR0T6	Rotator	I	Sensor 0	21	15	R2		R2_I_21
+10	CR0T6	Rotator	I	Rotate - Sensor	22	16	R2		R2_I_22
+10	CR0T6	Rotator	I	Rotate + Sensor	23	17	R2		R2_I_23
+11	CR1T0	Conveyor	O	Motor +	35	23	L4		L4_O_35
+11	CR1T0	Conveyor	O	Motor -	36	24	L4		L4_O_36
+11	CR1T0	Conveyor	I	Sensor 0	24	18	L4		L4_I_24
+12	CR1T1	Machine	O	Motor +	37	25	M4		M4_O_37
+12	CR1T1	Machine	O	Motor -	38	26	M4		M4_O_38
+12	CR1T1	Machine	O	Rotate -	39	27	M4		M4_O_39
+12	CR1T1	Machine	O	Rotate +	40	28	M4		M4_O_40
+12	CR1T1	Machine	O	Tool	41	29	M4		M4_O_41
+12	CR1T1	Machine	O	X -	42	2A	M4		M4_O_42
+12	CR1T1	Machine	O	X +	43	2B	M4		M4_O_43
+12	CR1T1	Machine	O	Z +	44	2C	M4		M4_O_44
+12	CR1T1	Machine	O	Z -	45	2D	M4		M4_O_45
+12	CR1T1	Machine	I	Sensor 0	25	19	M4		M4_I_25
+12	CR1T1	Machine	I	Tool Sensor	26	1A	M4		M4_I_26
+12	CR1T1	Machine	I	X + Sensor	27	1B	M4		M4_I_27
+12	CR1T1	Machine	I	X - Sensor	28	1C	M4		M4_I_28
+12	CR1T1	Machine	I	Z + Sensor	29	1D	M4		M4_I_29
+12	CR1T1	Machine	I	Z - Sensor	30	1E	M4		M4_I_30
+13	CR1T2	Machine	O	Motor +	46	2E	M3		M3_O_46
+13	CR1T2	Machine	O	Motor -	47	2F	M3		M3_O_47
+13	CR1T2	Machine	O	Rotate -	48	30	M3		M3_O_48
+13	CR1T2	Machine	O	Rotate +	49	31	M3		M3_O_49
+13	CR1T2	Machine	O	Tool	50	32	M3		M3_O_50
+13	CR1T2	Machine	O	X -	51	33	M3		M3_O_51
+13	CR1T2	Machine	O	X +	52	34	M3		M3_O_52
+13	CR1T2	Machine	O	Z +	53	35	M3		M3_O_53
+13	CR1T2	Machine	O	Z -	54	36	M3		M3_O_54
+13	CR1T2	Machine	I	Sensor 0	31	1F	M3		M3_I_31
+13	CR1T2	Machine	I	Tool Sensor	32	20	M3		M3_I_32
+13	CR1T2	Machine	I	X + Sensor	33	21	M3		M3_I_33
+13	CR1T2	Machine	I	X - Sensor	34	22	M3		M3_I_34
+13	CR1T2	Machine	I	Z + Sensor	35	23	M3		M3_I_35
+13	CR1T2	Machine	I	Z - Sensor	36	24	M3		M3_I_36
+14	CR1T3	Machine	O	Motor +	55	37	M2		M2_O_55
+14	CR1T3	Machine	O	Motor -	56	38	M2		M2_O_56
+14	CR1T3	Machine	O	Rotate -	57	39	M2		M2_O_57
+14	CR1T3	Machine	O	Rotate +	58	3A	M2		M2_O_58
+14	CR1T3	Machine	O	Tool	59	3B	M2		M2_O_59
+14	CR1T3	Machine	O	X -	60	3C	M2		M2_O_60
+14	CR1T3	Machine	O	X +	61	3D	M2		M2_O_61
+14	CR1T3	Machine	O	Z +	62	3E	M2		M2_O_62
+14	CR1T3	Machine	O	Z -	63	3F	M2		M2_O_63
+14	CR1T3	Machine	I	Sensor 0	37	25	M2		M2_I_37
+14	CR1T3	Machine	I	Tool Sensor	38	26	M2		M2_I_38
+14	CR1T3	Machine	I	X + Sensor	39	27	M2		M2_I_39
+14	CR1T3	Machine	I	X - Sensor	40	28	M2		M2_I_40
+14	CR1T3	Machine	I	Z + Sensor	41	29	M2		M2_I_41
+14	CR1T3	Machine	I	Z - Sensor	42	2A	M2		M2_I_42
+15	CR1T4	Machine	O	Motor +	64	40	M1		M1_O_64
+15	CR1T4	Machine	O	Motor -	65	41	M1		M1_O_65
+15	CR1T4	Machine	O	Rotate -	66	42	M1		M1_O_66
+15	CR1T4	Machine	O	Rotate +	67	43	M1		M1_O_67
+15	CR1T4	Machine	O	Tool	68	44	M1		M1_O_68
+15	CR1T4	Machine	O	X -	69	45	M1		M1_O_69
+15	CR1T4	Machine	O	X +	70	46	M1		M1_O_70
+15	CR1T4	Machine	O	Z +	71	47	M1		M1_O_71
+15	CR1T4	Machine	O	Z -	72	48	M1		M1_O_72
+15	CR1T4	Machine	I	Sensor 0	43	2B	M1		M1_I_43
+15	CR1T4	Machine	I	Tool Sensor	44	2C	M1		M1_I_44
+15	CR1T4	Machine	I	X + Sensor	45	2D	M1		M1_I_45
+15	CR1T4	Machine	I	X - Sensor	46	2E	M1		M1_I_46
+15	CR1T4	Machine	I	Z + Sensor	47	2F	M1		M1_I_47
+15	CR1T4	Machine	I	Z - Sensor	48	30	M1		M1_I_48
+16	CR1T5	Conveyor	O	Motor +	73	49	L2		L2_O_73
+16	CR1T5	Conveyor	O	Motor -	74	4A	L2		L2_O_74
+16	CR1T5	Conveyor	I	Sensor 0	49	31	L2		L2_I_49
+17	CR2T1a	Rotator	O	Motor +	75	4B	R4		R4_O_75
+17	CR2T1a	Rotator	O	Motor -	76	4C	R4		R4_O_76
+17	CR2T1a	Rotator	O	Rotate -	77	4D	R4		R4_O_77
+17	CR2T1a	Rotator	O	Rotate +	78	4E	R4		R4_O_78
+17	CR2T1a	Rotator	I	Sensor 0	50	32	R4		R4_I_50
+17	CR2T1a	Rotator	I	Rotate - Sensor	51	33	R4		R4_I_51
+17	CR2T1a	Rotator	I	Rotate + Sensor	52	34	R4		R4_I_52
+18	CR2T1b	Conveyor	O	Motor +	79	4F	L3		L3_O_79
+18	CR2T1b	Conveyor	O	Motor -	80	50	L3		L3_O_80
+18	CR2T1b	Conveyor	I	Sensor 0	53	35	L3		L3_I_53
+19	CR2T2	Conveyor	O	Motor +	81	51	L5		L5_O_81
+19	CR2T2	Conveyor	O	Motor -	82	52	L5		L5_O_82
+19	CR2T2	Conveyor	I	Sensor 0	54	36	L5		L5_I_54
+20	CR2T3	Pusher	O	Motor +	83	53	P3		P3_O_83
+20	CR2T3	Pusher	O	Motor -	84	54	P3		P3_O_84
+20	CR2T3	Pusher	O	Push +	85	55	P3		P3_O_85
+20	CR2T3	Pusher	O	Push -	86	56	P3		P3_O_86
+20	CR2T3	Pusher	I	Sensor 0	55	37	P3		P3_I_55
+20	CR2T3	Pusher	I	Push + Sensor	56	38	P3		P3_I_56
+20	CR2T3	Pusher	I	Push - Sensor	57	39	P3		P3_I_57
+21	CR2T4	Pusher	O	Motor +	87	57	P2		P2_O_87
+21	CR2T4	Pusher	O	Motor -	88	58	P2		P2_O_88
+21	CR2T4	Pusher	O	Push +	89	59	P2		P2_O_89
+21	CR2T4	Pusher	O	Push -	90	5A	P2		P2_O_90
+21	CR2T4	Pusher	I	Sensor 0	58	3A	P2		P2_I_58
+21	CR2T4	Pusher	I	Push + Sensor	59	3B	P2		P2_I_59
+21	CR2T4	Pusher	I	Push - Sensor	60	3C	P2		P2_I_60
+22	CR2T5	Pusher	O	Motor +	91	5B	P1		P1_O_91
+22	CR2T5	Pusher	O	Motor -	92	5C	P1		P1_O_92
+22	CR2T5	Pusher	O	Push +	93	5D	P1		P1_O_93
+22	CR2T5	Pusher	O	Push -	94	5E	P1		P1_O_94
+22	CR2T5	Pusher	I	Sensor 0	61	3D	P1		P1_I_61
+22	CR2T5	Pusher	I	Push + Sensor	62	3E	P1		P1_I_62
+22	CR2T5	Pusher	I	Push - Sensor	63	3F	P1		P1_I_63
+23	CR2T6	Conveyor	O	Motor +	95	5F	L6		L6_O_95
+23	CR2T6	Conveyor	O	Motor -	96	60	L6		L6_O_96
+23	CR2T6	Conveyor	I	Sensor 0	64	40	L6		L6_I_64
+24	CR2T7a	Rotator	O	Motor +	97	61	R1		R1_O_97
+24	CR2T7a	Rotator	O	Motor -	98	62	R1		R1_O_98
+24	CR2T7a	Rotator	O	Rotate -	99	63	R1		R1_O_99
+24	CR2T7a	Rotator	O	Rotate +	100	64	R1		R1_O_100
+24	CR2T7a	Rotator	I	Sensor 0	65	41	R1		R1_I_65
+24	CR2T7a	Rotator	I	Rotate - Sensor	66	42	R1		R1_I_66
+24	CR2T7a	Rotator	I	Rotate + Sensor	67	43	R1		R1_I_67
+25	CR2T7b	Conveyor	O	Motor +	101	65	L1		L1_O_101
+25	CR2T7b	Conveyor	O	Motor -	102	66	L1		L1_O_102
+25	CR2T7b	Conveyor	I	Sensor 0	68	44	L1		L1_I_68
+26	PM11	Roller	I	Sensor 0	69	45	O1		O1_I_69
+27	PM12	Roller	I	Sensor 0	70	46	O1		O1_I_70
+28	PM13	Roller	I	Sensor 0	71	47	O1		O1_I_71
+30	PM21	Roller	I	Sensor 0	72	48	O2		O2_I_72
+31	PM22	Roller	I	Sensor 0	73	49	O2		O2_I_73
+32	PM23	Roller	I	Sensor 0	74	4A	O2		O2_I_74
+34	PM31	Roller	I	Sensor 0	75	4B	O3		O3_I_75
+35	PM32	Roller	I	Sensor 0	76	4C	O3		O3_I_76
+36	PM33	Roller	I	Sensor 0	77	4D	O3		O3_I_77
+38	ALT5	Warehouse In	O	Motor +	103	67	Wi2		Wi2_O_103
+38	ALT5	Warehouse In	O	Motor -	104	68	Wi2		Wi2_O_104
+38	ALT5	Warehouse In	O	Warehouse In	105	69	Wi2		Wi2_O_105
+38	ALT5	Warehouse In	I	Sensor 0	78	4E	Wi2		Wi2_I_78
+39	ALT6	Warehouse Out	O	Motor +	106	6A	Wo2		Wo2_O_106
+39	ALT6	Warehouse Out	O	Motor -	107	6B	Wo2		Wo2_O_107
+39	ALT6	Warehouse Out	I	Sensor 0	79	4F	Wo2		Wo2_I_79
+39	ALT6	Warehouse Out	R	Warehouse Out	1	1	Wo2		Wo2_R_1
+40	ALT7	Conveyor	O	Motor +	108	6C	L8		L8_O_108
+40	ALT7	Conveyor	O	Motor -	109	6D	L8		L8_O_109
+40	ALT7	Conveyor	I	Sensor 0	80	50	L8		L8_I_80
+41	ALT8	Rotator	O	Motor +	110	6E	R10		R10_O_110
+41	ALT8	Rotator	O	Motor -	111	6F	R10		R10_O_111
+41	ALT8	Rotator	O	Rotate -	112	70	R10		R10_O_112
+41	ALT8	Rotator	O	Rotate +	113	71	R10		R10_O_113
+41	ALT8	Rotator	I	Sensor 0	81	51	R10		R10_I_81
+41	ALT8	Rotator	I	Rotate - Sensor	82	52	R10		R10_I_82
+41	ALT8	Rotator	I	Rotate + Sensor	83	53	R10		R10_I_83
+42	CL0T1	Rotator	O	Motor +	114	72	R16		R16_O_114
+42	CL0T1	Rotator	O	Motor -	115	73	R16		R16_O_115
+42	CL0T1	Rotator	O	Rotate -	116	74	R16		R16_O_116
+42	CL0T1	Rotator	O	Rotate +	117	75	R16		R16_O_117
+42	CL0T1	Rotator	I	Sensor 0	84	54	R16		R16_I_84
+42	CL0T1	Rotator	I	Rotate - Sensor	85	55	R16		R16_I_85
+42	CL0T1	Rotator	I	Rotate + Sensor	86	56	R16		R16_I_86
+43	CL0T2	Rotator	O	Motor +	118	76	R15		R15_O_118
+43	CL0T2	Rotator	O	Motor -	119	77	R15		R15_O_119
+43	CL0T2	Rotator	O	Rotate -	120	78	R15		R15_O_120
+43	CL0T2	Rotator	O	Rotate +	121	79	R15		R15_O_121
+43	CL0T2	Rotator	I	Sensor 0	87	57	R15		R15_I_87
+43	CL0T2	Rotator	I	Rotate - Sensor	88	58	R15		R15_I_88
+43	CL0T2	Rotator	I	Rotate + Sensor	89	59	R15		R15_I_89
+44	CL0T3	Rotator	O	Motor +	122	7A	R14		R14_O_122
+44	CL0T3	Rotator	O	Motor -	123	7B	R14		R14_O_123
+44	CL0T3	Rotator	O	Rotate -	124	7C	R14		R14_O_124
+44	CL0T3	Rotator	O	Rotate +	125	7D	R14		R14_O_125
+44	CL0T3	Rotator	I	Sensor 0	90	5A	R14		R14_I_90
+44	CL0T3	Rotator	I	Rotate - Sensor	91	5B	R14		R14_I_91
+44	CL0T3	Rotator	I	Rotate + Sensor	92	5C	R14		R14_I_92
+45	CL0T4	Rotator	O	Motor +	126	7E	R13		R13_O_126
+45	CL0T4	Rotator	O	Motor -	127	7F	R13		R13_O_127
+45	CL0T4	Rotator	O	Rotate -	128	80	R13		R13_O_128
+45	CL0T4	Rotator	O	Rotate +	129	81	R13		R13_O_129
+45	CL0T4	Rotator	I	Sensor 0	93	5D	R13		R13_I_93
+45	CL0T4	Rotator	I	Rotate - Sensor	94	5E	R13		R13_I_94
+45	CL0T4	Rotator	I	Rotate + Sensor	95	5F	R13		R13_I_95
+46	CL0T5	Rotator	O	Motor +	130	82	R12		R12_O_130
+46	CL0T5	Rotator	O	Motor -	131	83	R12		R12_O_131
+46	CL0T5	Rotator	O	Rotate -	132	84	R12		R12_O_132
+46	CL0T5	Rotator	O	Rotate +	133	85	R12		R12_O_133
+46	CL0T5	Rotator	I	Sensor 0	96	60	R12		R12_I_96
+46	CL0T5	Rotator	I	Rotate - Sensor	97	61	R12		R12_I_97
+46	CL0T5	Rotator	I	Rotate + Sensor	98	62	R12		R12_I_98
+47	CL0T6	Rotator	O	Motor +	134	86	R11		R11_O_134
+47	CL0T6	Rotator	O	Motor -	135	87	R11		R11_O_135
+47	CL0T6	Rotator	O	Rotate -	136	88	R11		R11_O_136
+47	CL0T6	Rotator	O	Rotate +	137	89	R11		R11_O_137
+47	CL0T6	Rotator	I	Sensor 0	99	63	R11		R11_I_99
+47	CL0T6	Rotator	I	Rotate - Sensor	100	64	R11		R11_I_100
+47	CL0T6	Rotator	I	Rotate + Sensor	101	65	R11		R11_I_101
+48	CL1T0	Conveyor	O	Motor +	138	8A	L10		L10_O_138
+48	CL1T0	Conveyor	O	Motor -	139	8B	L10		L10_O_139
+48	CL1T0	Conveyor	I	Sensor 0	102	66	L10		L10_I_102
+49	CL1T1	Machine	O	Motor +	140	8C	M8		M8_O_140
+49	CL1T1	Machine	O	Motor -	141	8D	M8		M8_O_141
+49	CL1T1	Machine	O	Rotate -	142	8E	M8		M8_O_142
+49	CL1T1	Machine	O	Rotate +	143	8F	M8		M8_O_143
+49	CL1T1	Machine	O	Tool	144	90	M8		M8_O_144
+49	CL1T1	Machine	O	X -	145	91	M8		M8_O_145
+49	CL1T1	Machine	O	X +	146	92	M8		M8_O_146
+49	CL1T1	Machine	O	Z +	147	93	M8		M8_O_147
+49	CL1T1	Machine	O	Z -	148	94	M8		M8_O_148
+49	CL1T1	Machine	I	Sensor 0	103	67	M8		M8_I_103
+49	CL1T1	Machine	I	Tool Sensor	104	68	M8		M8_I_104
+49	CL1T1	Machine	I	X + Sensor	105	69	M8		M8_I_105
+49	CL1T1	Machine	I	X - Sensor	106	6A	M8		M8_I_106
+49	CL1T1	Machine	I	Z + Sensor	107	6B	M8		M8_I_107
+49	CL1T1	Machine	I	Z - Sensor	108	6C	M8		M8_I_108
+50	CL1T2	Machine	O	Motor +	149	95	M7		M7_O_149
+50	CL1T2	Machine	O	Motor -	150	96	M7		M7_O_150
+50	CL1T2	Machine	O	Rotate -	151	97	M7		M7_O_151
+50	CL1T2	Machine	O	Rotate +	152	98	M7		M7_O_152
+50	CL1T2	Machine	O	Tool	153	99	M7		M7_O_153
+50	CL1T2	Machine	O	X -	154	9A	M7		M7_O_154
+50	CL1T2	Machine	O	X +	155	9B	M7		M7_O_155
+50	CL1T2	Machine	O	Z +	156	9C	M7		M7_O_156
+50	CL1T2	Machine	O	Z -	157	9D	M7		M7_O_157
+50	CL1T2	Machine	I	Sensor 0	109	6D	M7		M7_I_109
+50	CL1T2	Machine	I	Tool Sensor	110	6E	M7		M7_I_110
+50	CL1T2	Machine	I	X + Sensor	111	6F	M7		M7_I_111
+50	CL1T2	Machine	I	X - Sensor	112	70	M7		M7_I_112
+50	CL1T2	Machine	I	Z + Sensor	113	71	M7		M7_I_113
+50	CL1T2	Machine	I	Z - Sensor	114	72	M7		M7_I_114
+51	CL1T3	Machine	O	Motor +	158	9E	M6		M6_O_158
+51	CL1T3	Machine	O	Motor -	159	9F	M6		M6_O_159
+51	CL1T3	Machine	O	Rotate -	160	A0	M6		M6_O_160
+51	CL1T3	Machine	O	Rotate +	161	A1	M6		M6_O_161
+51	CL1T3	Machine	O	Tool	162	A2	M6		M6_O_162
+51	CL1T3	Machine	O	X -	163	A3	M6		M6_O_163
+51	CL1T3	Machine	O	X +	164	A4	M6		M6_O_164
+51	CL1T3	Machine	O	Z +	165	A5	M6		M6_O_165
+51	CL1T3	Machine	O	Z -	166	A6	M6		M6_O_166
+51	CL1T3	Machine	I	Sensor 0	115	73	M6		M6_I_115
+51	CL1T3	Machine	I	Tool Sensor	116	74	M6		M6_I_116
+51	CL1T3	Machine	I	X + Sensor	117	75	M6		M6_I_117
+51	CL1T3	Machine	I	X - Sensor	118	76	M6		M6_I_118
+51	CL1T3	Machine	I	Z + Sensor	119	77	M6		M6_I_119
+51	CL1T3	Machine	I	Z - Sensor	120	78	M6		M6_I_120
+52	CL1T4	Machine	O	Motor +	167	A7	M5		M5_O_167
+52	CL1T4	Machine	O	Motor -	168	A8	M5		M5_O_168
+52	CL1T4	Machine	O	Rotate -	169	A9	M5		M5_O_169
+52	CL1T4	Machine	O	Rotate +	170	AA	M5		M5_O_170
+52	CL1T4	Machine	O	Tool	171	AB	M5		M5_O_171
+52	CL1T4	Machine	O	X -	172	AC	M5		M5_O_172
+52	CL1T4	Machine	O	X +	173	AD	M5		M5_O_173
+52	CL1T4	Machine	O	Z +	174	AE	M5		M5_O_174
+52	CL1T4	Machine	O	Z -	175	AF	M5		M5_O_175
+52	CL1T4	Machine	I	Sensor 0	121	79	M5		M5_I_121
+52	CL1T4	Machine	I	Tool Sensor	122	7A	M5		M5_I_122
+52	CL1T4	Machine	I	X + Sensor	123	7B	M5		M5_I_123
+52	CL1T4	Machine	I	X - Sensor	124	7C	M5		M5_I_124
+52	CL1T4	Machine	I	Z + Sensor	125	7D	M5		M5_I_125
+52	CL1T4	Machine	I	Z - Sensor	126	7E	M5		M5_I_126
+53	CL1T5	Conveyor	O	Motor +	176	B0	L9		L9_O_176
+53	CL1T5	Conveyor	O	Motor -	177	B1	L9		L9_O_177
+53	CL1T5	Conveyor	I	Sensor 0	127	7F	L9		L9_I_127
