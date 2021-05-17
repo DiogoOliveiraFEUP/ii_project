@@ -6,13 +6,13 @@ public class Scheduler {
         // some scheduling algorithm
         for(Transformation_Order order : transfOrders){
             if(order.getStatus() == Order.Status.NEW){
-                order.setPath("L7:?P=6");
+                order.setPath("Wo1:L7:?P=6");
                 order.setStatus(Order.Status.READY);
             }
         }
         for(Unloading_Order order : unldOrders){
             if(order.getStatus() == Order.Status.NEW){
-                order.setPath("L7:?P=6");
+                order.setPath("Wo1:L7:?P=6");
                 order.setStatus(Order.Status.READY);
             }
         }

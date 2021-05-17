@@ -18,6 +18,5 @@ public class Application {
         xml_processor.start();
 
         PLC_Manager PLC = new PLC_Manager(transfOrders, unldOrders);
-        PLC.start();
     }
 }

@@ -62,6 +62,8 @@ public class XML_Parser {
                                 }
 
                                 scheduler.schedule(transfOrders,unldOrders);
+                                PLC_Manager.getInstance().evalWo1();
+                                PLC_Manager.getInstance().evalWo2();
                                 updateDB(transfOrders);
                             }
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
@@ -76,6 +78,8 @@ public class XML_Parser {
                                     unldOrders.add(new Unloading_Order(type,dest,number));
                                 }
                                 scheduler.schedule(transfOrders,unldOrders);
+                                PLC_Manager.getInstance().evalWo1();
+                                PLC_Manager.getInstance().evalWo2();
                             }
                         }
                     }

@@ -48,7 +48,7 @@ public class OPC_UA_Connection {
     public void setValue(String node, Object value){
         UaVariableNode nodeToChange = null;
         try {
-            nodeToChange = (UaVariableNode) addressSpace.getNode(new NodeId(4,"|var|CODESYS Control Win V3 x64.Application."+ node));
+            nodeToChange = (UaVariableNode) addressSpace.getNode(new NodeId(4,node));
             nodeToChange.writeValue(new Variant(value));
         } catch (Exception e) {
             e.printStackTrace();
