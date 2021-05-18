@@ -28,7 +28,7 @@ public class Scheduler {
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
         for(Transformation_Order transformation_order:transfOrders){
-            if(order.getStatus() == Order.Status.NEW){
+            if(transformation_order.getStatus() == Order.Order.Status.NEW){
             GraphPath<Entity, PathEdge> path = null;
             GraphPath<Part, PathEdge> partPath = pathPlanner.getPath(transformation_order.getInitBlockType(),transformation_order.getFinalBlockType());
             machineList = timetable.addToTimetable(transformation_order,partPath);
@@ -48,16 +48,16 @@ public class Scheduler {
             for (String s:machineList){
                 pathString = pathString.replace(s.substring(0,2),s);
             }
-            transformation_order.setStatus(Order.Status.READY);
+            transformation_order.setStatus(Order.Order.Status.READY);
             transformation_order.setPath(pathString);
             }
         }
 
 
         for(Unloading_Order order : unldOrders){
-            if(order.getStatus() == Order.Status.NEW){
+            if(order.getStatus() == Order.Order.Status.NEW){
                 order.setPath("Wo1:L7:?P=6");
-                order.setStatus(Order.Status.READY);
+                order.setStatus(Order.Order.Status.READY);
             }
         }
     }

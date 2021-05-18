@@ -19,8 +19,6 @@ public class Order {
     }
 
 
-    public void setPath(String path) {
-        this.path = path;
     public int getMainID() {
         return mainID;
     }

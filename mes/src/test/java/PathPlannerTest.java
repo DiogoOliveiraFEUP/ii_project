@@ -71,7 +71,7 @@ public class PathPlannerTest {
         for(Transformation_Order transformation_order_ : transformation_order_list){
             System.out.println(transformation_order_.getPath());
         }
-        //System.out.println(scheduler.timetable);
+        System.out.println(scheduler.timetable);
     }
 
 }

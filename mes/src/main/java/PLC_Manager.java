@@ -1,3 +1,5 @@
+import Order.Transformation_Order;
+import Order.Unloading_Order;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedDataItem;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedSubscription;
 import org.eclipse.milo.opcua.stack.core.UaException;
@@ -111,14 +113,14 @@ public class PLC_Manager {
                 /* check next transformation order for wo1 */
                 synchronized (transfOrders) {
                     for (Transformation_Order aux : transfOrders) {
-                        if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
+                        if (aux.getStatus() == Order.Order.Status.READY && aux.getPath().contains("Wo1")) {
                             transf = aux;
                             break;
                         }
                         System.out.println(aux.getStatus());
                     }
                     if (transf != null) {
-                        transf.setStatus(Order.Status.RUNNING);
+                        transf.setStatus(Order.Order.Status.RUNNING);
                         conn.setValue(wo1PieceNode, transf.getPath());
                         conn.setValue(wo1PieceNode, "");
                         //updateDB
@@ -130,12 +132,12 @@ public class PLC_Manager {
                     /* check for unloading orders */
                     synchronized (unldOrders) {
                         for (Unloading_Order aux : unldOrders) {
-                            if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
+                            if (aux.getStatus() == Order.Order.Status.READY && aux.getPath().contains("Wo1")) {
                                 unld = aux;
                             }
                         }
                         if (unld != null) {
-                            unld.setStatus(Order.Status.RUNNING);
+                            unld.setStatus(Order.Order.Status.RUNNING);
                             conn.setValue(wo1PieceNode, unld.getPath());
                             conn.setValue(wo1PieceNode, "");
                             //updateDB
