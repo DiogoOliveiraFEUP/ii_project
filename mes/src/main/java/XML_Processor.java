@@ -5,8 +5,8 @@ import java.util.List;
 
 public class XML_Processor extends Thread{
 
-    private XML_Parser xml_parser = new XML_Parser();
-    private List<XML_Request> xml_requests;
+    private final XML_Parser xml_parser = new XML_Parser();
+    private final List<XML_Request> xml_requests;
     List<Transformation_Order> transfOrders;
     List<Unloading_Order> unldOrders;
 

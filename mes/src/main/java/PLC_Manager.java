@@ -17,12 +17,12 @@ public class PLC_Manager {
         return singleton;
     }
 
-    List<Transformation_Order> transfOrders;
-    List<Unloading_Order> unldOrders;
+    final List<Transformation_Order> transfOrders;
+    final List<Unloading_Order> unldOrders;
 
     OPC_UA_Connection conn;
 
-    String wo1EmptyNode = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.Empty.x";
+    String wo1EmptyNode = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.Wo1.Empty.x";
     String wo1PieceNode = "|var|CODESYS Control Win V3 x64.Application.WHs.Wo1PieceIn";
     ManagedSubscription subscriptionWo1;
     String wi1EndNode   = "|var|CODESYS Control Win V3 x64.Application";
@@ -96,8 +96,9 @@ public class PLC_Manager {
 
 
     public void evalWo1() {
-        boolean wo1State = (boolean) conn.getValue(wo1EmptyNode);
-
+        System.out.println(PLC_Manager.getInstance().conn);
+        boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+        System.out.println(wo1State);
         if (wo1State) {
 
             Unloading_Order unld = null;
@@ -120,9 +121,9 @@ public class PLC_Manager {
                         System.out.println(aux.getStatus());
                     }
                     if (transf != null) {
-                        transf.setStatus(Order.Order.Status.RUNNING);
-                        conn.setValue(wo1PieceNode, transf.getPath());
-                        conn.setValue(wo1PieceNode, "");
+                        transf.setStatus(Order.Status.RUNNING);
+                        conn.setValue(wo1PieceNode, transf.getPath().replace("Wo1:",""));
+                        conn.setValue(wo1PieceNode, "null");
                         //updateDB
                     }
                 }
