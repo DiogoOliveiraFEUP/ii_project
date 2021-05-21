@@ -50,12 +50,18 @@ public class PathPlannerTest {
     @Test
     public void schedulerTest(){
 
-        Transformation_Order transformation_order = new Transformation_Order(1,1,"P1","P4",0,0,0);
-        Transformation_Order transformation_order1 = new Transformation_Order(1,1,"P1","P4",0,0,0);
-        Transformation_Order transformation_order2 = new Transformation_Order(1,1,"P1","P4",0,0,0);
-        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P1","P4",0,0,0);
-        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P1","P4",0,0,0);
-        Transformation_Order transformation_order5 = new Transformation_Order(1,1,"P1","P4",0,0,0);
+        Transformation_Order transformation_order = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order1 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order2 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order5 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order6 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order7 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order8 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order9 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order10 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+
 
         Scheduler scheduler = new Scheduler();
         List<Transformation_Order> transformation_order_list = new ArrayList<>();
@@ -65,6 +71,12 @@ public class PathPlannerTest {
         transformation_order_list.add(transformation_order3);
         transformation_order_list.add(transformation_order4);
         transformation_order_list.add(transformation_order5);
+        transformation_order_list.add(transformation_order6);
+        transformation_order_list.add(transformation_order7);
+        transformation_order_list.add(transformation_order8);
+        transformation_order_list.add(transformation_order9);
+        transformation_order_list.add(transformation_order10);
+
 
 
         scheduler.schedule(transformation_order_list, new ArrayList<Unloading_Order>());
