@@ -121,7 +121,7 @@ public class PLC_Manager {
                         System.out.println(aux.getStatus());
                     }
                     if (transf != null) {
-                        transf.setStatus(Order.Status.RUNNING);
+                        transf.setStatus(Order.Order.Status.RUNNING);
                         conn.setValue(wo1PieceNode, transf.getPath().replace("Wo1:",""));
                         conn.setValue(wo1PieceNode, "null");
                         //updateDB
