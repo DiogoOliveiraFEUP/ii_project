@@ -5,6 +5,7 @@ import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
+import java.time.Instant;
 import java.util.List;
 
 public class PLC_Manager {
@@ -24,13 +25,15 @@ public class PLC_Manager {
     String wo1EmptyNode = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.Wo1.Empty.x";
     String wo1PieceNode = "|var|CODESYS Control Win V3 x64.Application.WHs.Wo1PieceIn";
     ManagedSubscription subscriptionWo1;
-    String wi1EndNode   = "|var|CODESYS Control Win V3 x64.Application";
+    String wi1OrderNode   = "|var|CODESYS Control Win V3 x64.Application.WHs.Wi1OrderID";
+    String wi1DoneNode   = "|var|CODESYS Control Win V3 x64.Application.WHs.Wi1Done";
     ManagedSubscription subscriptionWi1;
 
     String wo2EmptyNode = "|var|CODESYS Control Win V3 x64.Application.Factory_Left.Wo2.Empty.x";
     String wo2PieceNode = "|var|CODESYS Control Win V3 x64.Application.WHs.Wo2PieceIn";
     ManagedSubscription subscriptionWo2;
-    String wi2EndNode   = "|var|CODESYS Control Win V3 x64.Application";
+    String wi2OrderNode   = "|var|CODESYS Control Win V3 x64.Application.WHs.Wi2OrderID";
+    String wi2DoneNode   = "|var|CODESYS Control Win V3 x64.Application.WHs.Wi2Done";
     ManagedSubscription subscriptionWi2;
 
 
@@ -63,7 +66,14 @@ public class PLC_Manager {
             if (!dataItem.getStatusCode().isGood()) {
                 throw new RuntimeException("uh oh!");
             }
-
+            dataItem = subscriptionWi1.createDataItem(new NodeId(4, wi1OrderNode));
+            if (!dataItem.getStatusCode().isGood()) {
+                throw new RuntimeException("uh oh!");
+            }
+            dataItem = subscriptionWi2.createDataItem(new NodeId(4, wi2OrderNode));
+            if (!dataItem.getStatusCode().isGood()) {
+                throw new RuntimeException("uh oh!");
+            }
         } catch (UaException e) {
             e.printStackTrace();
         }
@@ -76,7 +86,6 @@ public class PLC_Manager {
                 for (ManagedDataItem item : dataItems) {
                     if(item.getNodeId().getIdentifier().equals(wo1EmptyNode)){
                         boolean wo1State = (boolean) dataValues.get(i).getValue().getValue();
-                        System.out.println("Wo1" + wo1State);
                         if(wo1State){
                             evalWo1();
                         }
@@ -87,17 +96,31 @@ public class PLC_Manager {
         });
 
         /* Avisa MES que Wi1 concluiu um caminho */
-        subscriptionWo1.addChangeListener(new ManagedSubscription.ChangeListener() {
+        subscriptionWi1.addChangeListener(new ManagedSubscription.ChangeListener() {
             @Override
             public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
                 int i = 0;
+                System.out.println("hello");
                 for (ManagedDataItem item : dataItems) {
-                    if(item.getNodeId().getIdentifier().equals(wi1EndNode)){
+                    if(item.getNodeId().getIdentifier().equals(wi1OrderNode)){
                         /* deal with order completed */
+                        String orderID = (String) dataValues.get(i).getValue().getValue();
+                        if(!orderID.equals("null")){
+                            System.out.println(orderID);
+                            conn.setValue(wi1DoneNode,true);
 
-                        /*
-                            ...
-                        */
+                            String[] str = orderID.split("_");
+                            int mainid = Integer.parseInt(str[0]);
+                            int id = Integer.parseInt(str[1]);
+                            int subid = Integer.parseInt(str[2]);
+
+                            synchronized (transfOrders){
+                                Transformation_Order order = Transformation_Order.getOrderByMainID_ID_SubID(transfOrders,mainid,id,subid);
+                                order.setStatus(Order.Status.COMPLETED);
+                                order.setEndTime(Instant.now().getEpochSecond());
+                                Database_Connection.updateDB(transfOrders);
+                            }
+                        }
                     }
                     i++;
                 }
@@ -112,7 +135,6 @@ public class PLC_Manager {
                 for (ManagedDataItem item : dataItems) {
                     if(item.getNodeId().getIdentifier().equals(wo2EmptyNode)){
                         boolean wo2State = (boolean) dataValues.get(i).getValue().getValue();
-                        System.out.println("Wo2" + wo2State);
                         if(wo2State){
                             evalWo2();
                         }
@@ -122,13 +144,42 @@ public class PLC_Manager {
             }
         });
 
+        subscriptionWi2.addChangeListener(new ManagedSubscription.ChangeListener() {
+            @Override
+            public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
+                int i = 0;
+                for (ManagedDataItem item : dataItems) {
+                    if(item.getNodeId().getIdentifier().equals(wi2OrderNode)){
+                        /* deal with order completed */
+                        String orderID = (String) dataValues.get(i).getValue().getValue();
+                        if(!orderID.equals("null")){
+                            System.out.println(orderID);
+                            conn.setValue(wi2DoneNode,true);
+
+                            String[] str = orderID.split("_");
+                            int mainid = Integer.parseInt(str[0]);
+                            int id = Integer.parseInt(str[1]);
+                            int subid = Integer.parseInt(str[2]);
+
+                            synchronized (transfOrders){
+                                Transformation_Order order = Transformation_Order.getOrderByMainID_ID_SubID(transfOrders,mainid,id,subid);
+                                order.setStatus(Order.Status.COMPLETED);
+                                order.setEndTime(Instant.now().getEpochSecond());
+                                Database_Connection.updateDB(transfOrders);
+                            }
+                        }
+                    }
+                    i++;
+                }
+            }
+        });
     }
 
 
     public void evalWo1() {
 
         boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
-        System.out.println(wo1State);
+
         if (wo1State) {
 
             Unloading_Order unld = null;
@@ -144,17 +195,22 @@ public class PLC_Manager {
                 /* check next transformation order for wo1 */
                 synchronized (transfOrders) {
                     for (Transformation_Order aux : transfOrders) {
-                        System.out.println(aux.getPath());
                         if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
                             transf = aux;
                             break;
                         }
-                        System.out.println(aux.getStatus());
                     }
                     if (transf != null) {
                         transf.setStatus(Order.Status.RUNNING);
-                        conn.setValue(wo1PieceNode, transf.getPath().replace("Wo1:",""));
-                        //updateDB
+                        transf.setStartTime(Instant.now().getEpochSecond());
+
+                        String path = transf.getPath().replace("Wo1:","") + "?P=" + transf.getInitBlockType().substring(1)
+                                + "?ID=" + transf.getMainID() + "_" + transf.getID() + "_" + transf.getSubID();
+
+                        System.out.println(path);
+
+                        conn.setValue(wo1PieceNode, path);
+                        Database_Connection.updateDB(transfOrders);
                     }
                 }
 
@@ -179,8 +235,9 @@ public class PLC_Manager {
     }
 
     public void evalWo2() {
+
         boolean wo2State = (boolean) PLC_Manager.getInstance().conn.getValue(wo2EmptyNode);
-        System.out.println(wo2State);
+
         if (wo2State) {
 
             Unloading_Order unld = null;
@@ -196,17 +253,22 @@ public class PLC_Manager {
                 /* check next transformation order for wo1 */
                 synchronized (transfOrders) {
                     for (Transformation_Order aux : transfOrders) {
-                        System.out.println(aux.getPath());
                         if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo2")) {
                             transf = aux;
                             break;
                         }
-                        System.out.println(aux.getStatus());
                     }
                     if (transf != null) {
                         transf.setStatus(Order.Status.RUNNING);
-                        conn.setValue(wo2PieceNode, transf.getPath().replace("Wo2:",""));
-                        //updateDB
+                        transf.setStartTime(Instant.now().getEpochSecond());
+
+                        String path = transf.getPath().replace("Wo2:","") + "?P=" + transf.getInitBlockType().substring(1)
+                                + "?ID=" + transf.getMainID() + "." + transf.getID() + "." + transf.getSubID();
+
+                        System.out.println(path);
+
+                        conn.setValue(wo2PieceNode, path);
+                        Database_Connection.updateDB(transfOrders);
                     }
                 }
 
