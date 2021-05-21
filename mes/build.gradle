@@ -29,13 +29,6 @@ dependencies {
 
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(15)
-    }
-}
-
-
 test {
     useJUnitPlatform()
 }
