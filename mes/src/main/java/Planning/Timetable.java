@@ -89,7 +89,7 @@ public class Timetable {
         for (PathEdge pathEdge:orderPath.getEdgeList()) {
 
             Machine machine = sideA.getMachineWithTool(pathEdge.getTool(),0);
-            sideAMachines.add(machine.toString()+"#"+pathEdge.getTool().substring(1,2)+'|'+pathEdge.getTime());
+            sideAMachines.add(machine.toString()+":M"+"#"+pathEdge.getTool().substring(1,2)+'|'+pathEdge.getTime());
             MachineTimeSlot machineTimeSlot = null;
             if(isFirst){
                  machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),sideA.getLastEndingTime(machine),sideA.getLastEndingTime(machine)+ pathEdge.getTime());
@@ -110,7 +110,7 @@ public class Timetable {
         for (PathEdge pathEdge:orderPath.getEdgeList()) {
 
             Machine machine = sideB.getMachineWithTool(pathEdge.getTool(),1);
-            sideBMachines.add(machine.toString()+"#"+pathEdge.getTool().substring(1,2)+'|'+pathEdge.getTime());
+            sideBMachines.add(machine.toString()+":M"+"#"+pathEdge.getTool().substring(1,2)+'|'+pathEdge.getTime());
 
             MachineTimeSlot machineTimeSlot = null;
             if(isFirst){

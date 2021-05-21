@@ -32,7 +32,7 @@ public class Factory{
 
         //Machine Instantiation
         for(int i=0; i < 8;i++){
-            machineList.put("M%d".formatted(i+1),new Machine("M%d".formatted(i+ 1)));
+            machineList.put(String.format("M%d",i+1),new Machine(String.format("M%d",i+ 1)));
         }
 
         for(Machine machine: machineList.values()){
@@ -42,7 +42,7 @@ public class Factory{
 
         //Rotative instantiation
         for(int i=0; i < 16;i++){
-            rotativeList.put("R%d".formatted(i+1),new Rotative("R%d".formatted(i+ 1)));
+            rotativeList.put(String.format("R%d",i+1),new Rotative(String.format("R%d",i+ 1)));
         }
 
         for(Rotative rotative: rotativeList.values()){
@@ -51,7 +51,7 @@ public class Factory{
 
         //Linear Mat instantiation
         for(int i=0; i < 10;i++){
-            linearList.put("L%d".formatted(i+1),new Linear("L%d".formatted(i+ 1)));
+            linearList.put(String.format("L%d",i+1),new Linear(String.format("L%d",i+ 1)));
         }
 
         for(Linear linear: linearList.values()){
@@ -76,7 +76,7 @@ public class Factory{
 
         //Roller Mat instantiation
         for(int i=0; i < 3;i++){
-            rollerList.put("O%d".formatted(i+1),new Roller("O%d".formatted(i+ 1)));
+            rollerList.put(String.format("O%d",i+1),new Roller(String.format("O%d",i+ 1)));
         }
 
         for(Roller roller: rollerList.values()){
@@ -85,7 +85,7 @@ public class Factory{
 
         //PusherMat instantiation
         for(int i=0; i < 3;i++){
-            pusherList.put("P%d".formatted(i+1),new Pusher("P%d".formatted(i+ 1)));
+            pusherList.put(String.format("P%d",i+1),new Pusher(String.format("P%d",i+ 1)));
         }
 
         for(Pusher pusher: pusherList.values()){

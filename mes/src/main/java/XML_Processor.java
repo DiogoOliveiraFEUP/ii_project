@@ -5,8 +5,8 @@ import java.util.List;
 
 public class XML_Processor extends Thread{
 
-    private XML_Parser xml_parser = new XML_Parser();
-    private List<XML_Request> xml_requests;
+    private final XML_Parser xml_parser = new XML_Parser();
+    private final List<XML_Request> xml_requests;
     List<Transformation_Order> transfOrders;
     List<Unloading_Order> unldOrders;
 
@@ -24,7 +24,7 @@ public class XML_Processor extends Thread{
                 if(!xml_requests.isEmpty()){
                     xml_parser.parse(xml_requests.get(0),transfOrders,unldOrders);
                     xml_requests.remove(0);
-                    System.out.println(xml_requests.size());
+                    //System.out.println(xml_requests.size());
                 }
             }
         }

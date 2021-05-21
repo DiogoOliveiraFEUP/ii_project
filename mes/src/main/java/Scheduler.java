@@ -49,6 +49,7 @@ public class Scheduler {
             for (String s:machineList){
                 pathString = pathString.replace(s.substring(0,2),s);
             }
+            pathString+="Wh:";
             transformation_order.setStatus(Order.Order.Status.READY);
             transformation_order.setPath(pathString);
             }
