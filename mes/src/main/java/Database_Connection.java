@@ -1,5 +1,9 @@
 import java.io.StringWriter;
 import java.sql.*;
+import java.util.List;
+
+import Order.Order;
+import Order.Transformation_Order;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
@@ -83,6 +87,89 @@ public class Database_Connection {
 
         return result;
     }
+
+    public static void updateDB(List<Transformation_Order> transfOrders){
+
+        StringBuilder sb = new StringBuilder();
+
+        List<Integer> mainIDs = Transformation_Order.getMainIDs(transfOrders);
+
+        for(Integer mainID : mainIDs){
+            List<Transformation_Order> orders = Transformation_Order.getOrdersByMainID(transfOrders,mainID);
+            int total = 0;
+            int finished = 0;
+            int running = 0;
+            long startTime = Long.MAX_VALUE;
+            long endTime = Long.MIN_VALUE;
+
+            Order.Status status;
+            List<Integer> IDs = Transformation_Order.getIDs(orders);
+
+            for(Integer ID : IDs){
+                List<Transformation_Order> subOrders = Transformation_Order.getOrdersByID(orders,ID);
+
+                total++;
+                status = Order.Status.READY;
+
+                for(Transformation_Order subOrder : subOrders){
+                    if(subOrder.getStatus() == Order.Status.RUNNING){
+                        status = Order.Status.RUNNING;
+                    }
+                    else if(status != Order.Status.RUNNING && subOrder.getStatus() == Order.Status.COMPLETED){
+                        status = Order.Status.COMPLETED;
+                    }
+                    if(subOrder.getStartTime() < startTime){
+                        startTime = subOrder.getStartTime();
+                    }
+                    if(subOrder.getEndTime() > endTime){
+                        endTime = subOrder.getEndTime();
+                    }
+                }
+
+                if(status == Order.Status.COMPLETED){
+                    finished++;
+                }
+                else if(status == Order.Status.RUNNING){
+                    running++;
+                }
+            }
+
+            sb.append("REPLACE INTO transforders VALUES ("
+                    + mainID + ","
+                    + "'" + orders.get(0).getInitBlockType() + "',"
+                    + "'" + orders.get(0).getFinalBlockType() + "',"
+                    + total + ","
+                    + finished + ","
+                    + running + ","
+                    + orders.get(0).getInputTime() + ","
+                    + orders.get(0).getRealInputTime() + ","
+                    + orders.get(0).getMaxDelay() + ","
+                    + orders.get(0).getPenalty() + ","
+                    + startTime + ","
+                    + endTime + ");\n");
+        }
+
+        /*
+        Transformation Order DB
+            + Main_ID: int
+            + BlockType_Initial: int
+            + BlockType_Final: int
+            + Total_Quantity: int
+            + Finished_Quantity: int
+            + Running_Quantity: int
+            + Send_Time: int
+            + Arrival_Time: int
+            + MaxDelay: int
+            + Penalty: int
+            + Start_Time: int
+            + End_Time: int
+        */
+
+        String res = (new Database_Connection()).query(sb.toString());
+        //System.out.println(res);
+    }
+
+
 
 
 }

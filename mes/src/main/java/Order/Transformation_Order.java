@@ -12,8 +12,8 @@ public class Transformation_Order extends Order{
     private final int maxDelay;
     private final int penalty;
     private final long realInputTime;
-    private int startTime;
-    private int endTime;
+    private long startTime;
+    private long endTime;
     private int realPenalty;
 
     public Transformation_Order(int mainID, int subID, String initBlockType, String finalBlockType, long inputTime, int maxDelay, int penalty) {
@@ -53,19 +53,19 @@ public class Transformation_Order extends Order{
         return realInputTime;
     }
 
-    public int getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(int startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public int getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(int endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 
@@ -117,6 +117,14 @@ public class Transformation_Order extends Order{
             if(order.getID() == id && order.getMainID() == mainid) result.add(order);
         }
         return result;
+    }
+
+    public static Transformation_Order getOrderByMainID_ID_SubID(List<Transformation_Order> orders, int mainid, int id, int subid){
+        for(Transformation_Order order : orders){
+            if(order.getSubID() == subid && order.getID() == id && order.getMainID() == mainid)
+                return order;
+        }
+        return null;
     }
 
     public static List<Transformation_Order> getOrdersByMainID_ID_Status(List<Transformation_Order> orders, int mainid, int id, Status status){

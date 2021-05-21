@@ -5,6 +5,7 @@ import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
+import java.time.Instant;
 import java.util.List;
 
 public class PLC_Manager {
@@ -107,6 +108,18 @@ public class PLC_Manager {
                         if(!orderID.equals("null")){
                             System.out.println(orderID);
                             conn.setValue(wi1DoneNode,true);
+
+                            String[] str = orderID.split("_");
+                            int mainid = Integer.parseInt(str[0]);
+                            int id = Integer.parseInt(str[1]);
+                            int subid = Integer.parseInt(str[2]);
+
+                            synchronized (transfOrders){
+                                Transformation_Order order = Transformation_Order.getOrderByMainID_ID_SubID(transfOrders,mainid,id,subid);
+                                order.setStatus(Order.Status.COMPLETED);
+                                order.setEndTime(Instant.now().getEpochSecond());
+                                Database_Connection.updateDB(transfOrders);
+                            }
                         }
                     }
                     i++;
@@ -142,6 +155,18 @@ public class PLC_Manager {
                         if(!orderID.equals("null")){
                             System.out.println(orderID);
                             conn.setValue(wi2DoneNode,true);
+
+                            String[] str = orderID.split("_");
+                            int mainid = Integer.parseInt(str[0]);
+                            int id = Integer.parseInt(str[1]);
+                            int subid = Integer.parseInt(str[2]);
+
+                            synchronized (transfOrders){
+                                Transformation_Order order = Transformation_Order.getOrderByMainID_ID_SubID(transfOrders,mainid,id,subid);
+                                order.setStatus(Order.Status.COMPLETED);
+                                order.setEndTime(Instant.now().getEpochSecond());
+                                Database_Connection.updateDB(transfOrders);
+                            }
                         }
                     }
                     i++;
@@ -177,14 +202,15 @@ public class PLC_Manager {
                     }
                     if (transf != null) {
                         transf.setStatus(Order.Status.RUNNING);
+                        transf.setStartTime(Instant.now().getEpochSecond());
 
                         String path = transf.getPath().replace("Wo1:","") + "?P=" + transf.getInitBlockType().substring(1)
-                                + "?ID=" + transf.getMainID() + "." + transf.getID() + "." + transf.getSubID();
+                                + "?ID=" + transf.getMainID() + "_" + transf.getID() + "_" + transf.getSubID();
 
                         System.out.println(path);
 
                         conn.setValue(wo1PieceNode, path);
-                        //updateDB
+                        Database_Connection.updateDB(transfOrders);
                     }
                 }
 
@@ -234,6 +260,7 @@ public class PLC_Manager {
                     }
                     if (transf != null) {
                         transf.setStatus(Order.Status.RUNNING);
+                        transf.setStartTime(Instant.now().getEpochSecond());
 
                         String path = transf.getPath().replace("Wo2:","") + "?P=" + transf.getInitBlockType().substring(1)
                                 + "?ID=" + transf.getMainID() + "." + transf.getID() + "." + transf.getSubID();
@@ -241,7 +268,7 @@ public class PLC_Manager {
                         System.out.println(path);
 
                         conn.setValue(wo2PieceNode, path);
-                        //updateDB
+                        Database_Connection.updateDB(transfOrders);
                     }
                 }
 
