@@ -1,5 +1,4 @@
-import Order.Transformation_Order;
-import Order.Unloading_Order;
+import Order.*;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedDataItem;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedSubscription;
 import org.eclipse.milo.opcua.stack.core.UaException;
@@ -28,6 +27,13 @@ public class PLC_Manager {
     String wi1EndNode   = "|var|CODESYS Control Win V3 x64.Application";
     ManagedSubscription subscriptionWi1;
 
+    String wo2EmptyNode = "|var|CODESYS Control Win V3 x64.Application.Factory_Left.Wo2.Empty.x";
+    String wo2PieceNode = "|var|CODESYS Control Win V3 x64.Application.WHs.Wo2PieceIn";
+    ManagedSubscription subscriptionWo2;
+    String wi2EndNode   = "|var|CODESYS Control Win V3 x64.Application";
+    ManagedSubscription subscriptionWi2;
+
+
     public PLC_Manager(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders) {
 
         singleton = this;
@@ -40,6 +46,8 @@ public class PLC_Manager {
         try {
             subscriptionWo1 = ManagedSubscription.create(conn.getClient());
             subscriptionWi1 = ManagedSubscription.create(conn.getClient());
+            subscriptionWo2 = ManagedSubscription.create(conn.getClient());
+            subscriptionWi2 = ManagedSubscription.create(conn.getClient());
         } catch (UaException e) {
             e.printStackTrace();
         }
@@ -48,6 +56,10 @@ public class PLC_Manager {
         try {
 
             dataItem = subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
+            if (!dataItem.getStatusCode().isGood()) {
+                throw new RuntimeException("uh oh!");
+            }
+            dataItem = subscriptionWo2.createDataItem(new NodeId(4, wo2EmptyNode));
             if (!dataItem.getStatusCode().isGood()) {
                 throw new RuntimeException("uh oh!");
             }
@@ -92,11 +104,29 @@ public class PLC_Manager {
             }
         });
 
+        /* Avisa MES que Wo2 ficou livre */
+        subscriptionWo2.addChangeListener(new ManagedSubscription.ChangeListener() {
+            @Override
+            public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
+                int i = 0;
+                for (ManagedDataItem item : dataItems) {
+                    if(item.getNodeId().getIdentifier().equals(wo2EmptyNode)){
+                        boolean wo2State = (boolean) dataValues.get(i).getValue().getValue();
+                        System.out.println("Wo2" + wo2State);
+                        if(wo2State){
+                            evalWo2();
+                        }
+                    }
+                    i++;
+                }
+            }
+        });
+
     }
 
 
     public void evalWo1() {
-        System.out.println(PLC_Manager.getInstance().conn);
+
         boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
         System.out.println(wo1State);
         if (wo1State) {
@@ -114,16 +144,16 @@ public class PLC_Manager {
                 /* check next transformation order for wo1 */
                 synchronized (transfOrders) {
                     for (Transformation_Order aux : transfOrders) {
-                        if (aux.getStatus() == Order.Order.Status.READY && aux.getPath().contains("Wo1")) {
+                        System.out.println(aux.getPath());
+                        if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
                             transf = aux;
                             break;
                         }
                         System.out.println(aux.getStatus());
                     }
                     if (transf != null) {
-                        transf.setStatus(Order.Order.Status.RUNNING);
+                        transf.setStatus(Order.Status.RUNNING);
                         conn.setValue(wo1PieceNode, transf.getPath().replace("Wo1:",""));
-                        conn.setValue(wo1PieceNode, "null");
                         //updateDB
                     }
                 }
@@ -133,14 +163,13 @@ public class PLC_Manager {
                     /* check for unloading orders */
                     synchronized (unldOrders) {
                         for (Unloading_Order aux : unldOrders) {
-                            if (aux.getStatus() == Order.Order.Status.READY && aux.getPath().contains("Wo1")) {
+                            if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
                                 unld = aux;
                             }
                         }
                         if (unld != null) {
-                            unld.setStatus(Order.Order.Status.RUNNING);
+                            unld.setStatus(Order.Status.RUNNING);
                             conn.setValue(wo1PieceNode, unld.getPath());
-                            conn.setValue(wo1PieceNode, "");
                             //updateDB
                         }
                     }
@@ -150,7 +179,54 @@ public class PLC_Manager {
     }
 
     public void evalWo2() {
+        boolean wo2State = (boolean) PLC_Manager.getInstance().conn.getValue(wo2EmptyNode);
+        System.out.println(wo2State);
+        if (wo2State) {
 
+            Unloading_Order unld = null;
+            /* check prioritary unloading orders */
 
+            /*
+                    ...
+            */
+
+            if(unld == null){
+
+                Transformation_Order transf = null;
+                /* check next transformation order for wo1 */
+                synchronized (transfOrders) {
+                    for (Transformation_Order aux : transfOrders) {
+                        System.out.println(aux.getPath());
+                        if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo2")) {
+                            transf = aux;
+                            break;
+                        }
+                        System.out.println(aux.getStatus());
+                    }
+                    if (transf != null) {
+                        transf.setStatus(Order.Status.RUNNING);
+                        conn.setValue(wo2PieceNode, transf.getPath().replace("Wo2:",""));
+                        //updateDB
+                    }
+                }
+
+                if (transf == null) {
+
+                    /* check for unloading orders */
+                    synchronized (unldOrders) {
+                        for (Unloading_Order aux : unldOrders) {
+                            if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo2")) {
+                                unld = aux;
+                            }
+                        }
+                        if (unld != null) {
+                            unld.setStatus(Order.Status.RUNNING);
+                            conn.setValue(wo2PieceNode, unld.getPath());
+                            //updateDB
+                        }
+                    }
+                }
+            }
+        }
     }
 }

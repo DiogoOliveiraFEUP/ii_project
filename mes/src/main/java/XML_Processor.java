@@ -24,7 +24,7 @@ public class XML_Processor extends Thread{
                 if(!xml_requests.isEmpty()){
                     xml_parser.parse(xml_requests.get(0),transfOrders,unldOrders);
                     xml_requests.remove(0);
-                    System.out.println(xml_requests.size());
+                    //System.out.println(xml_requests.size());
                 }
             }
         }
