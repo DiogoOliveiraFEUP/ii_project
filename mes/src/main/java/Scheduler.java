@@ -25,6 +25,7 @@ public class Scheduler {
 
 
     public void schedule(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders){
+        System.out.println("Scheduling");
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
         for(Transformation_Order transformation_order:transfOrders){
@@ -60,6 +61,7 @@ public class Scheduler {
                 order.setStatus(Order.Order.Status.READY);
             }
         }
+        System.out.println("Scheduled");
     }
 
 }
