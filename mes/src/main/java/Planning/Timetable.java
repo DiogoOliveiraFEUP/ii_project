@@ -62,6 +62,15 @@ public class Timetable {
         return maxEndingTime;
     }
 
+    public int getEndingTime(int side){
+        int maxEndingTime = 0;
+        for(int i=1;i<=4*side+4;i++){
+            if(!timetable.get(new Machine("M"+i)).isEmpty())
+                maxEndingTime += timetable.get(new Machine("M"+i)).getLast().getEnding_Time()-timetable.get(new Machine("M"+i)).getFirst().starting_Time;
+        }
+        return maxEndingTime;
+    }
+
     public Machine getMachineWithTool(String tool, int side){
         for (int i = 4*side + 1; i < 4*side +5; i++) {
             Entity entity = new Machine("M"+i);
@@ -100,9 +109,21 @@ public class Timetable {
                 //System.out.println(i);
                 Machine machine = new Machine("M" + (4 * side + i+1));
                 int LatestStartingTime = timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                int LatestEndingTime=0;
+                if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
+                    LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
+                    if(LastEndingTime<LatestStartingTime+30){
+                        LatestEndingTime = LastEndingTime + getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime());
+                    }else{
+                        LatestEndingTime = LastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
+                    }
+                }
+                else{
+                    LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
+                }
                 Timetable buffer = new Timetable(timetable);
-                MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestStartingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime()));
+                MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
                 timetables.add(buffer);
                 //System.out.println(buffer.toString());
@@ -122,11 +143,24 @@ public class Timetable {
             for (int i = highest_machine; i < 4; i++) {
                 Machine machine = new Machine("M" + (4 * side + i + 1));
                 Timetable buffer = new Timetable(timetable);
-                int LatestStartingTime = timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                int LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                int LatestEndingTime=0;
+                if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
-                MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestStartingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime()));
+                    LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
+                    if(LastEndingTime<LatestStartingTime+30){
+                        LatestEndingTime = LastEndingTime + getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime());
+                    }else{
+                        LatestEndingTime = LastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
+                    }
+                }
+                else{
+                    LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
+                }
+
+                MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
-                buffer.timetable = buffer.iterate(level + 1, side, i+1==4?i:i+1,LatestStartingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime()), transformation_order, orderPath);
+                buffer.timetable = buffer.iterate(level + 1, side, i+1==4?i:i+1,LatestEndingTime, transformation_order, orderPath);
                 timetables.add(buffer);
                 //System.out.println("Level" + level + "\n" + buffer);
             }
