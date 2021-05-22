@@ -1,6 +1,7 @@
 import Factory.Entities.Entity;
 import Factory.Entities.Machine;
 import Factory.Factory;
+import Order.Order;
 import Order.Transformation_Order;
 import Order.Unloading_Order;
 import Planning.MachineTimeSlot;
@@ -29,10 +30,11 @@ public class Scheduler {
 
     public void schedule(List<Transformation_Order> transfOrders){
         System.out.println("Scheduling");
+
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
         for(Transformation_Order transformation_order:transfOrders){
-            if(transformation_order.getStatus() == Order.Order.Status.NEW){
+            if(transformation_order.getStatus() == Order.Status.NEW && transformation_order.getStatus()== Order.Status.READY){
             GraphPath<Entity, PathEdge> path = null;
             GraphPath<Part, PathEdge> partPath = pathPlanner.getPath(transformation_order.getInitBlockType(),transformation_order.getFinalBlockType());
             timetable.addToTimetable(transformation_order,partPath);
