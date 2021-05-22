@@ -1,0 +1,19 @@
+CREATE TABLE `transforders` (
+	`MainID` INT(11) NOT NULL,
+	`InitType` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`FinalType` VARCHAR(50) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
+	`TotalQuantity` INT(11) NULL DEFAULT NULL,
+	`FinQuantity` INT(11) NULL DEFAULT NULL,
+	`RunQuantity` INT(11) NULL DEFAULT NULL,
+	`InputTime` INT(11) NULL DEFAULT NULL,
+	`RealInputTime` INT(11) NULL DEFAULT NULL,
+	`MaxDelay` INT(11) NULL DEFAULT NULL,
+	`Penalty` INT(11) NULL DEFAULT NULL,
+	`StartTime` INT(11) NULL DEFAULT NULL,
+	`EndTime` INT(11) NULL DEFAULT NULL,
+	PRIMARY KEY (`MainID`) USING BTREE
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+

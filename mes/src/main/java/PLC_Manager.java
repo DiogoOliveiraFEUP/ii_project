@@ -145,6 +145,7 @@ public class PLC_Manager {
             }
         });
 
+        /* Avisa MES que Wi2 concluiu um caminho */
         subscriptionWi2.addChangeListener(new ManagedSubscription.ChangeListener() {
             @Override
             public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
