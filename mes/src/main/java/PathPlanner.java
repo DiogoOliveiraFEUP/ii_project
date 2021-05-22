@@ -56,7 +56,7 @@ public class PathPlanner {
         p.addEdge(P5,P6,new PathEdge(30, "T2"));
         p.addEdge(P3,P4,new PathEdge(15, "T3"));
         p.addEdge(P5,P9,new PathEdge(30, "T3"));
-        p.addEdge(P6,P9,new PathEdge(30, "T3"));
+        p.addEdge(P6,P7,new PathEdge(30, "T3"));
 
         AllDirectedPaths<Part,PathEdge> paths = new AllDirectedPaths<>(p);
         for(Part pFrom:p.vertexSet()){

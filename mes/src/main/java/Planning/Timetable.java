@@ -145,6 +145,7 @@ public class Timetable {
                 Timetable buffer = new Timetable(timetable);
                 int LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
                 int LatestEndingTime=0;
+                LastEndingTime=timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
                 if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
                     LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
@@ -225,11 +226,17 @@ public class Timetable {
         Timetable sideB = new Timetable(timetable);
         if(sideA.getBestEndingTime(sideAMachines,0,transformation_order,orderPath)>sideB.getBestEndingTime(sideBMachines,1,transformation_order,orderPath)){
             timetable=sideB.timetable;
+            //System.out.println(this);
+
             return sideBMachines;
+
         }
         else{
             timetable= sideA.timetable;
+            //System.out.println(this);
+
             return sideAMachines;
+
         }
     }
 

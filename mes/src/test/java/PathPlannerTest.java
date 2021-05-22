@@ -50,11 +50,11 @@ public class PathPlannerTest {
     @Test
     public void schedulerTest(){
 
-        Transformation_Order transformation_order = new Transformation_Order(1,1,"P1","P2",0,0,0);
-        Transformation_Order transformation_order1 = new Transformation_Order(1,1,"P1","P2",0,0,0);
-        Transformation_Order transformation_order2 = new Transformation_Order(1,1,"P1","P2",0,0,0);
-        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P1","P2",0,0,0);
-        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P1","P2",0,0,0);
+        Transformation_Order transformation_order = new Transformation_Order(1,1,"P5","P9",0,0,0);
+        Transformation_Order transformation_order1 = new Transformation_Order(1,1,"P5","P9",0,0,0);
+        Transformation_Order transformation_order2 = new Transformation_Order(1,1,"P5","P9",0,0,0);
+        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order5 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order6 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order7 = new Transformation_Order(1,1,"P1","P5",0,0,0);
@@ -70,7 +70,7 @@ public class PathPlannerTest {
         transformation_order_list.add(transformation_order2);
         transformation_order_list.add(transformation_order3);
         transformation_order_list.add(transformation_order4);
-        transformation_order_list.add(transformation_order5);
+       transformation_order_list.add(transformation_order5);
         transformation_order_list.add(transformation_order6);
         transformation_order_list.add(transformation_order7);
         transformation_order_list.add(transformation_order8);

@@ -53,3 +53,5 @@ plc/*.compileinfo
 erp/UDP_Receiver/gradle/wrapper/gradle-wrapper.jar
 plc/*.precompilecache
 plc/*.xml
+
+gui/
