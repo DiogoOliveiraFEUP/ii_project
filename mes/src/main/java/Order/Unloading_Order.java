@@ -1,5 +1,10 @@
 package Order;
 
+import Factory.Entities.Entity;
+import Factory.Factory;
+import Transform.PathEdge;
+import org.jgrapht.GraphPath;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +12,26 @@ public class Unloading_Order extends Order{
 
     private final String blockType;
     private final String destination;
+    private final boolean priority;
 
-    public Unloading_Order(String blockType, String destination, int mainID) {
+    public Unloading_Order(String blockType, String destination, int mainID, boolean priority) {
 
         /* CHANGE ID !!!!!!!!!!! */
-        super(1,mainID);
+        super(mainID,mainID);
 
         this.blockType = blockType;
         this.destination = destination;
+        this.priority = priority;
+        super.setStatus(Status.READY);
+        System.out.println();
+        GraphPath<Entity, PathEdge> path = (new Factory()).getPath("Wo1","O"+destination.substring(2));
+
+        String pathString ="";
+        for(int i = 0; i<=path.getLength();i++){
+            pathString +=String.format("%s:",path.getVertexList().get(i));
+        }
+
+        super.setPath(pathString);
     }
 
     public String getBlockType() {
@@ -40,5 +57,9 @@ public class Unloading_Order extends Order{
             if(order.getMainID() == id) result.add(order);
         }
         return result;
+    }
+
+    public boolean isPriority() {
+        return priority;
     }
 }

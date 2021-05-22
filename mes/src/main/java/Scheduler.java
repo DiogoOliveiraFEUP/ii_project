@@ -24,7 +24,7 @@ public class Scheduler {
     }
 
 
-    public void schedule(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders){
+    public void schedule(List<Transformation_Order> transfOrders){
         System.out.println("Scheduling");
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
@@ -52,14 +52,6 @@ public class Scheduler {
             pathString+="Wh:";
             transformation_order.setStatus(Order.Order.Status.READY);
             transformation_order.setPath(pathString);
-            }
-        }
-
-
-        for(Unloading_Order order : unldOrders){
-            if(order.getStatus() == Order.Order.Status.NEW){
-                order.setPath("Wo1:L7:?P=6");
-                order.setStatus(Order.Order.Status.READY);
             }
         }
         System.out.println("Scheduled");
