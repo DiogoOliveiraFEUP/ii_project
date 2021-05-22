@@ -30,7 +30,7 @@ public class PathPlannerTest {
         }
         System.out.println(path.getVertexList().get(path.getLength()));
 
-        pathPlanner.getPath("P1","P9");
+        pathPlanner.getPath("P1","P6");
         Factory factory = new Factory();
         List<String> machineList = new ArrayList<>();
         machineList.add("M1");
@@ -60,7 +60,7 @@ public class PathPlannerTest {
         Transformation_Order transformation_order7 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order8 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order9 = new Transformation_Order(1,1,"P1","P5",0,0,0);
-        Transformation_Order transformation_order10 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order10 = new Transformation_Order(1,1,"P2","P5",0,0,0);
 
 
         Scheduler scheduler = new Scheduler();

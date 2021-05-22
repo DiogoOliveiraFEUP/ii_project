@@ -5,16 +5,26 @@ import Factory.Entities.Machine;
 import Order.Transformation_Order;
 import Transform.Part;
 import Transform.PathEdge;
+import org.bouncycastle.tsp.TSPUtil;
 import org.jgrapht.GraphPath;
 
 import javax.tools.Tool;
+import java.sql.SQLOutput;
 import java.sql.Time;
 import java.util.*;
 
 public class Timetable {
     //Map<Entity, Map> timetable = new HashMap<>();
     HashMap<Entity,LinkedList<MachineTimeSlot>> timetable = new HashMap<>();
+    List<String> sideMachines=new ArrayList<>();
 
+    public HashMap<Entity, LinkedList<MachineTimeSlot>> getTimetable() {
+        return timetable;
+    }
+
+    public List<String> getSideMachines() {
+        return sideMachines;
+    }
 
     public Timetable() {
         addEntity(new Machine("M1"));
@@ -97,10 +107,10 @@ public class Timetable {
             return timetable.get(machine).getLast().getEnding_Time();
     }
 
-    public HashMap<Entity,LinkedList<MachineTimeSlot>> iterate(int level,int side, int highest_machine, int LastEndingTime,Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
+    public HashMap<Entity,LinkedList<MachineTimeSlot>> iterate(List<String>sideMachines,int level,int side, int highest_machine, int LastEndingTime,Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
 
         PathEdge pathEdge = orderPath.getEdgeList().get(level);
-        //System.out.println(level);
+        System.out.println(level);
         //System.out.println("Highest machine:"+highest_machine +" -> Tool" + pathEdge.getTool());
 
         List<Timetable> timetables = new ArrayList<>();
@@ -108,21 +118,30 @@ public class Timetable {
             for (int i = highest_machine; i < 4; i++) {
                 //System.out.println(i);
                 Machine machine = new Machine("M" + (4 * side + i+1));
-                int LatestStartingTime = timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+
+                int LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
                 int LatestEndingTime=0;
+                LastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+
                 if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
                     LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
-                    if(LastEndingTime<LatestStartingTime+30){
+                    if(LastEndingTime<=LatestStartingTime+30){
                         LatestEndingTime = LastEndingTime + getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime());
                     }else{
                         LatestEndingTime = LastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
                     }
+                    System.out.println(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30);
+                    System.out.println(i);
+                    System.out.println(LastEndingTime);
+                    System.out.println(LatestStartingTime);
                 }
                 else{
                     LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
                 }
                 Timetable buffer = new Timetable(timetable);
+                buffer.sideMachines.addAll(sideMachines);
+                buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
                 MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
                 timetables.add(buffer);
@@ -137,6 +156,10 @@ public class Timetable {
                 }
             }
             //System.out.println("Winner\n"+ best);
+            sideMachines.clear();
+            sideMachines.addAll( best.sideMachines);
+            //System.out.println(best);
+            //System.out.println(sideMachines);
             this.timetable = best.timetable;
             return timetable;
         }else{
@@ -145,11 +168,11 @@ public class Timetable {
                 Timetable buffer = new Timetable(timetable);
                 int LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
                 int LatestEndingTime=0;
-                LastEndingTime=timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                LastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
                 if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
                     LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
-                    if(LastEndingTime<LatestStartingTime+30){
+                    if(LastEndingTime<=LatestStartingTime+30){
                         LatestEndingTime = LastEndingTime + getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime());
                     }else{
                         LatestEndingTime = LastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
@@ -158,10 +181,12 @@ public class Timetable {
                 else{
                     LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
                 }
+                buffer.sideMachines.addAll(sideMachines);
+                buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
 
                 MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
-                buffer.timetable = buffer.iterate(level + 1, side, i+1==4?i:i+1,LatestEndingTime, transformation_order, orderPath);
+                buffer.timetable = buffer.iterate(buffer.sideMachines,level + 1, side, i+1==4?i:i+1,LatestEndingTime, transformation_order, orderPath);
                 timetables.add(buffer);
                 //System.out.println("Level" + level + "\n" + buffer);
             }
@@ -172,7 +197,11 @@ public class Timetable {
                     }
                 }
                 //System.out.println("Winner\n" + best);
-                this.timetable = best.timetable;
+                sideMachines.clear();
+                sideMachines.addAll( best.sideMachines);
+            //System.out.println(sideMachines);
+
+            this.timetable = best.timetable;
                 return timetable;
 
 
@@ -184,27 +213,18 @@ public class Timetable {
 
 
 
-
     public int getBestEndingTime( List<String> sideMachines,int side, Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
         int lastEndingTime=0;
         int newStartTime = 0;
         boolean isFirst = true;
-        Timetable old_timetable = new Timetable(timetable);
-        timetable = iterate(0,side,0,0,transformation_order,orderPath);
+        timetable = iterate(sideMachines,0,side,0,0,transformation_order,orderPath);
         //System.out.println(this);
-        int j=0;
-        for(int i =1;i<=8;i++){
-            Machine machine = new Machine("M"+i);
-            if(timetable.get(machine).size()>old_timetable.timetable.get(machine).size()){
-                sideMachines.add(machine.toString()+ ":M" + "#" + orderPath.getEdgeList().get(j).getTool().charAt(1) + '|'+orderPath.getEdgeList().get(j).getTime());
-                j++;
-            }
-        }
+
 
         return getEndingTime();
     }
 
-    public List<String> addToTimetable(Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
+    public void addToTimetable(Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
         List<String> sideAMachines = new ArrayList<>();
         List<String> sideBMachines = new ArrayList<>();
 
@@ -214,14 +234,16 @@ public class Timetable {
             timetable=sideB.timetable;
             //System.out.println(this);
 
-            return sideBMachines;
+            sideMachines.clear();
+            sideMachines.addAll(sideBMachines);
 
         }
         else{
             timetable= sideA.timetable;
             //System.out.println(this);
 
-            return sideAMachines;
+            sideMachines.clear();
+            sideMachines.addAll(sideAMachines);
 
         }
     }
