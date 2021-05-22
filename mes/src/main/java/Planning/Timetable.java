@@ -192,28 +192,14 @@ public class Timetable {
         Timetable old_timetable = new Timetable(timetable);
         timetable = iterate(0,side,0,0,transformation_order,orderPath);
         //System.out.println(this);
+        int j=0;
         for(int i =1;i<=8;i++){
             Machine machine = new Machine("M"+i);
             if(timetable.get(machine).size()>old_timetable.timetable.get(machine).size()){
-                sideMachines.add(machine.toString());
+                sideMachines.add(machine.toString()+ ":M" + "#" + orderPath.getEdgeList().get(j).getTool().charAt(1) + '|'+orderPath.getEdgeList().get(j).getTime());
+                j++;
             }
         }
-
-            /*
-            Machine machine = getMachineWithTool(pathEdge.getTool(),side);
-            sideMachines.add(machine.toString()+":M"+"#"+pathEdge.getTool().charAt(1)+'|'+pathEdge.getTime());
-            MachineTimeSlot machineTimeSlot = null;
-            if(isFirst){
-                machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),getLastEndingTime(machine),getLastEndingTime(machine)+ pathEdge.getTime());
-                isFirst=false;
-                lastEndingTime = getLastEndingTime(machine)+ pathEdge.getTime();
-            }else{
-                newStartTime=getLastEndingTime(machine);
-                newStartTime = Math.max(newStartTime, lastEndingTime);
-                lastEndingTime = newStartTime+ pathEdge.getTime();
-                machineTimeSlot = new MachineTimeSlot(transformation_order,pathEdge.getTool(),newStartTime,newStartTime+ pathEdge.getTime());
-            }
-            timetable.get(machine).addLast(machineTimeSlot);*/
 
         return getEndingTime();
     }
