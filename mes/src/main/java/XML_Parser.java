@@ -64,7 +64,7 @@ public class XML_Parser {
                                     transfOrders.add(new Transformation_Order(number,i+1, from,to, time,maxDelay,penalty));
                                 }
 
-                                scheduler.schedule(transfOrders,unldOrders);
+                                scheduler.schedule(transfOrders);
                                 PLC_Manager.getInstance().evalWo1();
                                 PLC_Manager.getInstance().evalWo2();
                                 Database_Connection.updateDB(transfOrders);
@@ -78,9 +78,12 @@ public class XML_Parser {
 
                                 /* Do Something - Order Unload */
                                 for(int i = 0; i < quantity; i++){
-                                    unldOrders.add(new Unloading_Order(type,dest,number));
+                                    if(i == 0)
+                                        unldOrders.add(new Unloading_Order(type,dest,number,true));
+                                    else
+                                        unldOrders.add(new Unloading_Order(type,dest,number,false));
                                 }
-                                scheduler.schedule(transfOrders,unldOrders);
+                                scheduler.schedule(transfOrders);
                                 PLC_Manager.getInstance().evalWo1();
                                 PLC_Manager.getInstance().evalWo2();
                             }
