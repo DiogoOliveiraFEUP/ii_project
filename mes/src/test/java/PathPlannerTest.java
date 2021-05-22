@@ -53,8 +53,8 @@ public class PathPlannerTest {
         Transformation_Order transformation_order = new Transformation_Order(1,1,"P5","P9",0,0,0);
         Transformation_Order transformation_order1 = new Transformation_Order(1,1,"P5","P9",0,0,0);
         Transformation_Order transformation_order2 = new Transformation_Order(1,1,"P5","P9",0,0,0);
-        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P1","P5",0,0,0);
-        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P1","P5",0,0,0);
+        Transformation_Order transformation_order3 = new Transformation_Order(1,1,"P5","P9",0,0,0);
+        Transformation_Order transformation_order4 = new Transformation_Order(1,1,"P5","P9",0,0,0);
         Transformation_Order transformation_order5 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order6 = new Transformation_Order(1,1,"P1","P5",0,0,0);
         Transformation_Order transformation_order7 = new Transformation_Order(1,1,"P1","P5",0,0,0);
@@ -79,7 +79,7 @@ public class PathPlannerTest {
 
 
 
-        scheduler.schedule(transformation_order_list, new ArrayList<Unloading_Order>());
+        scheduler.schedule(transformation_order_list);
         for(Transformation_Order transformation_order_ : transformation_order_list){
             System.out.println(transformation_order_.getPath());
         }
