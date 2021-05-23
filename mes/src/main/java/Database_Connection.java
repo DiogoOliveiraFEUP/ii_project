@@ -88,6 +88,42 @@ public class Database_Connection {
         return result;
     }
 
+
+    public static void updateTOrders(List<Transformation_Order> transfOrders){
+
+        StringBuilder sb = new StringBuilder();
+
+        for(Transformation_Order order : transfOrders){
+
+            Order.Status status = order.getStatus();
+            int status_int = 0;
+            if(status == Order.Status.NEW)
+                status_int = 1;
+            else if(status == Order.Status.READY)
+                status_int = 2;
+            else if(status == Order.Status.RUNNING)
+                status_int = 3;
+            else if(status == Order.Status.COMPLETED)
+                status_int = 4;
+
+            sb.append("REPLACE INTO transforders2 VALUES ("
+                    + order.getMainID() + ","
+                    + order.getID() + ","
+                    + order.getSubID() + ","
+                    + status_int + ","
+                    + "'" + order.getInitBlockType() + "',"
+                    + "'" + order.getFinalBlockType() + "',"
+                    + order.getInputTime() + ","
+                    + order.getRealInputTime() + ","
+                    + order.getMaxDelay() + ","
+                    + order.getPenalty() + ","
+                    + order.getStartTime() + ","
+                    + order.getEndTime() + ");\n");
+        }
+        String res = (new Database_Connection()).query(sb.toString());
+        //System.out.println(res);
+    }
+
     public static void updateDB(List<Transformation_Order> transfOrders){
 
         StringBuilder sb = new StringBuilder();
