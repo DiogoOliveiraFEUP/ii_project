@@ -108,6 +108,7 @@ public class PLC_Manager {
                             System.out.println(orderID);
                             conn.setValue(wi1DoneNode,true);
 
+                            //WRONGGGGGGGGGG!!!!!!!!!!!!!!!!!! does not continues with transf orders
                             if(!orderID.equals("P1") && !orderID.equals("P2")) break;
 
                             String[] str = orderID.split("_");
@@ -119,7 +120,7 @@ public class PLC_Manager {
                                 Transformation_Order order = Transformation_Order.getOrderByMainID_ID_SubID(transfOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
                                 order.setEndTime(Instant.now().getEpochSecond());
-                                Database_Connection.updateDB(transfOrders);
+                                Database_Connection.updateTOrders(transfOrders);
                             }
                         }
                     }
@@ -169,7 +170,7 @@ public class PLC_Manager {
                                 Transformation_Order order = Transformation_Order.getOrderByMainID_ID_SubID(transfOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
                                 order.setEndTime(Instant.now().getEpochSecond());
-                                Database_Connection.updateDB(transfOrders);
+                                Database_Connection.updateTOrders(transfOrders);
                             }
                         }
                     }
@@ -203,7 +204,7 @@ public class PLC_Manager {
                     System.out.println(path);
 
                     conn.setValue(wo1PieceNode, path);
-                    //updateDB
+                    //updateTOrders();
                 }
             }
 
@@ -228,7 +229,7 @@ public class PLC_Manager {
                         System.out.println(path);
 
                         conn.setValue(wo1PieceNode, path);
-                        Database_Connection.updateDB(transfOrders);
+                        Database_Connection.updateTOrders(transfOrders);
                     }
                 }
 
@@ -250,7 +251,7 @@ public class PLC_Manager {
                             System.out.println(path);
 
                             conn.setValue(wo1PieceNode, path);
-                            //updateDB
+                            //updateTOrders();
                         }
                     }
                 }
@@ -282,7 +283,7 @@ public class PLC_Manager {
                     System.out.println(path);
 
                     conn.setValue(wo2PieceNode, path);
-                    Database_Connection.updateDB(transfOrders);
+                    Database_Connection.updateTOrders(transfOrders);
                 }
             }
 

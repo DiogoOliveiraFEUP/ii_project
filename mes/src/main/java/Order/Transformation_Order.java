@@ -16,9 +16,9 @@ public class Transformation_Order extends Order{
     private long endTime;
     private int realPenalty;
 
-    public Transformation_Order(int mainID, int subID, String initBlockType, String finalBlockType, long inputTime, int maxDelay, int penalty) {
+    public Transformation_Order(int mainID, int ID, int subID, String initBlockType, String finalBlockType, long inputTime, int maxDelay, int penalty) {
 
-        super(mainID,subID);
+        super(mainID,ID,subID);
 
         this.finalBlockType = finalBlockType;
         this.initBlockType = initBlockType;
@@ -133,5 +133,11 @@ public class Transformation_Order extends Order{
             if(order.getID() == id && order.getMainID() == mainid && order.getStatus() == status) result.add(order);
         }
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return "Transform _ MainID:" + this.getMainID() + " ID:" + this.getID() + " SubID:" + this.getSubID()
+                + " From:" + this.initBlockType + " To:" + this.finalBlockType + " Time:" + this.inputTime + " MaxDelay:" + this.maxDelay + " Penalty:" + this.penalty;
     }
 }

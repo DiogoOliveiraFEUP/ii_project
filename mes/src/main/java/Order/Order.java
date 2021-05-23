@@ -11,10 +11,10 @@ public class Order {
     public enum Status {NEW,READY,RUNNING,COMPLETED};
     private Status status;
 
-    public Order(int mainID, int ID){
+    public Order(int mainID, int ID, int subID){
         this.mainID = mainID;
         this.ID = ID;
-        this.subID = 0;
+        this.subID = subID;
         this.status = Status.NEW;
     }
 

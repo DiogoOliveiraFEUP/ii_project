@@ -28,8 +28,8 @@ public class XML_Parser {
 
             Element root = doc.getDocumentElement();
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + root.getNodeName());
-            System.out.println("----------------------------");
+            //System.out.println("Root element :" + root.getNodeName());
+            //System.out.println("----------------------------");
 
             if(root.getNodeName().equals("ORDERS")){
 
@@ -39,13 +39,13 @@ public class XML_Parser {
                 if(nList.getLength()>0){
                     for (int temp = 0; temp < nList.getLength(); temp++) {
                         Node nNode = nList.item(temp);
-                        System.out.println("Current Element : " + nNode.getNodeName());
+                        //System.out.println("Current Element : " + nNode.getNodeName());
 
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                             Element e1 = (Element) nNode;
                             int number = Integer.parseInt(e1.getAttribute("Number"));
-                            System.out.println("Order no: " + number);
+                            //System.out.println("Order no: " + number);
 
                             Element e2;
                             if(e1.getElementsByTagName("Transform").getLength()>0){
@@ -56,18 +56,16 @@ public class XML_Parser {
                                 int time = Integer.parseInt(e2.getAttribute("Time"));
                                 int maxDelay = Integer.parseInt(e2.getAttribute("MaxDelay"));
                                 int penalty = Integer.parseInt(e2.getAttribute("Penalty"));
-                                System.out.println("Transform _ From:" + from + " To:" + to + " Quantity:" + quantity
-                                        + " Time:" + time + " MaxDelay:" + maxDelay + " Penalty:" + penalty);
 
                                 /* Do Something - Order Transform */
-                                for(int i = 0; i < quantity; i++){
-                                    transfOrders.add(new Transformation_Order(number,i+1, from,to, time,maxDelay,penalty));
+                                for(int i = 1; i <= quantity; i++){
+                                    addOrder(transfOrders,number,i,from,to,time,maxDelay,penalty);
                                 }
 
                                 scheduler.schedule(transfOrders);
                                 PLC_Manager.getInstance().evalWo1();
                                 PLC_Manager.getInstance().evalWo2();
-                                Database_Connection.updateDB(transfOrders);
+                                Database_Connection.updateTOrders(transfOrders);
                             }
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
                                 e2 = (Element) e1.getElementsByTagName("Unload").item(0);
@@ -122,6 +120,48 @@ public class XML_Parser {
             e.printStackTrace();
         }
 
+    }
+
+    private void addOrder(List<Transformation_Order> transforders, int mainID, int ID, String from, String to, int time, int maxDelay, int penalty){
+
+        if(from.equals("P1")){
+            if(to.equals("P2") || to.equals("P3") || to.equals("P4") || to.equals("P5")){
+                transforders.add(new Transformation_Order(mainID,ID,1,from,to,time,maxDelay,penalty));
+            }
+            else if(to.equals("P6") || to.equals("P7") || to.equals("P8") || to.equals("P9")) {
+                transforders.add(new Transformation_Order(mainID, ID, 1, from, "P5", time, maxDelay, penalty));
+                transforders.add(new Transformation_Order(mainID, ID, 2, "P5", to, time, maxDelay, penalty));
+            }
+        }
+        if(from.equals("P2")){
+            if(to.equals("P3") || to.equals("P4") || to.equals("P5") || to.equals("P6") || to.equals("P9")){
+                transforders.add(new Transformation_Order(mainID,ID,1,from,to,time,maxDelay,penalty));
+            }
+            else if(to.equals("P7") || to.equals("P8")) {
+                transforders.add(new Transformation_Order(mainID, ID, 1, from, "P6", time, maxDelay, penalty));
+                transforders.add(new Transformation_Order(mainID, ID, 2, "P6", to, time, maxDelay, penalty));
+            }
+        }
+        if(from.equals("P3")){
+            if(to.equals("P4") || to.equals("P5") || to.equals("P6") || to.equals("P7") || to.equals("P8") || to.equals("P9")){
+                transforders.add(new Transformation_Order(mainID,ID,1,from,to,time,maxDelay,penalty));
+            }
+        }
+        if(from.equals("P4")){
+            if(to.equals("P5") || to.equals("P6") || to.equals("P7") || to.equals("P8") || to.equals("P9")){
+                transforders.add(new Transformation_Order(mainID,ID,1,from,to,time,maxDelay,penalty));
+            }
+        }
+        if(from.equals("P5")){
+            if(to.equals("P6") || to.equals("P7") || to.equals("P8") || to.equals("P9")){
+                transforders.add(new Transformation_Order(mainID,ID,1,from,to,time,maxDelay,penalty));
+            }
+        }
+        if(from.equals("P6")){
+            if(to.equals("P7") || to.equals("P8")){
+                transforders.add(new Transformation_Order(mainID,ID,1,from,to,time,maxDelay,penalty));
+            }
+        }
     }
 
     private String getOrdersXML() {

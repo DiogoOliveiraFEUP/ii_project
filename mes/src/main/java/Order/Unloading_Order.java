@@ -17,7 +17,7 @@ public class Unloading_Order extends Order{
     public Unloading_Order(String blockType, String destination, int mainID, boolean priority) {
 
         /* CHANGE ID !!!!!!!!!!! */
-        super(mainID,mainID);
+        super(mainID,mainID,0);
 
         this.blockType = blockType;
         this.destination = destination;

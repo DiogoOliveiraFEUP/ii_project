@@ -29,7 +29,7 @@ public class Scheduler {
 
 
     public void schedule(List<Transformation_Order> transfOrders){
-        System.out.println("Scheduling");
+//        System.out.println("Scheduling");
 
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
@@ -39,7 +39,7 @@ public class Scheduler {
             GraphPath<Part, PathEdge> partPath = pathPlanner.getPath(transformation_order.getInitBlockType(),transformation_order.getFinalBlockType());
             timetable.addToTimetable(transformation_order,partPath);
             machineList = timetable.getSideMachines();
-                System.out.println(machineList);
+  //              System.out.println(machineList);
             char side_indicator = machineList.get(0).charAt(1);
             if(side_indicator=='1'||side_indicator=='2'||side_indicator=='3'||side_indicator=='4'){
                 path = factory.getPath("Wo1","Wi1",machineList);
@@ -63,7 +63,7 @@ public class Scheduler {
             transformation_order.setPath(pathString);
             }
         }
-        System.out.println("Scheduled");
+        //System.out.println("Scheduled");
     }
 
 
