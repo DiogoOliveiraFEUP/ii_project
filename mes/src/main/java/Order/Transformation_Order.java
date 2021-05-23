@@ -29,6 +29,19 @@ public class Transformation_Order extends Order{
         this.realInputTime = Instant.now().getEpochSecond();
     }
 
+    public Transformation_Order(int mainID, int ID, int subID, String initBlockType, String finalBlockType, long inputTime, int maxDelay, int penalty, int realInputTime) {
+
+        super(mainID,ID,subID);
+
+        this.finalBlockType = finalBlockType;
+        this.initBlockType = initBlockType;
+        this.inputTime = inputTime;
+        this.maxDelay = maxDelay;
+        this.penalty = penalty;
+
+        this.realInputTime = realInputTime;
+    }
+
     public String getInitBlockType() {
         return initBlockType;
     }

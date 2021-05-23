@@ -108,8 +108,7 @@ public class PLC_Manager {
                             System.out.println(orderID);
                             conn.setValue(wi1DoneNode,true);
 
-                            //WRONGGGGGGGGGG!!!!!!!!!!!!!!!!!! does not continues with transf orders
-                            if(!orderID.equals("P1") && !orderID.equals("P2")) break;
+                            if(orderID.contains("P") && !orderID.equals("P1") && !orderID.equals("P2")) break;
 
                             String[] str = orderID.split("_");
                             int mainid = Integer.parseInt(str[0]);
@@ -159,8 +158,6 @@ public class PLC_Manager {
                             System.out.println(orderID);
                             conn.setValue(wi2DoneNode,true);
 
-                            if(!orderID.equals("P1") && !orderID.equals("P2")) break;
-
                             String[] str = orderID.split("_");
                             int mainid = Integer.parseInt(str[0]);
                             int id = Integer.parseInt(str[1]);
@@ -204,7 +201,7 @@ public class PLC_Manager {
                     System.out.println(path);
 
                     conn.setValue(wo1PieceNode, path);
-                    //updateTOrders();
+                    Database_Connection.updateUOrders(unldOrders);
                 }
             }
 
@@ -251,7 +248,7 @@ public class PLC_Manager {
                             System.out.println(path);
 
                             conn.setValue(wo1PieceNode, path);
-                            //updateTOrders();
+                            Database_Connection.updateUOrders(unldOrders);
                         }
                     }
                 }

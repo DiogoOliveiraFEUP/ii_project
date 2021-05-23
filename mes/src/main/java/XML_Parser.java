@@ -75,15 +75,14 @@ public class XML_Parser {
                                 System.out.println("Unload _" + " Type:" + type + " Destination:" + dest + " Quantity:" + quantity);
 
                                 /* Do Something - Order Unload */
-                                for(int i = 0; i < quantity; i++){
-                                    if(i == 0)
-                                        unldOrders.add(new Unloading_Order(type,dest,number,true));
+                                for(int i = 1; i <= quantity; i++){
+                                    if(i == 1)
+                                        unldOrders.add(new Unloading_Order(type,dest,number,i,true));
                                     else
-                                        unldOrders.add(new Unloading_Order(type,dest,number,false));
+                                        unldOrders.add(new Unloading_Order(type,dest,number,i,false));
                                 }
-                                scheduler.schedule(transfOrders);
                                 PLC_Manager.getInstance().evalWo1();
-                                PLC_Manager.getInstance().evalWo2();
+                                Database_Connection.updateUOrders(unldOrders);
                             }
                         }
                     }

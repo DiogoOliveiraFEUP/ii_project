@@ -26,13 +26,16 @@ public class Application {
 
         int timeM1, timeM2, timeM3, timeM4, timeM5, timeM6, timeM7, timeM8;
 
-
         //SYNCHRONIZE XML_REQUESTS!!!!!
         List<XML_Request> xml_requests = new ArrayList<>();
 
         //SYNCHRONIZE ORDERS!!!!!
         List<Transformation_Order> transfOrders = new ArrayList<>();
         List<Unloading_Order> unldOrders = new ArrayList<>();
+
+        //GET ORDERS FROM DB
+        Database_Connection.getTOrders(transfOrders);
+        Database_Connection.getUOrders(unldOrders);
 
         UDP_Listener udp_listener = new UDP_Listener(xml_requests);
         udp_listener.start();
@@ -41,5 +44,9 @@ public class Application {
         xml_processor.start();
 
         PLC_Manager PLC = new PLC_Manager(transfOrders, unldOrders);
+
+        (new Scheduler()).schedule(transfOrders);
+        PLC.evalWo1();
+        PLC.evalWo2();
     }
 }

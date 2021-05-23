@@ -14,10 +14,10 @@ public class Unloading_Order extends Order{
     private final String destination;
     private final boolean priority;
 
-    public Unloading_Order(String blockType, String destination, int mainID, boolean priority) {
+    public Unloading_Order(String blockType, String destination, int mainID, int ID, boolean priority) {
 
         /* CHANGE ID !!!!!!!!!!! */
-        super(mainID,mainID,0);
+        super(mainID,ID,0);
 
         this.blockType = blockType;
         this.destination = destination;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import Order.Order;
 import Order.Transformation_Order;
+import Order.Unloading_Order;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.OutputKeys;
@@ -37,6 +38,25 @@ public class Database_Connection {
         }
 
         return result;
+    }
+
+    public ResultSet query2(String query){
+
+        ResultSet rs = null;
+
+        try {
+
+            Connection conn = DriverManager.getConnection(URL,user,password);
+            Statement stmt = conn.createStatement();
+
+            stmt.executeQuery("USE factory");
+            rs = stmt.executeQuery(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return rs;
     }
 
     public String ResultSet2String(ResultSet rs){
@@ -88,6 +108,73 @@ public class Database_Connection {
         return result;
     }
 
+    public static void getTOrders(List<Transformation_Order> transforders){
+
+        String query = "SELECT * FROM transforders2;";
+
+        ResultSet rset = (new Database_Connection()).query2(query);
+
+        int rowCount = 0;
+        try {
+            while (rset.next()) {   // Repeatedly process each row
+
+                if (rset.getInt("Status") != 4) {
+                    int mainID = rset.getInt("MainID");
+                    int ID = rset.getInt("ID");
+                    int subID = rset.getInt("SubID");
+                    int status = rset.getInt("Status");
+                    String from = rset.getString("InitType");
+                    String to = rset.getString("FinalType");
+                    int inputTime = rset.getInt("InputTime");
+                    int realInputTime = rset.getInt("RealInputTime");
+                    int maxDelay = rset.getInt("MaxDelay");
+                    int penalty = rset.getInt("Penalty");
+                    int startTime = rset.getInt("StartTime");
+                    int endTime = rset.getInt("EndTime");
+
+                    Transformation_Order order = new Transformation_Order(mainID, ID, subID, from, to, inputTime, maxDelay, penalty, realInputTime);
+                    order.setStartTime(startTime);
+                    transforders.add(order);
+                }
+                rowCount++;
+            }
+            System.out.println("Total Transformation Orders from DB = " + rowCount);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void getUOrders(List<Unloading_Order> unldorders){
+
+        String query = "SELECT * FROM unldorders;";
+
+        ResultSet rset = (new Database_Connection()).query2(query);
+
+        int rowCount = 0;
+        try {
+            while (rset.next()) {   // Repeatedly process each row
+
+                if (rset.getInt("Status") != 4) {
+                    int mainID = rset.getInt("MainID");
+                    int ID = rset.getInt("ID");
+                    String blockType = rset.getString("BlockType");
+                    String dest = rset.getString("Destination");
+                    boolean priority = rset.getBoolean("Priority");
+
+                    Unloading_Order order = new Unloading_Order(blockType,dest,mainID,ID,priority);
+                    unldorders.add(order);
+                }
+                rowCount++;
+            }
+            System.out.println("Total Unloading Orders from DB = " + rowCount);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 
     public static void updateTOrders(List<Transformation_Order> transfOrders){
 
@@ -123,6 +210,39 @@ public class Database_Connection {
         String res = (new Database_Connection()).query(sb.toString());
         //System.out.println(res);
     }
+
+    public static void updateUOrders(List<Unloading_Order> unldOrders){
+
+        StringBuilder sb = new StringBuilder();
+
+        for(Unloading_Order order : unldOrders){
+
+            Order.Status status = order.getStatus();
+            int status_int = 0;
+            if(status == Order.Status.NEW)
+                status_int = 1;
+            else if(status == Order.Status.READY)
+                status_int = 2;
+            else if(status == Order.Status.RUNNING)
+                status_int = 3;
+            else if(status == Order.Status.COMPLETED)
+                status_int = 4;
+
+            sb.append("REPLACE INTO unldorders VALUES ("
+                    + order.getMainID() + ","
+                    + order.getID() + ","
+                    + status_int + ","
+                    + "'" + order.getBlockType() + "',"
+                    + "'" + order.getDestination() + "',"
+                    + order.isPriority() + ");\n");
+        }
+        String res = (new Database_Connection()).query(sb.toString());
+        //System.out.println(res);
+    }
+
+
+
+
 
     public static void updateDB(List<Transformation_Order> transfOrders){
 
