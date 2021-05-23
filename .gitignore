@@ -20,6 +20,14 @@ erp/gui/out/
 erp/gui/build/
 erp/gui/*.iml
 
+
+#GUI
+gui/.idea/
+gui/.gradle/
+erp/gui/out/
+gui/build/
+gui/*.iml
+
 #ERP UDP Receiver GUI
 erp/UDP_Receiver/.idea/
 erp/UDP_Receiver/.gradle/
@@ -54,5 +62,5 @@ erp/UDP_Receiver/gradle/wrapper/gradle-wrapper.jar
 plc/*.precompilecache
 plc/*.xml
 
-gui/
+
 *.~u
