@@ -13,7 +13,7 @@ public class UDP_Listener {
 
     public UDP_Listener(){
         try {
-            ds = new DatagramSocket(1234);
+            ds = new DatagramSocket(4321);
         } catch (SocketException e) {
             e.printStackTrace();
         }

@@ -48,5 +48,6 @@ public class Application {
         (new Scheduler()).schedule(transfOrders);
         PLC.evalWo1();
         PLC.evalWo2();
+        PLC.updateStocks();
     }
 }

@@ -110,7 +110,7 @@ public class Database_Connection {
 
     public static void getTOrders(List<Transformation_Order> transforders){
 
-        String query = "SELECT * FROM transforders2;";
+        String query = "SELECT * FROM transforders;";
 
         ResultSet rset = (new Database_Connection()).query2(query);
 
@@ -135,8 +135,8 @@ public class Database_Connection {
                     Transformation_Order order = new Transformation_Order(mainID, ID, subID, from, to, inputTime, maxDelay, penalty, realInputTime);
                     order.setStartTime(startTime);
                     transforders.add(order);
+                    rowCount++;
                 }
-                rowCount++;
             }
             System.out.println("Total Transformation Orders from DB = " + rowCount);
         }
@@ -193,7 +193,7 @@ public class Database_Connection {
             else if(status == Order.Status.COMPLETED)
                 status_int = 4;
 
-            sb.append("REPLACE INTO transforders2 VALUES ("
+            sb.append("REPLACE INTO transforders VALUES ("
                     + order.getMainID() + ","
                     + order.getID() + ","
                     + order.getSubID() + ","
@@ -240,9 +240,22 @@ public class Database_Connection {
         //System.out.println(res);
     }
 
+    public static void updateStocks(int P1, int P2, int P3, int P4, int P5, int P6, int P7, int P8, int P9){
 
+        StringBuilder sb = new StringBuilder();
 
+        sb.append("REPLACE INTO stocks VALUES ('P1'," + P1 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P2'," + P2 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P3'," + P3 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P4'," + P4 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P5'," + P5 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P6'," + P6 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P7'," + P7 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P8'," + P8 + ");\n");
+        sb.append("REPLACE INTO stocks VALUES ('P9'," + P9 + ");\n");
 
+        String res = (new Database_Connection()).query(sb.toString());
+    }
 
     public static void updateDB(List<Transformation_Order> transfOrders){
 

@@ -97,7 +97,7 @@ public class XML_Parser {
 
                         /* Do Something - Request_Stores */
                         udp.send(getStoresXML(),request.getAddress(),request.getPort());
-                        // System.out.println("Sent " + getStoresXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
+                        System.out.println("Sent " + getStoresXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
 
                     }
                 }
@@ -111,7 +111,7 @@ public class XML_Parser {
 
                         /* Do Something - Request_Orders */
                         udp.send(getOrdersXML(),request.getAddress(),request.getPort());
-                        //System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
+                        System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
                     }
                 }
             }

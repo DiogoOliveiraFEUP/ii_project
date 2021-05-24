@@ -23,7 +23,6 @@ public class Unloading_Order extends Order{
         this.destination = destination;
         this.priority = priority;
         super.setStatus(Status.READY);
-        System.out.println();
         GraphPath<Entity, PathEdge> path = (new Factory()).getPath("Wo1","O"+destination.substring(2));
 
         String pathString ="";
@@ -61,5 +60,13 @@ public class Unloading_Order extends Order{
 
     public boolean isPriority() {
         return priority;
+    }
+
+    public static Unloading_Order getOrderByMainID_ID_SubID(List<Unloading_Order> orders, int mainid, int id, int subid){
+        for(Unloading_Order order : orders){
+            if(order.getSubID() == subid && order.getID() == id && order.getMainID() == mainid)
+                return order;
+        }
+        return null;
     }
 }
