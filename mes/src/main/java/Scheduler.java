@@ -59,6 +59,8 @@ public class Scheduler {
                 pathString = pathString.replace(s.substring(0,2),s);
             }
             pathString+="Wh:";
+            transformation_order.setStartTime(timetable.getOrderStartingTime());
+            transformation_order.setEndTime(timetable.getOrderEndingTime());
             transformation_order.setStatus(Order.Status.READY);
             transformation_order.setPath(pathString);
             }
