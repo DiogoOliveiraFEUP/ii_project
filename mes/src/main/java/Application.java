@@ -1,5 +1,6 @@
 import Order.Transformation_Order;
 import Order.Unloading_Order;
+import GUI.GUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,9 @@ public class Application {
 
         int timeM1, timeM2, timeM3, timeM4, timeM5, timeM6, timeM7, timeM8;
 
+        //GUI
+        GUI gui = new GUI();
+
         //SYNCHRONIZE XML_REQUESTS!!!!!
         List<XML_Request> xml_requests = new ArrayList<>();
 
@@ -43,11 +47,12 @@ public class Application {
         XML_Processor xml_processor = new XML_Processor(xml_requests, transfOrders, unldOrders);
         xml_processor.start();
 
-        PLC_Manager PLC = new PLC_Manager(transfOrders, unldOrders);
+        PLC_Manager PLC = new PLC_Manager(transfOrders, unldOrders, gui);
 
         (new Scheduler()).schedule(transfOrders);
         PLC.evalWo1();
         PLC.evalWo2();
         PLC.updateStocks();
+
     }
 }

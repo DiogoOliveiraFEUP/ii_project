@@ -257,6 +257,49 @@ public class Database_Connection {
         String res = (new Database_Connection()).query(sb.toString());
     }
 
+    public static void updateUnld(int roller, int pieceType, int quant){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("UPDATE unloading SET Quant = Quant + ");
+        sb.append(quant);
+        sb.append(" WHERE Roller = ");
+        sb.append(roller);
+        sb.append("AND PieceType = ");
+        sb.append(pieceType);
+        sb.append(";\n");
+
+        String res = (new Database_Connection()).query(sb.toString());
+    }
+
+    public static void updateMacQuant(int machine, int pieceType, int quant){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("UPDATE machine_quants SET Quant = Quant + ");
+        sb.append(quant);
+        sb.append(" WHERE Machine = ");
+        sb.append(machine);
+        sb.append("AND PieceType = ");
+        sb.append(pieceType);
+        sb.append(";\n");
+
+        String res = (new Database_Connection()).query(sb.toString());
+    }
+
+    public static void updateMacTime(int machine, int time){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("UPDATE machine_times SET Time = Time + ");
+        sb.append(time);
+        sb.append(" WHERE Machine = ");
+        sb.append(machine);
+        sb.append(";\n");
+
+        String res = (new Database_Connection()).query(sb.toString());
+    }
+
     public static void updateDB(List<Transformation_Order> transfOrders){
 
         StringBuilder sb = new StringBuilder();

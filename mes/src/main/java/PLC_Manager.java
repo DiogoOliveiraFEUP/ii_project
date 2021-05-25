@@ -1,3 +1,4 @@
+import GUI.GUI;
 import Order.*;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedDataItem;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedSubscription;
@@ -19,6 +20,8 @@ public class PLC_Manager {
 
     final List<Transformation_Order> transfOrders;
     final List<Unloading_Order> unldOrders;
+
+    private GUI gui;
 
     OPC_UA_Connection conn;
 
@@ -60,12 +63,13 @@ public class PLC_Manager {
     String stockP9 = "|var|CODESYS Control Win V3 x64.Application.WHs.StockP9";
     ManagedSubscription subscriptionStocks;
 
-    public PLC_Manager(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders) {
+    public PLC_Manager(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders, GUI gui) {
 
         singleton = this;
 
         this.transfOrders = transfOrders;
         this.unldOrders = unldOrders;
+        this.gui = gui;
 
         conn = new OPC_UA_Connection();
 
@@ -272,6 +276,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
+                                //Database_Connection.updateUnld(1,order.getBlockType());
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -348,7 +353,6 @@ public class PLC_Manager {
             }
         });
     }
-
 
     public void evalWo1() {
 
