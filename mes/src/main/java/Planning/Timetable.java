@@ -26,6 +26,17 @@ public class Timetable {
         return sideMachines;
     }
 
+    public Integer getOrderStartingTime() {
+        return orderStartingTime;
+    }
+
+    public Integer getOrderEndingTime() {
+        return orderEndingTime;
+    }
+
+    Integer orderEndingTime = 0;
+    Integer orderStartingTime=Integer.MAX_VALUE;
+
     public Timetable() {
         addEntity(new Machine("M1"));
         addEntity(new Machine("M2"));
@@ -38,6 +49,7 @@ public class Timetable {
         for(Entity entity:timetable.keySet()){
             timetable.put(entity,new LinkedList<MachineTimeSlot>());
         }
+
 
     }
 
@@ -131,21 +143,31 @@ public class Timetable {
                     }else{
                         LatestEndingTime = internalLastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
                     }
+                    orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+
                     //System.out.println(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30);
                     //System.out.println(i);
                     //System.out.println(LastEndingTime);
                     //System.out.println(LatestStartingTime);
                 }
                 else{
+                    orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+
                     LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
                 }
+                orderEndingTime = LatestEndingTime;
+
+                //orderStartingTime = Math.min(LatestStartingTime,orderStartingTime);
                 Timetable buffer = new Timetable(timetable);
+                buffer.orderEndingTime = orderEndingTime;
+                buffer.orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
                 buffer.sideMachines.addAll(sideMachines);
                 buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
                 MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
                 timetables.add(buffer);
                 //System.out.println(buffer.toString());
+                //System.out.println("internal" + internalLastEndingTime + "global" + orderStartingTime);
 
 
             }
@@ -161,6 +183,9 @@ public class Timetable {
             sideMachines.addAll( best.sideMachines);
             //System.out.println(best);
             //System.out.println(sideMachines);
+            //System.out.println("Winner Starting Time" + this.orderStartingTime);
+            //orderStartingTime = getOrderStartingTime();
+            orderEndingTime = best.orderEndingTime;
             this.timetable = best.timetable;
             return timetable;
         }else{
@@ -178,13 +203,22 @@ public class Timetable {
                     }else{
                         LatestEndingTime = internalLastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
                     }
+                    orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+
                 }
                 else{
                     LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
+                    orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+
                 }
+                orderEndingTime = LatestEndingTime;
+
+                //buffer.orderStartingTime = Math.min(LastEndingTime,orderStartingTime);
+                //System.out.println(orderStartingTime);
+                //System.out.println(internalLastEndingTime);
                 buffer.sideMachines.addAll(sideMachines);
                 buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
-
+                buffer.orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
                 MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
                 buffer.timetable = buffer.iterate(buffer.sideMachines,level + 1, side, i+1==4?i:i+1,LatestEndingTime, transformation_order, orderPath);
@@ -195,15 +229,17 @@ public class Timetable {
                 for (Timetable buffer : timetables) {
                     if (buffer.getEndingTime() < best.getEndingTime()) {
                         best = buffer;
+
                     }
                 }
                 //System.out.println("Winner\n" + best);
                 sideMachines.clear();
                 sideMachines.addAll( best.sideMachines);
             //System.out.println(best);
-
+            orderEndingTime = best.getOrderEndingTime();
+            orderStartingTime = best.orderStartingTime;
             this.timetable = best.timetable;
-                return timetable;
+            return timetable;
 
 
         }
@@ -219,7 +255,6 @@ public class Timetable {
         int newStartTime = 0;
         boolean isFirst = true;
         timetable = iterate(sideMachines,0,side,0,0,transformation_order,orderPath);
-        //System.out.println(this);
 
 
         return getEndingTime();
@@ -233,6 +268,8 @@ public class Timetable {
         Timetable sideB = new Timetable(timetable);
         if(sideA.getBestEndingTime(sideAMachines,0,transformation_order,orderPath)>sideB.getBestEndingTime(sideBMachines,1,transformation_order,orderPath)){
             timetable=sideB.timetable;
+            orderStartingTime = sideB.getOrderStartingTime();
+            orderEndingTime = sideB.getOrderEndingTime();
             //System.out.println(this);
 
             sideMachines.clear();
@@ -241,12 +278,18 @@ public class Timetable {
         }
         else{
             timetable= sideA.timetable;
+            orderStartingTime = sideA.getOrderStartingTime();
+            orderEndingTime = sideB.getOrderEndingTime();
             //System.out.println(this);
 
             sideMachines.clear();
             sideMachines.addAll(sideAMachines);
 
         }
+        //System.out.println(orderStartingTime +" "+ orderEndingTime);
+        //System.out.println(this);
+
+        //System.out.println(getOrderStartingTime());
     }
 
     @Override
