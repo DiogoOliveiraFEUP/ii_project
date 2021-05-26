@@ -106,8 +106,7 @@ public class XML_Parser {
                 if(nList.getLength()>0){
                     for(int temp = 0; temp < nList.getLength(); temp++){
                         Node nNode = nList.item(temp);
-                        System.out.println("Current Element : " + nNode.getNodeName());
-
+                        //System.out.println("Current Element : " + nNode.getNodeName());
                         /* Do Something - Request_Orders */
                         udp.send(getOrdersXML(),request.getAddress(),request.getPort());
                         System.out.println("Sent " + getOrdersXML() + " to IP " + request.getAddress() + " to Port " + request.getPort());
@@ -194,7 +193,6 @@ public class XML_Parser {
                 status = Order.Status.READY;
 
                 for (Transformation_Order subOrder : subOrders) {
-                    System.out.println(subOrder.getEndTime());
                     if (subOrder.getStatus() == Order.Status.RUNNING) {
                         status = Order.Status.RUNNING;
                     } else if (status != Order.Status.RUNNING && subOrder.getStatus() == Order.Status.COMPLETED) {
@@ -223,7 +221,7 @@ public class XML_Parser {
                 }
             }
 
-            int penaltyIncurred = 0;
+            int penaltyIncurred = (((int) (endTime-orders.get(0).getInputTime()) / 50 + 1) * orders.get(0).getPenalty());
 
             sb.append("<Order Number=\"" + mainID + "\">\n");
             sb.append("<Transform From=\"P" + from + "\" To=\"P" + to + "\" ");
@@ -243,8 +241,7 @@ public class XML_Parser {
         }
 
         sb.append("</Order_Schedule>\n");
-        System.out.println(sb.toString());
-
+        //System.out.println(sb.toString());
         return sb.toString();
     }
 
