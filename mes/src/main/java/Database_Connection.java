@@ -135,11 +135,49 @@ public class Database_Connection {
 
                     Transformation_Order order = new Transformation_Order(mainID, ID, subID, from, to, inputTime, maxDelay, penalty, realInputTime);
                     order.setStartTime(startTime);
+                    order.setEndTime(endTime);
+                    if(status == 3) order.setStatus(Order.Status.RUNNING);
                     transforders.add(order);
                     rowCount++;
                 }
             }
             System.out.println("Total Transformation Orders from DB = " + rowCount);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+    public static void getTOrdersAll(List<Transformation_Order> transforders){
+
+        String query = "SELECT * FROM transforders;";
+
+        ResultSet rset = (new Database_Connection()).query2(query);
+
+        int rowCount = 0;
+        try {
+            while (rset.next()) {   // Repeatedly process each row
+                int mainID = rset.getInt("MainID");
+                int ID = rset.getInt("ID");
+                int subID = rset.getInt("SubID");
+                int status = rset.getInt("Status");
+                String from = rset.getString("InitType");
+                String to = rset.getString("FinalType");
+                int inputTime = rset.getInt("InputTime");
+                int realInputTime = rset.getInt("RealInputTime");
+                int maxDelay = rset.getInt("MaxDelay");
+                int penalty = rset.getInt("Penalty");
+                int startTime = rset.getInt("StartTime");
+                int endTime = rset.getInt("EndTime");
+
+                Transformation_Order order = new Transformation_Order(mainID, ID, subID, from, to, inputTime, maxDelay, penalty, realInputTime);
+                order.setStartTime(startTime);
+                order.setEndTime(endTime);
+                order.setStatus(status == 1 ? Order.Status.NEW : status == 2 ? Order.Status.READY : status == 3 ? Order.Status.RUNNING : Order.Status.COMPLETED);
+                transforders.add(order);
+                rowCount++;
+            }
+            //System.out.println("Total Transformation Orders from DB = " + rowCount);
         }
         catch (Exception e){
             e.printStackTrace();
