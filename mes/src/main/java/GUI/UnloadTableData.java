@@ -19,7 +19,8 @@ public class UnloadTableData {
 
     public void setUnloadPart(int exit,int part,int number){
         unloadPartsList.get(exit-1).getUnloadParts().set(part-1,number);
-        if(jTable!=null)jTable.setModel(this.getTableModel());
+        jTable.getModel().setValueAt(number,exit-1,part);
+        jTable.getModel().setValueAt(unloadPartsList.get(exit-1).getTotalUnloaded(),exit-1,10);
     }
 
     public int getUnloadPart(int exit,int part) {

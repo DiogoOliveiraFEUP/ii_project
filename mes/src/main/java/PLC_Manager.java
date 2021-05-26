@@ -84,6 +84,9 @@ public class PLC_Manager {
             subscriptionStocks = ManagedSubscription.create(conn.getClient());
 
             subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
+            subscriptionWo1.createDataItem(new NodeId(4, O1Full));
+            subscriptionWo1.createDataItem(new NodeId(4, O2Full));
+            subscriptionWo1.createDataItem(new NodeId(4, O3Full));
             subscriptionWo2.createDataItem(new NodeId(4, wo2EmptyNode));
             subscriptionWi1.createDataItem(new NodeId(4, wi1OrderNode));
             subscriptionWi2.createDataItem(new NodeId(4, wi2OrderNode));
@@ -113,6 +116,15 @@ public class PLC_Manager {
                         boolean wo1State = (boolean) dataValues.get(i).getValue().getValue();
                         if(wo1State){
                             evalWo1();
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(O1Full)){
+                        boolean o1state = (boolean) dataValues.get(i).getValue().getValue();
+                        if(!o1state) {
+                            boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+                            if(wo1State){
+                                evalWo1();
+                            }
                         }
                     }
                     i++;
@@ -294,6 +306,7 @@ public class PLC_Manager {
             }
         });
 
+        /* Atualiza Stocks */
         subscriptionStocks.addChangeListener(new ManagedSubscription.ChangeListener() {
             @Override
             public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
@@ -451,5 +464,4 @@ public class PLC_Manager {
         Database_Connection.incUnld(roller,pieceType,quant);
         gui.unloadTableData.setUnloadPart(roller,pieceType,gui.unloadTableData.getUnloadPart(roller,pieceType)+quant);
     }
-
 }

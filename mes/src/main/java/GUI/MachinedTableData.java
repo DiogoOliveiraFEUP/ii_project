@@ -24,13 +24,14 @@ public class MachinedTableData {
 
     public void setMachinedTime(int machine,int time){
         machinedPartsList.get(machine-1).machinedSeconds = time;
-        if(jTable!=null)jTable.setModel(this.getTableModel());
+        jTable.getModel().setValueAt(machinedPartsList.get(machine-1).getMachinedTime(),machine-1,1);
 
     }
 
     public void setMachinedParts(int machine,int part,int number){
         machinedPartsList.get(machine-1).getMachinedParts().set(part-1,number);
-        if(jTable!=null)jTable.setModel(this.getTableModel());
+        jTable.getModel().setValueAt(machinedPartsList.get(machine-1).getTotalMachined(),machine-1,2);
+        jTable.getModel().setValueAt(number,machine-1,part+2);
     }
 
     public int getMachinedParts(int machine,int part) {
