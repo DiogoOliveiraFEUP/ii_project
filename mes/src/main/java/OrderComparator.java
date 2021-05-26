@@ -1,5 +1,6 @@
 import Order.Transformation_Order;
 
+import java.time.Instant;
 import java.util.Comparator;
 
 public class OrderComparator implements Comparator<Transformation_Order> {
@@ -14,15 +15,17 @@ public class OrderComparator implements Comparator<Transformation_Order> {
         int machiningTime1=planner.getMachiningTime(o1.getInitBlockType(), o1.getFinalBlockType());
         int machiningTime2=planner.getMachiningTime(o2.getInitBlockType(), o2.getFinalBlockType());
 
-        if(machiningTime1>machiningTime2){
+
+        long missing1 = o1.getMaxDelay()- Instant.now().getEpochSecond()-o1.getInputTime();
+        long missing2 = o2.getMaxDelay()-Instant.now().getEpochSecond()-o1.getInputTime();
+        if(missing1 < missing2) {
             return 1;
-        }else{
-            if(machiningTime1==machiningTime2){
-                if(o1.getMaxDelay()<o2.getMaxDelay()){
-                    return 1;
-                }
+        }else if(missing1 == missing2) {
+            if(o1.getPenalty()<o2.getPenalty()){
+                return -1;
             }
         }
+
         return -1;
     }
 }

@@ -5,10 +5,10 @@ import Order.Transformation_Order;
 public class MachineTimeSlot {
     Transformation_Order order;
     String tool;
-    int starting_Time;
-    int ending_Time;
+    long starting_Time;
+    long ending_Time;
 
-    public MachineTimeSlot(Transformation_Order order, String tool, int starting_Time, int ending_Time) {
+    public MachineTimeSlot(Transformation_Order order, String tool, long starting_Time, long ending_Time) {
         this.order = order;
         this.tool = tool;
         this.starting_Time = starting_Time;
@@ -31,19 +31,19 @@ public class MachineTimeSlot {
         this.tool = tool;
     }
 
-    public int getStarting_Time() {
+    public long getStarting_Time() {
         return starting_Time;
     }
 
-    public void setStarting_Time(int starting_Time) {
+    public void setStarting_Time(long starting_Time) {
         this.starting_Time = starting_Time;
     }
 
-    public int getEnding_Time() {
+    public long getEnding_Time() {
         return ending_Time;
     }
 
-    public void setEnding_Time(int ending_Time) {
+    public void setEnding_Time(long ending_Time) {
         this.ending_Time = ending_Time;
     }
 }
