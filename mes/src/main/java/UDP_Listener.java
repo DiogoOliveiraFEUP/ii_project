@@ -16,7 +16,7 @@ public class UDP_Listener extends Thread{
     public UDP_Listener(List<XML_Request> xml_requests){
         this.xml_requests = xml_requests;
         try {
-            ds = new DatagramSocket(1234);
+            ds = new DatagramSocket(54321);
         } catch (SocketException e) {
             e.printStackTrace();
         }

@@ -191,8 +191,9 @@ public class PLC_Manager {
                     if(item.getNodeId().getIdentifier().equals(wi2OrderNode)){
                         /* deal with order completed */
                         String orderID = (String) dataValues.get(i).getValue().getValue();
+                        System.out.println(orderID);
                         if(!orderID.equals("null")){
-                            System.out.println(orderID);
+                            //System.out.println(orderID);
                             conn.setValue(wi2DoneNode,true);
 
                             String[] str = orderID.split("_");
