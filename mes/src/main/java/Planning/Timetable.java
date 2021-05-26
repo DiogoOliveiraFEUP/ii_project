@@ -11,13 +11,14 @@ import org.jgrapht.GraphPath;
 import javax.tools.Tool;
 import java.sql.SQLOutput;
 import java.sql.Time;
+import java.time.Instant;
 import java.util.*;
 
 public class Timetable {
     //Map<Entity, Map> timetable = new HashMap<>();
     HashMap<Entity,LinkedList<MachineTimeSlot>> timetable = new HashMap<>();
     List<String> sideMachines=new ArrayList<>();
-
+    Integer accumulated_penalty=0;
     public HashMap<Entity, LinkedList<MachineTimeSlot>> getTimetable() {
         return timetable;
     }
@@ -26,16 +27,16 @@ public class Timetable {
         return sideMachines;
     }
 
-    public Integer getOrderStartingTime() {
+    public long getOrderStartingTime() {
         return orderStartingTime;
     }
 
-    public Integer getOrderEndingTime() {
+    public long getOrderEndingTime() {
         return orderEndingTime;
     }
 
-    Integer orderEndingTime = 0;
-    Integer orderStartingTime=Integer.MAX_VALUE;
+    long orderEndingTime = 0;
+    long orderStartingTime=Long.MAX_VALUE;
 
     public Timetable() {
         addEntity(new Machine("M1"));
@@ -75,8 +76,14 @@ public class Timetable {
         return false;
     }
 
-    public int getEndingTime(){
-        int maxEndingTime = 0;
+    public long getPenalty(Transformation_Order order){
+        long secondsoff =0;
+        secondsoff = orderEndingTime - order.getInputTime();
+        return accumulated_penalty + ((long) (secondsoff/50))*order.getPenalty();
+    }
+
+    public long getEndingTime(){
+        long maxEndingTime = 0;
         for(Entity entity:timetable.keySet()){
             if(!timetable.get(entity).isEmpty())
                 maxEndingTime = Math.max(timetable.get(entity).getLast().getEnding_Time(),maxEndingTime);
@@ -112,14 +119,14 @@ public class Timetable {
 
     }
 
-    public int getLastEndingTime(Machine machine){
+    public long getLastEndingTime(Machine machine){
         if(timetable.get(machine).isEmpty())
             return 0;
         else
             return timetable.get(machine).getLast().getEnding_Time();
     }
 
-    public HashMap<Entity,LinkedList<MachineTimeSlot>> iterate(List<String>sideMachines,int level,int side, int highest_machine, int LastEndingTime,Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
+    public HashMap<Entity,LinkedList<MachineTimeSlot>> iterate(List<String>sideMachines,int level,int side, int highest_machine, long LastEndingTime,Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
 
         PathEdge pathEdge = orderPath.getEdgeList().get(level);
         //System.out.println(level);
@@ -131,9 +138,9 @@ public class Timetable {
                 //System.out.println("i" + i + " " + LastEndingTime);
                 Machine machine = new Machine("M" + (4 * side + i+1));
 
-                int LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
-                int LatestEndingTime=0;
-                int internalLastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                long LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                long LatestEndingTime=0;
+                long internalLastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
 
                 if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
@@ -161,6 +168,7 @@ public class Timetable {
                 Timetable buffer = new Timetable(timetable);
                 buffer.orderEndingTime = orderEndingTime;
                 buffer.orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+                buffer.accumulated_penalty = accumulated_penalty;
                 buffer.sideMachines.addAll(sideMachines);
                 buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
                 MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
@@ -173,9 +181,12 @@ public class Timetable {
             }
             Timetable best = timetables.get(0);
             for (Timetable buffer : timetables) {
-                //System.out.println(buffer);
                 if (buffer.getEndingTime() < best.getEndingTime()) {
                     best = buffer;
+                    accumulated_penalty = buffer.accumulated_penalty;
+                    transformation_order.setRealPenalty(accumulated_penalty);
+
+
                 }
             }
             //System.out.println("Winner\n"+ best);
@@ -192,9 +203,9 @@ public class Timetable {
             for (int i = highest_machine; i < 4; i++) {
                 Machine machine = new Machine("M" + (4 * side + i + 1));
                 Timetable buffer = new Timetable(timetable);
-                int LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
-                int LatestEndingTime=0;
-                int internalLastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                long LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+                long LatestEndingTime=0;
+                long internalLastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
                 if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
 
                     LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
@@ -219,6 +230,7 @@ public class Timetable {
                 buffer.sideMachines.addAll(sideMachines);
                 buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
                 buffer.orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+                buffer.accumulated_penalty = accumulated_penalty;
                 MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
                 buffer.timetable.get(machine).addLast(machineTimeSlot);
                 buffer.timetable = buffer.iterate(buffer.sideMachines,level + 1, side, i+1==4?i:i+1,LatestEndingTime, transformation_order, orderPath);
@@ -229,7 +241,8 @@ public class Timetable {
                 for (Timetable buffer : timetables) {
                     if (buffer.getEndingTime() < best.getEndingTime()) {
                         best = buffer;
-
+                        accumulated_penalty = buffer.accumulated_penalty;
+                        transformation_order.setRealPenalty(accumulated_penalty);
                     }
                 }
                 //System.out.println("Winner\n" + best);
@@ -250,11 +263,11 @@ public class Timetable {
 
 
 
-    public int getBestEndingTime( List<String> sideMachines,int side, Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
+    public long getBestEndingTime( List<String> sideMachines,int side, Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
         int lastEndingTime=0;
         int newStartTime = 0;
         boolean isFirst = true;
-        timetable = iterate(sideMachines,0,side,0,0,transformation_order,orderPath);
+        timetable = iterate(sideMachines,0,side,0, Instant.now().getEpochSecond(),transformation_order,orderPath);
 
 
         return getEndingTime();
@@ -286,6 +299,7 @@ public class Timetable {
             sideMachines.addAll(sideAMachines);
 
         }
+        //System.out.println(transformation_order.getRealPenalty());
         //System.out.println(orderStartingTime +" "+ orderEndingTime);
         //System.out.println(this);
 
