@@ -4,9 +4,10 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class UnloadData {
-    JTable jtable= null;
+
     ArrayList<Integer> unloadParts = new ArrayList<>();
     String outputName="";
+
     public UnloadData(String outputName){
         this.outputName=outputName;
         unloadParts.add(0);
@@ -28,19 +29,9 @@ public class UnloadData {
         return sum;
     }
 
-    public void setJtable(JTable jtable){
-        this.jtable = jtable;
-    }
-
-
     public ArrayList<Integer> getUnloadParts() {
         return unloadParts;
     }
-
-    public void setUnloadParts(ArrayList<Integer> unloadParts) {
-        this.unloadParts = unloadParts;
-    }
-
 
     public void setUnloadPartsNumber(int i,int number) {
         unloadParts.set(i,number);

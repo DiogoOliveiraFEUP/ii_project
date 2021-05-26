@@ -2,6 +2,7 @@ import java.io.StringWriter;
 import java.sql.*;
 import java.util.List;
 
+import GUI.GUI;
 import Order.Order;
 import Order.Transformation_Order;
 import Order.Unloading_Order;
@@ -110,7 +111,7 @@ public class Database_Connection {
 
     public static void getTOrders(List<Transformation_Order> transforders){
 
-        String query = "SELECT * FROM transforders;";
+        String query = "SELECT * FROM transforders WHERE Status != 4;";
 
         ResultSet rset = (new Database_Connection()).query2(query);
 
@@ -148,7 +149,7 @@ public class Database_Connection {
 
     public static void getUOrders(List<Unloading_Order> unldorders){
 
-        String query = "SELECT * FROM unldorders;";
+        String query = "SELECT * FROM unldorders WHERE Status != 4;";
 
         ResultSet rset = (new Database_Connection()).query2(query);
 
@@ -174,6 +175,69 @@ public class Database_Connection {
             e.printStackTrace();
         }
 
+    }
+
+    public static void getUnld(GUI gui){
+
+        String query = "SELECT * FROM unloading;";
+
+        ResultSet rset = (new Database_Connection()).query2(query);
+
+        int rowCount = 0;
+        try {
+            while (rset.next()) {   // Repeatedly process each row
+                gui.unloadTableData.setUnloadPart(rset.getInt("Roller"),
+                        rset.getInt("PieceType"),
+                        rset.getInt("Quant"));
+                rowCount++;
+            }
+            System.out.println("Total Unloading Stats from DB = " + rowCount);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void getMacQuant(GUI gui){
+
+        String query = "SELECT * FROM machine_quants;";
+
+        ResultSet rset = (new Database_Connection()).query2(query);
+
+        int rowCount = 0;
+        try {
+            while (rset.next()) {
+
+                gui.machinedTableData.setMachinedParts(rset.getInt("Machine"),
+                        rset.getInt("PieceType"),
+                        rset.getInt("Quant"));
+                rowCount++;
+            }
+            System.out.println("Total Machine_Quant Stats from DB = " + rowCount);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void getMacTimeQuant(GUI gui){
+
+        String query = "SELECT * FROM machine_times;";
+
+        ResultSet rset = (new Database_Connection()).query2(query);
+
+        int rowCount = 0;
+        try {
+            while (rset.next()) {   // Repeatedly process each row
+                gui.machinedTableData.setMachinedTime(rset.getInt("Machine"),
+                        rset.getInt("Time"));
+                rowCount++;
+            }
+            System.out.println("Total Machine_Time Stats from DB = " + rowCount);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void updateTOrders(List<Transformation_Order> transfOrders){
@@ -257,7 +321,7 @@ public class Database_Connection {
         String res = (new Database_Connection()).query(sb.toString());
     }
 
-    public static void updateUnld(int roller, int pieceType, int quant){
+    public static void incUnld(int roller, int pieceType, int quant){
 
         StringBuilder sb = new StringBuilder();
 
@@ -265,14 +329,16 @@ public class Database_Connection {
         sb.append(quant);
         sb.append(" WHERE Roller = ");
         sb.append(roller);
-        sb.append("AND PieceType = ");
+        sb.append(" AND PieceType = ");
         sb.append(pieceType);
         sb.append(";\n");
+
+        System.out.println(sb.toString());
 
         String res = (new Database_Connection()).query(sb.toString());
     }
 
-    public static void updateMacQuant(int machine, int pieceType, int quant){
+    public static void incMacQuant(int machine, int pieceType, int quant){
 
         StringBuilder sb = new StringBuilder();
 
@@ -280,14 +346,14 @@ public class Database_Connection {
         sb.append(quant);
         sb.append(" WHERE Machine = ");
         sb.append(machine);
-        sb.append("AND PieceType = ");
+        sb.append(" AND PieceType = ");
         sb.append(pieceType);
         sb.append(";\n");
 
         String res = (new Database_Connection()).query(sb.toString());
     }
 
-    public static void updateMacTime(int machine, int time){
+    public static void incMacTime(int machine, int time){
 
         StringBuilder sb = new StringBuilder();
 
@@ -380,8 +446,5 @@ public class Database_Connection {
         String res = (new Database_Connection()).query(sb.toString());
         //System.out.println(res);
     }
-
-
-
 
 }

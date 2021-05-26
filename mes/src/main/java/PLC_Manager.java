@@ -83,76 +83,22 @@ public class PLC_Manager {
             subscriptionO3 = ManagedSubscription.create(conn.getClient());
             subscriptionStocks = ManagedSubscription.create(conn.getClient());
 
-        } catch (UaException e) {
-            e.printStackTrace();
-        }
-
-        ManagedDataItem dataItem;
-        try {
-            dataItem = subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionWo2.createDataItem(new NodeId(4, wo2EmptyNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionWi1.createDataItem(new NodeId(4, wi1OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionWi2.createDataItem(new NodeId(4, wi2OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionO1.createDataItem(new NodeId(4, O1OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionO2.createDataItem(new NodeId(4, O2OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionO3.createDataItem(new NodeId(4, O3OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP1));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP2));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP3));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP4));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP5));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP6));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP7));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP8));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP9));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
+            subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
+            subscriptionWo2.createDataItem(new NodeId(4, wo2EmptyNode));
+            subscriptionWi1.createDataItem(new NodeId(4, wi1OrderNode));
+            subscriptionWi2.createDataItem(new NodeId(4, wi2OrderNode));
+            subscriptionO1.createDataItem(new NodeId(4, O1OrderNode));
+            subscriptionO2.createDataItem(new NodeId(4, O2OrderNode));
+            subscriptionO3.createDataItem(new NodeId(4, O3OrderNode));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP1));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP2));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP3));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP4));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP5));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP6));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP7));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP8));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP9));
         } catch (UaException e) {
             e.printStackTrace();
         }
@@ -276,7 +222,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
-                                //Database_Connection.updateUnld(1,order.getBlockType());
+                                incUnldQuant(1,Integer.parseInt(order.getBlockType().substring(1)),1);
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -307,6 +253,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
+                                incUnldQuant(2,Integer.parseInt(order.getBlockType().substring(1)),1);
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -337,6 +284,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
+                                incUnldQuant(3,Integer.parseInt(order.getBlockType().substring(1)),1);
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -488,4 +436,20 @@ public class PLC_Manager {
 
         Database_Connection.updateStocks(P1,P2,P3,P4,P5,P6,P7,P8,P9);
     }
+
+    public void incMacQuant(int machine, int pieceType, int quant){
+        Database_Connection.incMacQuant(machine,pieceType,quant);
+        gui.machinedTableData.setMachinedParts(machine,pieceType,gui.machinedTableData.getMachinedParts(machine,pieceType)+quant);
+    }
+
+    public void incMacTime(int machine, int time){
+        Database_Connection.incMacTime(machine,time);
+        gui.machinedTableData.setMachinedTime(machine,gui.machinedTableData.getMachinedTime(machine)+time);
+    }
+
+    public void incUnldQuant(int roller, int pieceType, int quant){
+        Database_Connection.incUnld(roller,pieceType,quant);
+        gui.unloadTableData.setUnloadPart(roller,pieceType,gui.unloadTableData.getUnloadPart(roller,pieceType)+quant);
+    }
+
 }

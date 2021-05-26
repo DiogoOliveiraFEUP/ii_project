@@ -4,9 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GUI_MachinedParts {
-    private JPanel machinedPartsPanel;
-    private GUI_Main gui_main;
 
+    private JPanel machinedPartsPanel;
 
     public GUI_MachinedParts(MachinedTableData machinedData) {
         GridBagConstraints constraints = new GridBagConstraints();
@@ -20,26 +19,15 @@ public class GUI_MachinedParts {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
-        JTable jt=new JTable();
-        jt.setBounds(30,40,600,400);
 
-        machinedData.setTable(jt);
-        jt.setModel(machinedData.getTableModel());
+        machinedData.jTable.setBounds(30,40,600,400);
 
-
-
-        JScrollPane sp=new JScrollPane(jt);
+        JScrollPane sp=new JScrollPane(machinedData.jTable);
 
         machinedPartsPanel.add(sp,constraints);
         machinedPartsPanel.setSize(300,400);
         machinedPartsPanel.setVisible(true);
-
-
-
-        //machinedPartsPanel.add(sendReqOrders,constraints);
     }
-
-
 
     public JPanel getPanel() {
         return this.machinedPartsPanel;

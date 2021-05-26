@@ -7,33 +7,23 @@ import java.util.ArrayList;
 
 public class UnloadTableData {
     ArrayList<UnloadData> unloadPartsList = new ArrayList<>();
-    JTable jTable = null;
-
-    public UnloadTableData(ArrayList<UnloadData> unloadPartsList) {
-        this.unloadPartsList = unloadPartsList;
-    }
+    JTable jTable;
 
     public UnloadTableData(){
         unloadPartsList.add(new UnloadData("O1"));
         unloadPartsList.add(new UnloadData("O2"));
         unloadPartsList.add(new UnloadData("O3"));
 
+        jTable = new JTable(getTableModel());
     }
 
-
-
     public void setUnloadPart(int exit,int part,int number){
-        unloadPartsList.get(exit).getUnloadParts().set(part,number);
+        unloadPartsList.get(exit-1).getUnloadParts().set(part-1,number);
         if(jTable!=null)jTable.setModel(this.getTableModel());
     }
 
     public int getUnloadPart(int exit,int part) {
-        return  unloadPartsList.get(exit).getUnloadParts().get(part);
-    }
-
-
-    public void setTable(JTable jTable){
-        this.jTable = jTable;
+        return  unloadPartsList.get(exit-1).getUnloadParts().get(part-1);
     }
 
     public TableModel getTableModel( ){
