@@ -16,9 +16,26 @@ import javax.xml.transform.stream.StreamResult;
 
 public class Database_Connection {
 
+    private static Database_Connection singleton = null;
+
+    public static Database_Connection getInstance(){
+        return singleton;
+    }
+
     String URL = "jdbc:mariadb://localhost/factory?allowMultiQueries=true";
     String user = "root";
     String password = "root";
+
+    Connection conn;
+
+    public Database_Connection(){
+        singleton = this;
+        try {
+            conn = DriverManager.getConnection(URL,user,password);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     public String query(String query){
 
@@ -26,8 +43,7 @@ public class Database_Connection {
 
         try {
 
-            Connection conn = DriverManager.getConnection(URL,user,password);
-            Statement stmt = conn.createStatement();
+            Statement stmt = Database_Connection.getInstance().conn.createStatement();
 
             stmt.executeQuery("USE factory");
             ResultSet rs = stmt.executeQuery(query);
@@ -47,8 +63,7 @@ public class Database_Connection {
 
         try {
 
-            Connection conn = DriverManager.getConnection(URL,user,password);
-            Statement stmt = conn.createStatement();
+            Statement stmt = Database_Connection.getInstance().conn.createStatement();
 
             stmt.executeQuery("USE factory");
             rs = stmt.executeQuery(query);

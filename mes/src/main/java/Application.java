@@ -19,6 +19,7 @@ public class Application {
         List<Unloading_Order> unldOrders = new ArrayList<>();
 
         //GET ORDERS FROM DB
+        Database_Connection db = new Database_Connection();
         Database_Connection.getTOrders(transfOrders);
         Database_Connection.getUOrders(unldOrders);
         Database_Connection.getMacQuant(gui);
