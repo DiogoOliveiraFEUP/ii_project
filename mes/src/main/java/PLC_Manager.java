@@ -63,6 +63,16 @@ public class PLC_Manager {
     String stockP9 = "|var|CODESYS Control Win V3 x64.Application.WHs.StockP9";
     ManagedSubscription subscriptionStocks;
 
+    String M1_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M1_Time";
+    String M2_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M2_Time";
+    String M3_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M3_Time";
+    String M4_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M4_Time";
+    String M5_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M5_Time";
+    String M6_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M6_Time";
+    String M7_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M7_Time";
+    String M8_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M8_Time";
+    ManagedSubscription subscriptionMxTimes;
+
     public PLC_Manager(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders, GUI gui) {
 
         singleton = this;
@@ -82,6 +92,7 @@ public class PLC_Manager {
             subscriptionO2 = ManagedSubscription.create(conn.getClient());
             subscriptionO3 = ManagedSubscription.create(conn.getClient());
             subscriptionStocks = ManagedSubscription.create(conn.getClient());
+            subscriptionMxTimes = ManagedSubscription.create(conn.getClient());
 
             subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
             subscriptionWo1.createDataItem(new NodeId(4, O1Full));
@@ -102,6 +113,15 @@ public class PLC_Manager {
             subscriptionStocks.createDataItem(new NodeId(4, stockP7));
             subscriptionStocks.createDataItem(new NodeId(4, stockP8));
             subscriptionStocks.createDataItem(new NodeId(4, stockP9));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M1_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M2_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M3_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M4_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M5_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M6_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M7_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M8_Time));
+
         } catch (UaException e) {
             e.printStackTrace();
         }
@@ -312,6 +332,83 @@ public class PLC_Manager {
             @Override
             public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
                 updateStocks();
+            }
+        });
+
+        /* Atualiza Machine Time Stats */
+        subscriptionMxTimes.addChangeListener(new ManagedSubscription.ChangeListener() {
+            @Override
+            public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
+                System.out.println("here");
+                int i = 0;
+                for (ManagedDataItem item : dataItems) {
+                    if(item.getNodeId().getIdentifier().equals(M1_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("1:"+value);
+                        if(value>0){
+                            incMacTime(1,value);
+                            conn.setValue(M1_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M2_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("2:"+value);
+                        if(value>0){
+                            incMacTime(2,value);
+                            conn.setValue(M2_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M3_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("3:"+value);
+                        if(value>0){
+                            incMacTime(3,value);
+                            conn.setValue(M3_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M4_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("4:"+value);
+                        if(value>0){
+                            incMacTime(4,value);
+                            conn.setValue(M4_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M5_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("5:"+value);
+                        if(value>0){
+                            incMacTime(5,value);
+                            conn.setValue(M5_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M6_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("6:"+value);
+                        if(value>0){
+                            incMacTime(6,value);
+                            conn.setValue(M6_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M7_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("7:"+value);
+                        if(value>0){
+                            incMacTime(7,value);
+                            conn.setValue(M7_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M8_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        System.out.println("8:"+value);
+                        if(value>0){
+                            incMacTime(8,value);
+                            conn.setValue(M8_Time,(short)0);
+                        }
+                    }
+                    i++;
+                }
+
             }
         });
     }
