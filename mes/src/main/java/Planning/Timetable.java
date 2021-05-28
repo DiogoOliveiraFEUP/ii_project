@@ -279,7 +279,7 @@ public class Timetable {
 
         Timetable sideA = new Timetable(timetable);
         Timetable sideB = new Timetable(timetable);
-        if(sideA.getBestEndingTime(sideAMachines,0,transformation_order,orderPath)>sideB.getBestEndingTime(sideBMachines,1,transformation_order,orderPath)){
+        if(sideA.getBestEndingTime(sideAMachines,0,transformation_order,orderPath)>=sideB.getBestEndingTime(sideBMachines,1,transformation_order,orderPath)){
             timetable=sideB.timetable;
             orderStartingTime = sideB.getOrderStartingTime();
             orderEndingTime = sideB.getOrderEndingTime();
