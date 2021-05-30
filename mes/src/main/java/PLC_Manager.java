@@ -167,6 +167,25 @@ public class PLC_Manager {
                             }
                         }
                     }
+                    if(item.getNodeId().getIdentifier().equals(O2Full)){
+                        boolean o2state = (boolean) dataValues.get(i).getValue().getValue();
+                        if(!o2state) {
+                            boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+                            if(wo1State){
+                                evalWo1();
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(O3Full)){
+                        boolean o3state = (boolean) dataValues.get(i).getValue().getValue();
+                        if(!o3state) {
+                            boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+                            if(wo1State){
+                                evalWo1();
+                            }
+                        }
+                    }
+
                     i++;
                 }
             }
@@ -198,6 +217,9 @@ public class PLC_Manager {
                                 order.setEndTime(Instant.now().getEpochSecond());
                                 Database_Connection.updateTOrders(transfOrders);
                             }
+
+                            evalWo1();
+                            evalWo2();
                         }
                     }
                     i++;
@@ -247,6 +269,9 @@ public class PLC_Manager {
                                 order.setEndTime(Instant.now().getEpochSecond());
                                 Database_Connection.updateTOrders(transfOrders);
                             }
+
+                            evalWo1();
+                            evalWo2();
                         }
                     }
                     i++;
@@ -646,7 +671,10 @@ public class PLC_Manager {
             synchronized (unldOrders) {
                 for (Unloading_Order aux : unldOrders) {
                     if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1") && aux.isPriority()) {
-                        unld = aux;
+                        if(hasStock(Integer.parseInt(aux.getBlockType().substring(1)))) {
+                            unld = aux;
+                            break;
+                        }
                     }
                 }
                 if (unld != null) {
@@ -674,8 +702,10 @@ public class PLC_Manager {
                 synchronized (transfOrders) {
                     for (Transformation_Order aux : transfOrders) {
                         if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
-                            transf = aux;
-                            break;
+                            if(hasStock(Integer.parseInt(aux.getInitBlockType().substring(1)))) {
+                                transf = aux;
+                                break;
+                            }
                         }
                     }
                     if (transf != null) {
@@ -698,24 +728,27 @@ public class PLC_Manager {
                     synchronized (unldOrders) {
                         for (Unloading_Order aux : unldOrders) {
                             if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
-                                unld = aux;
+                                if (hasStock(Integer.parseInt(aux.getBlockType().substring(1)))) {
+                                    unld = aux;
+                                    break;
+                                }
                             }
                         }
-                        if (unld != null) {
-                            if(unld.getPath().contains("O1") && !((boolean) conn.getValue(O1Full)) ||
-                                    unld.getPath().contains("O2") && !((boolean) conn.getValue(O2Full)) ||
-                                        unld.getPath().contains("O3") && !((boolean) conn.getValue(O3Full))) {
+                    }
+                    if (unld != null) {
+                        if(unld.getPath().contains("O1") && !((boolean) conn.getValue(O1Full)) ||
+                                unld.getPath().contains("O2") && !((boolean) conn.getValue(O2Full)) ||
+                                unld.getPath().contains("O3") && !((boolean) conn.getValue(O3Full))) {
 
-                                unld.setStatus(Order.Status.RUNNING);
+                            unld.setStatus(Order.Status.RUNNING);
 
-                                String path = unld.getPath().replace("Wo1:", "") + "?P=" + unld.getBlockType().substring(1)
-                                        + "?ID=" + unld.getMainID() + "_" + unld.getID() + "_" + unld.getSubID();
+                            String path = unld.getPath().replace("Wo1:", "") + "?P=" + unld.getBlockType().substring(1)
+                                    + "?ID=" + unld.getMainID() + "_" + unld.getID() + "_" + unld.getSubID();
 
-                                //System.out.println(path);
+                            //System.out.println(path);
 
-                                conn.setValue(wo1PieceNode, path);
-                                Database_Connection.updateUOrders(unldOrders);
-                            }
+                            conn.setValue(wo1PieceNode, path);
+                            Database_Connection.updateUOrders(unldOrders);
                         }
                     }
                 }
@@ -733,8 +766,10 @@ public class PLC_Manager {
             synchronized (transfOrders) {
                 for (Transformation_Order aux : transfOrders) {
                     if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo2")) {
-                        transf = aux;
-                        break;
+                        if(hasStock(Integer.parseInt(aux.getInitBlockType().substring(1)))) {
+                            transf = aux;
+                            break;
+                        }
                     }
                 }
                 if (transf != null) {
@@ -752,6 +787,46 @@ public class PLC_Manager {
             }
 
         }
+    }
+
+    public boolean hasStock(int piece){
+        if(piece == 1){
+            int P1 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP1)).intValue();
+            if(P1 > 0) return true;
+        }
+        else if(piece == 2){
+            int P2 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP2)).intValue();
+            if(P2 > 0) return true;
+        }
+        else if(piece == 3){
+            int P3 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP3)).intValue();
+            if(P3 > 0) return true;
+        }
+        else if(piece == 4){
+            int P4 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP4)).intValue();
+            if(P4 > 0) return true;
+        }
+        else if(piece == 5){
+            int P5 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP5)).intValue();
+            if(P5 > 0) return true;
+        }
+        else if(piece == 6){
+            int P6 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP6)).intValue();
+            if(P6 > 0) return true;
+        }
+        else if(piece == 7){
+            int P7 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP7)).intValue();
+            if(P7 > 0) return true;
+        }
+        else if(piece == 8){
+            int P8 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP8)).intValue();
+            if(P8 > 0) return true;
+        }
+        else if(piece == 9){
+            int P9 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP9)).intValue();
+            if(P9 > 0) return true;
+        }
+        return false;
     }
 
     public void updateStocks() {
