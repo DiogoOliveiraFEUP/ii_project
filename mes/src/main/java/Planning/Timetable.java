@@ -145,20 +145,20 @@ public class Timetable {
             long LatestEndingTime=0;
             long internalLastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
             if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
-                toolChanges++;
-                LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
+                {toolChanges++;}
+                /*LatestStartingTime = timetable.get(machine).isEmpty()?0:timetable.get(machine).getLast().getEnding_Time();
                 if(LastEndingTime<=LatestStartingTime+30){
                     LatestEndingTime = internalLastEndingTime + getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime());
                 }else{
                     LatestEndingTime = internalLastEndingTime+getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())-30;
                 }
-                orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+                orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);*/
             }
-            else{
+
                 LatestEndingTime=LatestStartingTime+getMachiningEndTime(machine, pathEdge.getTool(), pathEdge.getTime());
                 orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
 
-            }
+
             orderEndingTime = LatestEndingTime;
 
             //buffer.orderStartingTime = Math.min(LastEndingTime,orderStartingTime);
