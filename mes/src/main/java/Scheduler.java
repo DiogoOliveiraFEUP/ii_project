@@ -60,10 +60,10 @@ public class Scheduler {
             }
             pathString +=String.format("%s:",path.getVertexList().get(path.getLength()));
                 //System.out.println(pathString);
-            for (String s:machineList){
+                for(int i = machineList.size()-1;i>=0;i--){
+                    pathString = pathString.replace(machineList.get(i).substring(0,2),machineList.get(i));
 
-                pathString = pathString.replace(s.substring(0,2),s);
-            }
+                }
             pathString+="Wh:";
             transformation_order.setStartTime(timetable.getOrderStartingTime());
             transformation_order.setEndTime(timetable.getOrderEndingTime());
