@@ -51,10 +51,10 @@ public class PathPlannerTest {
     public void schedulerTest(){
 
         Transformation_Order transformation_order = new Transformation_Order(1,1,1,"P1","P5",0,100,1);
-        Transformation_Order transformation_order1 = new Transformation_Order(1,1,1,"P1","P9",0,100,1);
-        Transformation_Order transformation_order2 = new Transformation_Order(1,1,1,"P1","P9",0,100,1);
-        Transformation_Order transformation_order3 = new Transformation_Order(1,1,1,"P1","P9",0,100,1);
-        Transformation_Order transformation_order4 = new Transformation_Order(1,1,1,"P1","P9",0,100,1);
+        Transformation_Order transformation_order1 = new Transformation_Order(1,1,1,"P5","P9",0,100,1);
+        Transformation_Order transformation_order2 = new Transformation_Order(1,1,1,"P1","P5",0,100,1);
+        Transformation_Order transformation_order3 = new Transformation_Order(1,1,1,"P1","P5",0,100,1);
+        Transformation_Order transformation_order4 = new Transformation_Order(1,1,1,"P1","P5",0,100,1);
         Transformation_Order transformation_order5 = new Transformation_Order(1,1,1,"P1","P5",0,100,1);
         Transformation_Order transformation_order6 = new Transformation_Order(1,1,1,"P1","P5",0,100,1);
         Transformation_Order transformation_order7 = new Transformation_Order(1,1,1,"P1","P5",0,100,1);

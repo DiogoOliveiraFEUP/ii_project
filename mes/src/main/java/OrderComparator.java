@@ -19,10 +19,10 @@ public class OrderComparator implements Comparator<Transformation_Order> {
         long missing1 = o1.getMaxDelay()- Instant.now().getEpochSecond()-o1.getInputTime();
         long missing2 = o2.getMaxDelay()-Instant.now().getEpochSecond()-o1.getInputTime();
         if(missing1 < missing2) {
-            return 1;
+            return -1;
         }else if(missing1 == missing2) {
             if(o1.getPenalty()<o2.getPenalty()){
-                return -1;
+                return 1;
             }
         }
 
