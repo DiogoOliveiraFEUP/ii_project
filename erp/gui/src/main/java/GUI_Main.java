@@ -23,7 +23,7 @@ public class GUI_Main {
 
         try {
             IPmes = InetAddress.getByName("127.0.0.1");
-            portMes = 1234;
+            portMes = 54321;
             IPerp = InetAddress.getByName("127.0.0.1");
             portErp = 4321;
         } catch (Exception e) {

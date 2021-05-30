@@ -7,11 +7,7 @@ import java.util.ArrayList;
 
 public class MachinedTableData {
     ArrayList<MachinedData> machinedPartsList = new ArrayList<>();
-    JTable jTable = null;
-
-    public MachinedTableData(ArrayList<MachinedData> machinedPartsList) {
-        this.machinedPartsList = machinedPartsList;
-    }
+    JTable jTable;
 
     public MachinedTableData(){
         machinedPartsList.add(new MachinedData("M1"));
@@ -22,29 +18,28 @@ public class MachinedTableData {
         machinedPartsList.add(new MachinedData("M6"));
         machinedPartsList.add(new MachinedData("M7"));
         machinedPartsList.add(new MachinedData("M8"));
+
+        jTable = new JTable(getTableModel());
     }
 
     public void setMachinedTime(int machine,int time){
-        machinedPartsList.get(machine).machinedSeconds = time;
-        if(jTable!=null)jTable.setModel(this.getTableModel());
+        machinedPartsList.get(machine-1).machinedSeconds = time;
+        jTable.getModel().setValueAt(machinedPartsList.get(machine-1).getMachinedTime(),machine-1,1);
 
     }
 
     public void setMachinedParts(int machine,int part,int number){
-        machinedPartsList.get(machine).getMachinedParts().set(part,number);
-        if(jTable!=null)jTable.setModel(this.getTableModel());
+        machinedPartsList.get(machine-1).getMachinedParts().set(part-1,number);
+        jTable.getModel().setValueAt(machinedPartsList.get(machine-1).getTotalMachined(),machine-1,2);
+        jTable.getModel().setValueAt(number,machine-1,part+2);
     }
 
     public int getMachinedParts(int machine,int part) {
-        return  machinedPartsList.get(machine).getMachinedParts().get(part);
+        return  machinedPartsList.get(machine-1).getMachinedParts().get(part-1);
     }
 
-    public int getMachinedTime(int machine,int part) {
-        return  machinedPartsList.get(machine).getMachinedSeconds();
-    }
-
-        public void setTable(JTable jTable){
-        this.jTable = jTable;
+    public int getMachinedTime(int machine) {
+        return  machinedPartsList.get(machine-1).getMachinedSeconds();
     }
 
     public TableModel getTableModel( ){

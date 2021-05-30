@@ -7,6 +7,7 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 public class PLC_Manager {
@@ -63,6 +64,26 @@ public class PLC_Manager {
     String stockP9 = "|var|CODESYS Control Win V3 x64.Application.WHs.StockP9";
     ManagedSubscription subscriptionStocks;
 
+    String M1_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M1_Time";
+    String M2_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M2_Time";
+    String M3_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M3_Time";
+    String M4_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M4_Time";
+    String M5_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M5_Time";
+    String M6_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M6_Time";
+    String M7_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M7_Time";
+    String M8_Time = "|var|CODESYS Control Win V3 x64.Application.Stats.M8_Time";
+    ManagedSubscription subscriptionMxTimes;
+
+    String M1_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M1_Pieces";
+    String M2_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M2_Pieces";
+    String M3_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M3_Pieces";
+    String M4_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M4_Pieces";
+    String M5_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M5_Pieces";
+    String M6_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M6_Pieces";
+    String M7_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M7_Pieces";
+    String M8_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M8_Pieces";
+    ManagedSubscription subscriptionMxPieces;
+
     public PLC_Manager(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders, GUI gui) {
 
         singleton = this;
@@ -82,77 +103,45 @@ public class PLC_Manager {
             subscriptionO2 = ManagedSubscription.create(conn.getClient());
             subscriptionO3 = ManagedSubscription.create(conn.getClient());
             subscriptionStocks = ManagedSubscription.create(conn.getClient());
+            subscriptionMxTimes = ManagedSubscription.create(conn.getClient());
+            subscriptionMxPieces = ManagedSubscription.create(conn.getClient());
 
-        } catch (UaException e) {
-            e.printStackTrace();
-        }
+            subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
+            subscriptionWo1.createDataItem(new NodeId(4, O1Full));
+            subscriptionWo1.createDataItem(new NodeId(4, O2Full));
+            subscriptionWo1.createDataItem(new NodeId(4, O3Full));
+            subscriptionWo2.createDataItem(new NodeId(4, wo2EmptyNode));
+            subscriptionWi1.createDataItem(new NodeId(4, wi1OrderNode));
+            subscriptionWi2.createDataItem(new NodeId(4, wi2OrderNode));
+            subscriptionO1.createDataItem(new NodeId(4, O1OrderNode));
+            subscriptionO2.createDataItem(new NodeId(4, O2OrderNode));
+            subscriptionO3.createDataItem(new NodeId(4, O3OrderNode));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP1));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP2));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP3));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP4));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP5));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP6));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP7));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP8));
+            subscriptionStocks.createDataItem(new NodeId(4, stockP9));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M1_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M2_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M3_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M4_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M5_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M6_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M7_Time));
+            subscriptionMxTimes.createDataItem(new NodeId(4,M8_Time));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M1_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M2_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M3_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M4_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M5_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M6_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M7_Pieces));
+            subscriptionMxPieces.createDataItem(new NodeId(4,M8_Pieces));
 
-        ManagedDataItem dataItem;
-        try {
-            dataItem = subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionWo2.createDataItem(new NodeId(4, wo2EmptyNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionWi1.createDataItem(new NodeId(4, wi1OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionWi2.createDataItem(new NodeId(4, wi2OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionO1.createDataItem(new NodeId(4, O1OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionO2.createDataItem(new NodeId(4, O2OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionO3.createDataItem(new NodeId(4, O3OrderNode));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP1));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP2));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP3));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP4));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP5));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP6));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP7));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP8));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
-            dataItem = subscriptionStocks.createDataItem(new NodeId(4, stockP9));
-            if (!dataItem.getStatusCode().isGood()) {
-                throw new RuntimeException("uh oh!");
-            }
         } catch (UaException e) {
             e.printStackTrace();
         }
@@ -169,6 +158,34 @@ public class PLC_Manager {
                             evalWo1();
                         }
                     }
+                    if(item.getNodeId().getIdentifier().equals(O1Full)){
+                        boolean o1state = (boolean) dataValues.get(i).getValue().getValue();
+                        if(!o1state) {
+                            boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+                            if(wo1State){
+                                evalWo1();
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(O2Full)){
+                        boolean o2state = (boolean) dataValues.get(i).getValue().getValue();
+                        if(!o2state) {
+                            boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+                            if(wo1State){
+                                evalWo1();
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(O3Full)){
+                        boolean o3state = (boolean) dataValues.get(i).getValue().getValue();
+                        if(!o3state) {
+                            boolean wo1State = (boolean) PLC_Manager.getInstance().conn.getValue(wo1EmptyNode);
+                            if(wo1State){
+                                evalWo1();
+                            }
+                        }
+                    }
+
                     i++;
                 }
             }
@@ -184,7 +201,7 @@ public class PLC_Manager {
                         /* deal with order completed */
                         String orderID = (String) dataValues.get(i).getValue().getValue();
                         if(!orderID.equals("null")){
-                            System.out.println(orderID);
+                            //System.out.println(orderID);
                             conn.setValue(wi1DoneNode,true);
 
                             if(orderID.contains("P") && !orderID.equals("P1") && !orderID.equals("P2")) break;
@@ -200,6 +217,9 @@ public class PLC_Manager {
                                 order.setEndTime(Instant.now().getEpochSecond());
                                 Database_Connection.updateTOrders(transfOrders);
                             }
+
+                            evalWo1();
+                            evalWo2();
                         }
                     }
                     i++;
@@ -233,8 +253,9 @@ public class PLC_Manager {
                     if(item.getNodeId().getIdentifier().equals(wi2OrderNode)){
                         /* deal with order completed */
                         String orderID = (String) dataValues.get(i).getValue().getValue();
+                        //System.out.println(orderID);
                         if(!orderID.equals("null")){
-                            System.out.println(orderID);
+                            //System.out.println(orderID + ":Done");
                             conn.setValue(wi2DoneNode,true);
 
                             String[] str = orderID.split("_");
@@ -248,6 +269,9 @@ public class PLC_Manager {
                                 order.setEndTime(Instant.now().getEpochSecond());
                                 Database_Connection.updateTOrders(transfOrders);
                             }
+
+                            evalWo1();
+                            evalWo2();
                         }
                     }
                     i++;
@@ -265,7 +289,7 @@ public class PLC_Manager {
                         /* deal with order completed */
                         String orderID = (String) dataValues.get(i).getValue().getValue();
                         if(!orderID.equals("null")){
-                            System.out.println(orderID);
+                            //System.out.println(orderID);
                             conn.setValue(O1DoneNode,true);
 
                             String[] str = orderID.split("_");
@@ -276,7 +300,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
-                                //Database_Connection.updateUnld(1,order.getBlockType());
+                                incUnldQuant(1,Integer.parseInt(order.getBlockType().substring(1)),1);
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -296,7 +320,7 @@ public class PLC_Manager {
                         /* deal with order completed */
                         String orderID = (String) dataValues.get(i).getValue().getValue();
                         if(!orderID.equals("null")){
-                            System.out.println(orderID);
+                            //System.out.println(orderID);
                             conn.setValue(O2DoneNode,true);
 
                             String[] str = orderID.split("_");
@@ -307,6 +331,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
+                                incUnldQuant(2,Integer.parseInt(order.getBlockType().substring(1)),1);
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -326,7 +351,7 @@ public class PLC_Manager {
                         /* deal with order completed */
                         String orderID = (String) dataValues.get(i).getValue().getValue();
                         if(!orderID.equals("null")){
-                            System.out.println(orderID);
+                            //System.out.println(orderID);
                             conn.setValue(O3DoneNode,true);
 
                             String[] str = orderID.split("_");
@@ -337,6 +362,7 @@ public class PLC_Manager {
                             synchronized (unldOrders){
                                 Unloading_Order order = Unloading_Order.getOrderByMainID_ID_SubID(unldOrders,mainid,id,subid);
                                 order.setStatus(Order.Status.COMPLETED);
+                                incUnldQuant(3,Integer.parseInt(order.getBlockType().substring(1)),1);
                                 Database_Connection.updateUOrders(unldOrders);
                             }
                         }
@@ -346,10 +372,289 @@ public class PLC_Manager {
             }
         });
 
+        /* Atualiza Stocks */
         subscriptionStocks.addChangeListener(new ManagedSubscription.ChangeListener() {
             @Override
             public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
                 updateStocks();
+            }
+        });
+
+        /* Atualiza Machine Time Stats */
+        subscriptionMxTimes.addChangeListener(new ManagedSubscription.ChangeListener() {
+            @Override
+            public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
+                //System.out.println("here");
+                int i = 0;
+                for (ManagedDataItem item : dataItems) {
+                    if(item.getNodeId().getIdentifier().equals(M1_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("1:"+value);
+                        if(value>0){
+                            incMacTime(1,value);
+                            conn.setValue(M1_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M2_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("2:"+value);
+                        if(value>0){
+                            incMacTime(2,value);
+                            conn.setValue(M2_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M3_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("3:"+value);
+                        if(value>0){
+                            incMacTime(3,value);
+                            conn.setValue(M3_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M4_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("4:"+value);
+                        if(value>0){
+                            incMacTime(4,value);
+                            conn.setValue(M4_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M5_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("5:"+value);
+                        if(value>0){
+                            incMacTime(5,value);
+                            conn.setValue(M5_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M6_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("6:"+value);
+                        if(value>0){
+                            incMacTime(6,value);
+                            conn.setValue(M6_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M7_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("7:"+value);
+                        if(value>0){
+                            incMacTime(7,value);
+                            conn.setValue(M7_Time,(short)0);
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M8_Time)){
+                        short value = (short)dataValues.get(i).getValue().getValue();
+                        //System.out.println("8:"+value);
+                        if(value>0){
+                            incMacTime(8,value);
+                            conn.setValue(M8_Time,(short)0);
+                        }
+                    }
+                    i++;
+                }
+            }
+        });
+
+        /* Atualiza Machine Time Stats */
+        subscriptionMxPieces.addChangeListener(new ManagedSubscription.ChangeListener() {
+            @Override
+            public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
+                int i = 0;
+                for (ManagedDataItem item : dataItems) {
+                    if(item.getNodeId().getIdentifier().equals(M1_Pieces)){
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(1,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M1_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M2_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(2,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M2_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M3_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(3,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M3_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M4_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(4,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M4_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M5_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(5,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M5_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M6_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(6,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M6_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M7_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(7,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M7_Pieces,values);
+                            }
+                        }
+                    }
+                    if(item.getNodeId().getIdentifier().equals(M8_Pieces)){
+
+                        String aux = dataValues.get(i).getValue().toString();
+                        String aux1 = aux.replace("Variant{value=[","").replace(" ","").replace("]}","");
+                        String[] aux2 = aux1.split(",");
+
+                        short[] values = new short[6];
+                        values[0] = Short.parseShort(aux2[0]);
+                        values[1] = Short.parseShort(aux2[1]);
+                        values[2] = Short.parseShort(aux2[2]);
+                        values[3] = Short.parseShort(aux2[3]);
+                        values[4] = Short.parseShort(aux2[4]);
+                        values[5] = Short.parseShort(aux2[5]);
+
+                        //System.out.println(Arrays.toString(values));
+
+                        for(int j = 0; j < 6; j++){
+                            if(values[j] > 0){
+                                incMacQuant(8,j+1,values[j]);
+                                values[j] = 0;
+                                conn.setValue(M8_Pieces,values);
+                            }
+                        }
+                    }
+                    i++;
+                }
             }
         });
     }
@@ -366,7 +671,10 @@ public class PLC_Manager {
             synchronized (unldOrders) {
                 for (Unloading_Order aux : unldOrders) {
                     if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1") && aux.isPriority()) {
-                        unld = aux;
+                        if(hasStock(Integer.parseInt(aux.getBlockType().substring(1)))) {
+                            unld = aux;
+                            break;
+                        }
                     }
                 }
                 if (unld != null) {
@@ -379,7 +687,7 @@ public class PLC_Manager {
                         String path = unld.getPath().replace("Wo1:","") + "?P=" + unld.getBlockType().substring(1)
                                 + "?ID=" + unld.getMainID() + "_" + unld.getID() + "_" + unld.getSubID();
 
-                        System.out.println(path);
+                        //System.out.println(path);
 
                         conn.setValue(wo1PieceNode, path);
                         Database_Connection.updateUOrders(unldOrders);
@@ -394,8 +702,10 @@ public class PLC_Manager {
                 synchronized (transfOrders) {
                     for (Transformation_Order aux : transfOrders) {
                         if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
-                            transf = aux;
-                            break;
+                            if(hasStock(Integer.parseInt(aux.getInitBlockType().substring(1)))) {
+                                transf = aux;
+                                break;
+                            }
                         }
                     }
                     if (transf != null) {
@@ -405,7 +715,7 @@ public class PLC_Manager {
                         String path = transf.getPath().replace("Wo1:","") + "?P=" + transf.getInitBlockType().substring(1)
                                 + "?ID=" + transf.getMainID() + "_" + transf.getID() + "_" + transf.getSubID();
 
-                        System.out.println(path);
+                        //System.out.println(path);
 
                         conn.setValue(wo1PieceNode, path);
                         Database_Connection.updateTOrders(transfOrders);
@@ -418,24 +728,27 @@ public class PLC_Manager {
                     synchronized (unldOrders) {
                         for (Unloading_Order aux : unldOrders) {
                             if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo1")) {
-                                unld = aux;
+                                if (hasStock(Integer.parseInt(aux.getBlockType().substring(1)))) {
+                                    unld = aux;
+                                    break;
+                                }
                             }
                         }
-                        if (unld != null) {
-                            if(unld.getPath().contains("O1") && !((boolean) conn.getValue(O1Full)) ||
-                                    unld.getPath().contains("O2") && !((boolean) conn.getValue(O2Full)) ||
-                                        unld.getPath().contains("O3") && !((boolean) conn.getValue(O3Full))) {
+                    }
+                    if (unld != null) {
+                        if(unld.getPath().contains("O1") && !((boolean) conn.getValue(O1Full)) ||
+                                unld.getPath().contains("O2") && !((boolean) conn.getValue(O2Full)) ||
+                                unld.getPath().contains("O3") && !((boolean) conn.getValue(O3Full))) {
 
-                                unld.setStatus(Order.Status.RUNNING);
+                            unld.setStatus(Order.Status.RUNNING);
 
-                                String path = unld.getPath().replace("Wo1:", "") + "?P=" + unld.getBlockType().substring(1)
-                                        + "?ID=" + unld.getMainID() + "_" + unld.getID() + "_" + unld.getSubID();
+                            String path = unld.getPath().replace("Wo1:", "") + "?P=" + unld.getBlockType().substring(1)
+                                    + "?ID=" + unld.getMainID() + "_" + unld.getID() + "_" + unld.getSubID();
 
-                                System.out.println(path);
+                            //System.out.println(path);
 
-                                conn.setValue(wo1PieceNode, path);
-                                Database_Connection.updateUOrders(unldOrders);
-                            }
+                            conn.setValue(wo1PieceNode, path);
+                            Database_Connection.updateUOrders(unldOrders);
                         }
                     }
                 }
@@ -453,8 +766,10 @@ public class PLC_Manager {
             synchronized (transfOrders) {
                 for (Transformation_Order aux : transfOrders) {
                     if (aux.getStatus() == Order.Status.READY && aux.getPath().contains("Wo2")) {
-                        transf = aux;
-                        break;
+                        if(hasStock(Integer.parseInt(aux.getInitBlockType().substring(1)))) {
+                            transf = aux;
+                            break;
+                        }
                     }
                 }
                 if (transf != null) {
@@ -464,7 +779,7 @@ public class PLC_Manager {
                     String path = transf.getPath().replace("Wo2:","") + "?P=" + transf.getInitBlockType().substring(1)
                             + "?ID=" + transf.getMainID() + "_" + transf.getID() + "_" + transf.getSubID();
 
-                    System.out.println(path);
+                    //System.out.println(path);
 
                     conn.setValue(wo2PieceNode, path);
                     Database_Connection.updateTOrders(transfOrders);
@@ -472,6 +787,46 @@ public class PLC_Manager {
             }
 
         }
+    }
+
+    public boolean hasStock(int piece){
+        if(piece == 1){
+            int P1 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP1)).intValue();
+            if(P1 > 0) return true;
+        }
+        else if(piece == 2){
+            int P2 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP2)).intValue();
+            if(P2 > 0) return true;
+        }
+        else if(piece == 3){
+            int P3 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP3)).intValue();
+            if(P3 > 0) return true;
+        }
+        else if(piece == 4){
+            int P4 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP4)).intValue();
+            if(P4 > 0) return true;
+        }
+        else if(piece == 5){
+            int P5 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP5)).intValue();
+            if(P5 > 0) return true;
+        }
+        else if(piece == 6){
+            int P6 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP6)).intValue();
+            if(P6 > 0) return true;
+        }
+        else if(piece == 7){
+            int P7 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP7)).intValue();
+            if(P7 > 0) return true;
+        }
+        else if(piece == 8){
+            int P8 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP8)).intValue();
+            if(P8 > 0) return true;
+        }
+        else if(piece == 9){
+            int P9 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP9)).intValue();
+            if(P9 > 0) return true;
+        }
+        return false;
     }
 
     public void updateStocks() {
@@ -487,5 +842,20 @@ public class PLC_Manager {
         int P9 = ((Short) PLC_Manager.getInstance().conn.getValue(stockP9)).intValue();
 
         Database_Connection.updateStocks(P1,P2,P3,P4,P5,P6,P7,P8,P9);
+    }
+
+    public void incMacQuant(int machine, int pieceType, int quant){
+        Database_Connection.incMacQuant(machine,pieceType,quant);
+        gui.machinedTableData.setMachinedParts(machine,pieceType,gui.machinedTableData.getMachinedParts(machine,pieceType)+quant);
+    }
+
+    public void incMacTime(int machine, int time){
+        Database_Connection.incMacTime(machine,time);
+        gui.machinedTableData.setMachinedTime(machine,gui.machinedTableData.getMachinedTime(machine)+time);
+    }
+
+    public void incUnldQuant(int roller, int pieceType, int quant){
+        Database_Connection.incUnld(roller,pieceType,quant);
+        gui.unloadTableData.setUnloadPart(roller,pieceType,gui.unloadTableData.getUnloadPart(roller,pieceType)+quant);
     }
 }

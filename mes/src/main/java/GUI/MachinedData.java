@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class MachinedData {
-    JTable jtable= null;
+
    ArrayList<Integer> machinedParts = new ArrayList<>();
    Integer machinedSeconds=0;
    String machineName="";
-   String[] machinedDataString;
+
    public MachinedData(String machineName){
        this.machineName=machineName;
        machinedParts.add(0);
@@ -17,8 +17,6 @@ public class MachinedData {
        machinedParts.add(0);
        machinedParts.add(0);
        machinedParts.add(0);
-
-
    }
 
    public int getTotalMachined(){
@@ -27,10 +25,6 @@ public class MachinedData {
            sum+=integer;
        }
        return sum;
-   }
-
-   public void setJtable(JTable jtable){
-       this.jtable = jtable;
    }
 
     public String getMachinedTime() {

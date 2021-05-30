@@ -2,25 +2,12 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.InetAddress;
 
 public class GUI_Main {
-
-    private InetAddress IPmes;
-    private int portMes;
-    private InetAddress IPerp;
-    private int portErp;
-
-
-    private int nextOrderID = 1;
-
 
     JFrame f;
 
     public GUI_Main(MachinedTableData machinedData, UnloadTableData unloadTableData){
-
-
-
 
         f = new JFrame("MES Graphical User Interface");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,58 +29,11 @@ public class GUI_Main {
         unloadedPartsPanel.setName("Unloaded");
         tabbedPane.add(unloadedPartsPanel);
 
-
-
         // -------------------  //
 
         f.add(tabbedPane);
         f.pack();
         f.setLocationRelativeTo(null);
         f.setVisible(true);
-    }
-
-    public InetAddress getIPmes() {
-        return IPmes;
-    }
-
-    public void setIPmes(InetAddress IPmes) {
-        this.IPmes = IPmes;
-    }
-
-    public int getPortMes() {
-        return portMes;
-    }
-
-    public void setPortMes(int portMes) {
-        this.portMes = portMes;
-    }
-
-    public InetAddress getIPerp() {
-        return IPerp;
-    }
-
-    public void setIPerp(InetAddress IPerp) {
-        this.IPerp = IPerp;
-    }
-
-    public int getPortErp() {
-        return portErp;
-    }
-
-    public void setPortErp(int portErp) {
-        this.portErp = portErp;
-    }
-
-
-    public int getNextOrderID() {
-        return this.nextOrderID;
-    }
-
-    public void setNextOrderID(int nextOrderID) {
-        this.nextOrderID = nextOrderID;
-    }
-
-    public JFrame getJFrame() {
-        return f;
     }
 }

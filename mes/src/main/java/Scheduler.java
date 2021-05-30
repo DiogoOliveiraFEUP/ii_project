@@ -63,6 +63,7 @@ public class Scheduler {
             transformation_order.setEndTime(timetable.getOrderEndingTime());
             transformation_order.setStatus(Order.Status.READY);
             transformation_order.setPath(pathString);
+                //System.out.println(timetable.getOrderEndingTime());
             }
         }
         //System.out.println("Scheduled");
