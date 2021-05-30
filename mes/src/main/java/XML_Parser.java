@@ -59,14 +59,15 @@ public class XML_Parser {
                                 int penalty = Integer.parseInt(e2.getAttribute("Penalty"));
 
                                 /* Do Something - Order Transform */
-                                for(int i = 1; i <= quantity; i++){
-                                    addOrder(transfOrders,number,i,from,to,time,maxDelay,penalty);
-                                }
                                 synchronized (transfOrders){
-                                scheduler.schedule(transfOrders);}
+                                    for(int i = 1; i <= quantity; i++){
+                                        addOrder(transfOrders,number,i,from,to,time,maxDelay,penalty);
+                                    }
+                                }
+                                synchronized (transfOrders){scheduler.schedule(transfOrders);}
                                 PLC_Manager.getInstance().evalWo1();
                                 PLC_Manager.getInstance().evalWo2();
-                                Database_Connection.updateTOrders(transfOrders);
+                                synchronized (transfOrders){Database_Connection.updateTOrders(transfOrders);}
                             }
                             else if(e1.getElementsByTagName("Unload").getLength()>0){
                                 e2 = (Element) e1.getElementsByTagName("Unload").item(0);
@@ -76,14 +77,16 @@ public class XML_Parser {
                                 System.out.println("Unload _" + " Type:" + type + " Destination:" + dest + " Quantity:" + quantity);
 
                                 /* Do Something - Order Unload */
-                                for(int i = 1; i <= quantity; i++){
-                                    if(i == 1)
-                                        unldOrders.add(new Unloading_Order(type,dest,number,i,true));
-                                    else
-                                        unldOrders.add(new Unloading_Order(type,dest,number,i,false));
+                                synchronized (unldOrders){
+                                    for(int i = 1; i <= quantity; i++){
+                                        if(i == 1)
+                                            unldOrders.add(new Unloading_Order(type,dest,number,i,true));
+                                        else
+                                            unldOrders.add(new Unloading_Order(type,dest,number,i,false));
+                                    }
                                 }
                                 PLC_Manager.getInstance().evalWo1();
-                                Database_Connection.updateUOrders(unldOrders);
+                                synchronized (unldOrders){Database_Connection.updateUOrders(unldOrders);}
                             }
                         }
                     }
