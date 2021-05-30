@@ -168,6 +168,7 @@ public class Timetable {
             buffer.sideMachines.addAll(sideMachines);
             buffer.sideMachines.add(machine+":M#"+pathEdge.getTool()+"|"+pathEdge.getTime());
             buffer.orderStartingTime = Math.min(internalLastEndingTime,orderStartingTime);
+            buffer.orderEndingTime = orderEndingTime;
             accumulated_penalty = accumulated_penalty + getPenalty(transformation_order);
             MachineTimeSlot machineTimeSlot = new MachineTimeSlot(transformation_order, pathEdge.getTool(),LatestStartingTime,LatestEndingTime);
             buffer.timetable.get(machine).addLast(machineTimeSlot);
@@ -217,7 +218,7 @@ public class Timetable {
 
 
     public long getBestEndingTime( List<String> sideMachines,int side, Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
-        timetable = iterate(sideMachines,0,side,0, 0/*Instant.now().getEpochSecond()*/,transformation_order,orderPath);
+        timetable = iterate(sideMachines,0,side,0, Instant.now().getEpochSecond(),transformation_order,orderPath);
 
 
         return getEndingTime();
@@ -242,7 +243,7 @@ public class Timetable {
         else{
             timetable= sideA.timetable;
             orderStartingTime = sideA.getOrderStartingTime();
-            orderEndingTime = sideB.getOrderEndingTime();
+            orderEndingTime = sideA.getOrderEndingTime();
             //System.out.println(this);
             accumulated_penalty = sideA.accumulated_penalty;
 
