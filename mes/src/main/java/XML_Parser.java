@@ -221,7 +221,7 @@ public class XML_Parser {
                 }
             }
 
-            int penaltyIncurred = (((int) (endTime-orders.get(0).getInputTime()) / 50 + 1) * orders.get(0).getPenalty());
+            int penaltyIncurred = (((int) (endTime-orders.get(0).getRealInputTime()) / 50 + 1) * orders.get(0).getPenalty());
 
             sb.append("<Order Number=\"" + mainID + "\">\n");
             sb.append("<Transform From=\"P" + from + "\" To=\"P" + to + "\" ");
@@ -230,11 +230,11 @@ public class XML_Parser {
             sb.append("Quantity2=\"" + running + "\" ");
             sb.append("Quantity3=\"" + (total-finished-running) + "\" ");
             sb.append("Time=\"" + orders.get(0).getInputTime() + "\" ");
-            sb.append("Time1=\"" + orders.get(0).getRealInputTime() + "\" ");
+            sb.append("Time1=\"" + orders.get(0).getInputTime() + "\" ");
             sb.append("MaxDelay=\"" + orders.get(0).getMaxDelay() + "\" ");
             sb.append("Penalty=\"" + orders.get(0).getPenalty() + "\" ");
-            sb.append("Start=\"" + startTime + "\" ");
-            sb.append("End=\"" + endTime + "\" ");
+            sb.append("Start=\"" + (startTime-orders.get(0).getRealInputTime()) + "\" ");
+            sb.append("End=\"" + (endTime-orders.get(0).getRealInputTime()) + "\" ");
             sb.append("PenaltyIncurred=\"" + penaltyIncurred + "\"/>\n");
             sb.append("</Order>\n");
 
