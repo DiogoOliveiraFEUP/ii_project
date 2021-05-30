@@ -16,8 +16,8 @@ public class OrderComparator implements Comparator<Transformation_Order> {
         int machiningTime2=planner.getMachiningTime(o2.getInitBlockType(), o2.getFinalBlockType());
 
 
-        long missing1 = o1.getMaxDelay()- Instant.now().getEpochSecond()-o1.getInputTime();
-        long missing2 = o2.getMaxDelay()-Instant.now().getEpochSecond()-o1.getInputTime();
+        long missing1 = o1.getMaxDelay()- (Instant.now().getEpochSecond()-o1.getRealInputTime());
+        long missing2 = o2.getMaxDelay()-(Instant.now().getEpochSecond()-o1.getRealInputTime());
         if(missing1 < missing2) {
             return -1;
         }else if(missing1 == missing2) {
