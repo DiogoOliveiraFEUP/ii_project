@@ -36,8 +36,16 @@ public class Scheduler {
                 if(transformation_order.getTimetable()!= null) timetable = transformation_order.getTimetable();
             }
         }
-
+        transfOrders.sort((o1, o2) ->
+                Integer.compare(o1.getSubID(), o2.getSubID()));
+        transfOrders.sort((o1, o2) ->
+                Integer.compare(o1.getPenalty(), o2.getPenalty()));
         transfOrders.sort(new OrderComparator());
+
+
+        for(Transformation_Order transformation_order:transfOrders){
+            System.out.println(transformation_order);
+        }
         List<String > machineList;
         for(Transformation_Order transformation_order:transfOrders){
             if(transformation_order.getStatus() == Order.Status.NEW || transformation_order.getStatus()== Order.Status.READY){
