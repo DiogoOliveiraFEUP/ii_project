@@ -141,7 +141,7 @@ public class Timetable {
         for (int i = highest_machine; i < 4; i++) {
             Machine machine = new Machine("M" + (4 * side + i + 1));
             Timetable buffer = new Timetable(timetable);
-            long LatestStartingTime = timetable.get(machine).isEmpty()?0:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
+            long LatestStartingTime = timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
             long LatestEndingTime=0;
             long internalLastEndingTime=timetable.get(machine).isEmpty()?LastEndingTime:Math.max(timetable.get(machine).getLast().getEnding_Time(),LastEndingTime);
             if(getMachiningEndTime(machine,pathEdge.getTool(), pathEdge.getTime())>30){
