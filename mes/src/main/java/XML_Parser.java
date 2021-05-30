@@ -62,8 +62,8 @@ public class XML_Parser {
                                 for(int i = 1; i <= quantity; i++){
                                     addOrder(transfOrders,number,i,from,to,time,maxDelay,penalty);
                                 }
-
-                                scheduler.schedule(transfOrders);
+                                synchronized (transfOrders){
+                                scheduler.schedule(transfOrders);}
                                 PLC_Manager.getInstance().evalWo1();
                                 PLC_Manager.getInstance().evalWo2();
                                 Database_Connection.updateTOrders(transfOrders);

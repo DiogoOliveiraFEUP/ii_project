@@ -34,7 +34,9 @@ public class Application {
 
         PLC_Manager PLC = new PLC_Manager(transfOrders, unldOrders, gui);
 
-        (new Scheduler()).schedule(transfOrders);
+        synchronized (transfOrders){
+
+            (new Scheduler()).schedule(transfOrders);}
         PLC.evalWo1();
         PLC.evalWo2();
         PLC.updateStocks();
