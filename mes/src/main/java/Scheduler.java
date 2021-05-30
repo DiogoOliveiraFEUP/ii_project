@@ -30,6 +30,12 @@ public class Scheduler {
 
     public void schedule(List<Transformation_Order> transfOrders){
 //        System.out.println("Scheduling");
+        System.out.println(transfOrders);
+        for(Transformation_Order transformation_order:transfOrders) {
+            if(transformation_order.getStatus() == Order.Status.RUNNING||transformation_order.getStatus()==Order.Status.COMPLETED){
+                if(transformation_order.getTimetable()!= null) timetable = transformation_order.getTimetable();
+            }
+        }
 
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
@@ -54,15 +60,16 @@ public class Scheduler {
             }
             pathString +=String.format("%s:",path.getVertexList().get(path.getLength()));
                 //System.out.println(pathString);
-            for (String s:machineList){
+                for(int i = machineList.size()-1;i>=0;i--){
+                    pathString = pathString.replace(machineList.get(i).substring(0,2),machineList.get(i));
 
-                pathString = pathString.replace(s.substring(0,2),s);
-            }
+                }
             pathString+="Wh:";
             transformation_order.setStartTime(timetable.getOrderStartingTime());
             transformation_order.setEndTime(timetable.getOrderEndingTime());
             transformation_order.setStatus(Order.Status.READY);
             transformation_order.setPath(pathString);
+            transformation_order.setTimetable(timetable);
                 //System.out.println(timetable.getOrderEndingTime());
             }
         }

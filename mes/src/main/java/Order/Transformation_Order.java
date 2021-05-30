@@ -1,5 +1,7 @@
 package Order;
 
+import Planning.Timetable;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,17 +17,16 @@ public class Transformation_Order extends Order{
     private long startTime;
     private long endTime;
     private int realPenalty;
+    private Timetable timetable;
 
     public Transformation_Order(int mainID, int ID, int subID, String initBlockType, String finalBlockType, long inputTime, int maxDelay, int penalty) {
 
         super(mainID,ID,subID);
-
         this.finalBlockType = finalBlockType;
         this.initBlockType = initBlockType;
         this.inputTime = inputTime;
         this.maxDelay = maxDelay;
         this.penalty = penalty;
-
         this.realInputTime = Instant.now().getEpochSecond();
     }
 
@@ -40,6 +41,14 @@ public class Transformation_Order extends Order{
         this.penalty = penalty;
 
         this.realInputTime = realInputTime;
+    }
+
+    public Timetable getTimetable() {
+        return timetable;
+    }
+
+    public void setTimetable(Timetable timetable) {
+        this.timetable = timetable;
     }
 
     public String getInitBlockType() {
