@@ -233,8 +233,8 @@ public class XML_Parser {
             sb.append("Time1=\"" + orders.get(0).getInputTime() + "\" ");
             sb.append("MaxDelay=\"" + orders.get(0).getMaxDelay() + "\" ");
             sb.append("Penalty=\"" + orders.get(0).getPenalty() + "\" ");
-            sb.append("Start=\"" + (startTime-orders.get(0).getRealInputTime()) + "\" ");
-            sb.append("End=\"" + (endTime-orders.get(0).getRealInputTime()) + "\" ");
+            sb.append("Start=\"" + (startTime-orders.get(0).getRealInputTime()+orders.get(0).getInputTime()) + "\" ");
+            sb.append("End=\"" + (endTime-orders.get(0).getRealInputTime()+orders.get(0).getInputTime()) + "\" ");
             sb.append("PenaltyIncurred=\"" + penaltyIncurred + "\"/>\n");
             sb.append("</Order>\n");
 
