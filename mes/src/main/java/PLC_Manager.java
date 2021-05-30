@@ -84,16 +84,6 @@ public class PLC_Manager {
     String M8_Pieces = "|var|CODESYS Control Win V3 x64.Application.Stats.M8_Pieces";
     ManagedSubscription subscriptionMxPieces;
 
-    String LT_M1 = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.TS1.listTools";
-    String LT_M2 = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.TS2.listTools";
-    String LT_M3 = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.TS3.listTools";
-    String LT_M4 = "|var|CODESYS Control Win V3 x64.Application.Factory_Right.TS4.listTools";
-    String LT_M5 = "|var|CODESYS Control Win V3 x64.Application.Factory_Left.TS5.listTools";
-    String LT_M6 = "|var|CODESYS Control Win V3 x64.Application.Factory_Left.TS6.listTools";
-    String LT_M7 = "|var|CODESYS Control Win V3 x64.Application.Factory_Left.TS7.listTools";
-    String LT_M8 = "|var|CODESYS Control Win V3 x64.Application.Factory_Left.TS8.listTools";
-    ManagedSubscription subsListTools;
-
     public PLC_Manager(List<Transformation_Order> transfOrders, List<Unloading_Order> unldOrders, GUI gui) {
 
         singleton = this;
@@ -115,7 +105,6 @@ public class PLC_Manager {
             subscriptionStocks = ManagedSubscription.create(conn.getClient());
             subscriptionMxTimes = ManagedSubscription.create(conn.getClient());
             subscriptionMxPieces = ManagedSubscription.create(conn.getClient());
-            subsListTools = ManagedSubscription.create(conn.getClient());
 
             subscriptionWo1.createDataItem(new NodeId(4, wo1EmptyNode));
             subscriptionWo1.createDataItem(new NodeId(4, O1Full));
@@ -152,34 +141,9 @@ public class PLC_Manager {
             subscriptionMxPieces.createDataItem(new NodeId(4,M6_Pieces));
             subscriptionMxPieces.createDataItem(new NodeId(4,M7_Pieces));
             subscriptionMxPieces.createDataItem(new NodeId(4,M8_Pieces));
-            subsListTools.createDataItem(new NodeId(4,LT_M1));
-            subsListTools.createDataItem(new NodeId(4,LT_M2));
-            subsListTools.createDataItem(new NodeId(4,LT_M3));
-            subsListTools.createDataItem(new NodeId(4,LT_M4));
-            subsListTools.createDataItem(new NodeId(4,LT_M5));
-            subsListTools.createDataItem(new NodeId(4,LT_M6));
-            subsListTools.createDataItem(new NodeId(4,LT_M7));
-            subsListTools.createDataItem(new NodeId(4,LT_M8));
-
         } catch (UaException e) {
             e.printStackTrace();
         }
-
-
-        /* Avisa MES que Wo1 ficou livre */
-        subsListTools.addChangeListener(new ManagedSubscription.ChangeListener() {
-            @Override
-            public void onDataReceived(List<ManagedDataItem> dataItems, List<DataValue> dataValues) {
-                int i = 0;
-                for (ManagedDataItem item : dataItems) {
-                    System.out.println(item.getNodeId().getIdentifier() + " - " + dataValues.get(i).getValue().getValue());
-                    i++;
-                }
-            }
-        });
-
-
-
 
         /* Avisa MES que Wo1 ficou livre */
         subscriptionWo1.addChangeListener(new ManagedSubscription.ChangeListener() {
