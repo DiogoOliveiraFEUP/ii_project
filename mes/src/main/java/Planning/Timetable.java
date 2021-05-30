@@ -133,7 +133,6 @@ public class Timetable {
     }
 
     public HashMap<Entity,LinkedList<MachineTimeSlot>> iterate(List<String>sideMachines,int level,int side, int highest_machine, long LastEndingTime,Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){
-
         PathEdge pathEdge = orderPath.getEdgeList().get(level);
         //System.out.println(level);
         //System.out.println("Highest machine:"+highest_machine +" -> Tool" + pathEdge.getTool());
@@ -211,10 +210,6 @@ public class Timetable {
 
 
     }
-
-
-
-
 
 
     public long getBestEndingTime( List<String> sideMachines,int side, Transformation_Order transformation_order,GraphPath<Part, PathEdge> orderPath){

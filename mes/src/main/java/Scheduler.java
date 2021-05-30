@@ -30,6 +30,12 @@ public class Scheduler {
 
     public void schedule(List<Transformation_Order> transfOrders){
 //        System.out.println("Scheduling");
+        System.out.println(transfOrders);
+        for(Transformation_Order transformation_order:transfOrders) {
+            if(transformation_order.getStatus() == Order.Status.RUNNING||transformation_order.getStatus()==Order.Status.COMPLETED){
+                if(transformation_order.getTimetable()!= null) timetable = transformation_order.getTimetable();
+            }
+        }
 
         transfOrders.sort(new OrderComparator());
         List<String > machineList;
@@ -63,6 +69,7 @@ public class Scheduler {
             transformation_order.setEndTime(timetable.getOrderEndingTime());
             transformation_order.setStatus(Order.Status.READY);
             transformation_order.setPath(pathString);
+            transformation_order.setTimetable(timetable);
                 //System.out.println(timetable.getOrderEndingTime());
             }
         }
